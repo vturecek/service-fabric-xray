@@ -1,4 +1,8 @@
-﻿namespace Xray.Controllers
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
+
+namespace Xray.Controllers
 {
     using Microsoft.AspNet.Mvc;
 
@@ -6,12 +10,12 @@
     {
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public IActionResult Error()
         {
-            return View();
+            return this.View();
         }
     }
 }

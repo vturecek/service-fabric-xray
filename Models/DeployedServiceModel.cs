@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Models
 {
+    using System.Collections.Generic;
+
     public struct DeployedServiceModel
     {
         public DeployedServiceModel(
-            ServiceModel service, 
+            ServiceModel service,
             IEnumerable<ReplicaModel> replicas)
         {
             this.Service = service;

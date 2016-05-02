@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Models
 {
@@ -24,17 +23,17 @@ namespace Xray.Models
             this.RemainingBufferedCapacity = remainingBufferedCapacity;
             this.RemainingCapacity = remainingCapacity;
         }
-        
+
         public bool IsCapacityViolation { get; }
 
         public string Name { get; }
-        
+
         public long BufferedCapacity { get; }
 
         public long Capacity { get; }
 
         public long Load { get; }
-        
+
         public long RemainingBufferedCapacity { get; }
 
         public long RemainingCapacity { get; }

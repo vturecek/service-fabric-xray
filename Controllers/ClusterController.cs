@@ -1,18 +1,21 @@
-﻿using Xray.Models;
-using Microsoft.AspNet.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Fabric;
-using System.Fabric.Query;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Controllers
 {
+    using System.Collections.Generic;
+    using System.Fabric;
+    using System.Fabric.Query;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNet.Mvc;
+    using Xray.Models;
+
     [Route("api/[controller]")]
     public class ClusterController : Controller
     {
-        private static readonly IEnumerable<ClusterCapacity> defaultCapacities = new[] 
+        private static readonly IEnumerable<ClusterCapacity> defaultCapacities = new[]
         {
             new ClusterCapacity("Default Replica Count", 0, 500, 0, 0, 0, false, 0)
         };
@@ -27,17 +30,18 @@ namespace Xray.Controllers
         [HttpGet("capacity")]
         public async Task<IEnumerable<ClusterCapacity>> Capacity()
         {
-            ClusterLoadInformation loadInfo = await client.QueryManager.GetClusterLoadInformationAsync();
+            ClusterLoadInformation loadInfo = await this.client.QueryManager.GetClusterLoadInformationAsync();
 
-            return loadInfo.LoadMetricInformationList.Where(x => x.ClusterCapacity > 0).Select(x => new ClusterCapacity(
-                x.Name,
-                x.ClusterBufferedCapacity,
-                x.ClusterCapacity,
-                x.ClusterLoad,
-                x.ClusterRemainingBufferedCapacity,
-                x.ClusterRemainingCapacity,
-                x.IsClusterCapacityViolation,
-                x.NodeBufferPercentage))
+            return loadInfo.LoadMetricInformationList.Where(x => x.ClusterCapacity > 0).Select(
+                x => new ClusterCapacity(
+                    x.Name,
+                    x.ClusterBufferedCapacity,
+                    x.ClusterCapacity,
+                    x.ClusterLoad,
+                    x.ClusterRemainingBufferedCapacity,
+                    x.ClusterRemainingCapacity,
+                    x.IsClusterCapacityViolation,
+                    x.NodeBufferPercentage))
                 .Concat(defaultCapacities);
         }
     }

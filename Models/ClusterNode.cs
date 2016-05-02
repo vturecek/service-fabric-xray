@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Models
 {
+    using System.Collections.Generic;
+
     public struct ClusterNode
     {
         public ClusterNode(
@@ -26,7 +27,7 @@ namespace Xray.Models
         public string Name { get; }
 
         public string Status { get; }
-        
+
         public string HealthState { get; }
 
         public string FaultDomain { get; }

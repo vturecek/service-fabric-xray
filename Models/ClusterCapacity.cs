@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Models
 {
@@ -29,7 +28,7 @@ namespace Xray.Models
         }
 
         public long BufferedCapacity { get; }
-        
+
         public long Capacity { get; }
 
         public long Load { get; }

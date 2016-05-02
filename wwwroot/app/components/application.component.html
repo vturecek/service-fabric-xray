@@ -1,0 +1,25 @@
+﻿<ul class="application-list">
+    <li *ngFor="#item of applications">
+        <div *ngIf="hasSelectedMetric(item.application.metrics)"
+             #container
+             [ngClass]="getDeployedEntityClass(item.application, ['application'])"
+             [style.height.px]="getElementHeight(getSelectedMetric(item.application.metrics))">
+
+            <div *ngIf="item.selected" class="selectorButton"
+                 (click)="selectApplication(item)">[>]</div>
+
+            <div [ngClass]="{'label-selected': item.selected, 'label-collapsed': !item.selected }"
+                   (click)="selectApplication(item)">{{item.application.name}}</div>
+
+            <div *ngIf="item.selected">
+
+                <service-component [services]="item.services"
+                                   [selectedColors]="selectedColors"
+                                   [selectedMetricName]="selectedMetricName"
+                                   [parentCapacity]="getSelectedMetric(item.application.metrics)"
+                                   [parentContainerSize]="getContainerSize(getSelectedMetric(item.application.metrics))">
+                </service-component>
+            </div>
+        </div>
+    </li>
+</ul>

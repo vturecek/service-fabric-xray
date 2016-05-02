@@ -1,0 +1,27 @@
+﻿.replica-list { list-style: none; margin: 0; padding: 0; }
+.replica { list-style: none; margin: 0 0 0 15px; padding: 0; border: 1px solid #000000; }
+
+
+/* common */
+.invalid { }
+.unknown { background-color:#000000 }
+
+/* replica roles*/
+.Primary { opacity:1; border-color:#DDDDDD; }
+.ActiveSecondary { opacity:0.7; border-color: #000000; }
+.IdleSecondary { opacity:0.5; border-color: #000000; }
+.None { opacity:1; border-color: #000000; }
+.Unknown { opacity:1; border-color: #000000; }
+
+/* statuses*/
+.invalid { background-color:#000000 }
+.inbuild { background-color:#D17D00 }
+.standby { background-color:#77A5C6 }
+.ready { background-color:#00ABEC }
+.down { background-color: #E81123 }
+.dropped { background-color: #333333 }
+
+/* health states */
+.ok { background-color: #7FBA00; }
+.warning { background-color: #FCD116}
+.error { background-color: #E81123 }

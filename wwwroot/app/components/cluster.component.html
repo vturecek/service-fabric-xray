@@ -1,0 +1,32 @@
+﻿<h3>Nodes</h3>
+<a (click)="toggleExpand()">{{!expanded && 'Expand all' || 'Collapse all'}}</a>
+<label for="scaleFactor">Scale: </label> <input name="scaleFactor"[(ngModel)]="scaleFactor" />
+
+<select [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
+    <option *ngFor="#capacity of capacities">{{capacity.name}}</option>
+</select>
+
+<select [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">
+    <option value="status">Status</option>
+    <option value="health">Health</option>
+</select>
+
+<div class="nodes">
+    <ul>
+        <li *ngFor="#node of nodes">
+            <label>{{node.name}}</label>
+            <div #container
+                 [ngClass]="getDeployedEntityClass(node, ['node'])"
+                 [style.height.px]="getElementHeight(getSelectedCapacity(node.capacities))">
+
+                <application-component [nodeName]="node.name"
+                                       [selectedColors]="selectedColors"
+                                       [selectedMetricName]="selectedMetricName"
+                                       [parentCapacity]="getSelectedCapacity(node.capacities)"
+                                       [parentContainerSize]="getContainerSize(getSelectedCapacity(node.capacities))">
+                </application-component>
+                   
+            </div>
+        </li>
+    </ul>
+</div>

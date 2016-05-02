@@ -1,0 +1,20 @@
+﻿.application-list { list-style: none; margin: 0; padding: 0; }
+.application { font-size:10px; position:relative; list-style: none; margin: 2px 0; padding: 1px 2px; border: 1px solid #000000; overflow:hidden }
+.selectorButton { cursor: pointer; position:absolute; line-height: 1em; }
+.label-selected { cursor: pointer; float: left; position: absolute; top: 18px; left:16px; transform: rotate(90deg); transform-origin: left top 0; }
+.label-unselected { cursor: pointer; }
+
+/* common */
+.invalid { border-color:#000;}
+.unknown { border-color:#000; }
+
+/* statuses */
+.ready { border-color:#00ABEC; }
+.upgrading { border-color:#00C69F; }
+.creating { border-color:#D17D00; }
+.deleting { border-color:#AAAAAA; }
+
+/* health states */
+.ok { border-color: #7FBA00; }
+.warning { border-color: #FCD116}
+.error { border-color: #E81123 }

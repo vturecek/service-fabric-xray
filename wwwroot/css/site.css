@@ -1,0 +1,35 @@
+﻿h2 { 
+  color: #eee; 
+  font-weight: lighter;
+}
+body { 
+    background-color:#333333;
+}
+body, input[text], button { 
+  color: #ddd; 
+  font:1em 'Segoe UI', 'Segoe', Arial, sans-serif; 
+  font-weight:normal;
+}
+input{
+    background-color: #000000;
+}
+button {
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #cfd8dc;
+}
+button:disabled {
+  background-color: #eee;
+  color: #aaa; 
+  cursor: auto;
+}
+/* everywhere else */
+* { 
+  font:1em 'Segoe UI', 'Segoe', Arial, sans-serif;
+  font-weight:normal;
+}

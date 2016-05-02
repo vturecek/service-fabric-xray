@@ -1,0 +1,14 @@
+﻿<ul class="replica-list">
+    <li *ngFor="#item of replicas">
+        <div *ngIf="hasSelectedMetric(item.metrics)"
+             #container
+             [ngClass]="getDeployedEntityClass(item, ['replica', item.role])"
+             [style.height.px]="getElementHeight(getSelectedMetric(item.metrics))">
+            <!--
+              <span>{{item.partitionId}}</span>
+             <span>{{item.id}}</span>
+             <span>{{getSelectedMetric(item.metrics)}}</span>
+                -->
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,25 @@
+﻿<ul class="service-list">
+    <li *ngFor="#item of services">
+        <div *ngIf="hasSelectedMetric(item.service.metrics)"
+             #container
+             [ngClass]="getDeployedEntityClass(item.service, ['service'])"
+             [style.height.px]="getElementHeight(getSelectedMetric(item.service.metrics))">
+
+            <div *ngIf="item.selected" class="selectorButton"
+                 (click)="selectService(item)">[>]</div>
+
+            <div [ngClass]="{'label-selected': item.selected, 'label-collapsed': !item.selected }"
+                 (click)="selectService(item)">{{item.service.name}}</div>
+
+            <div *ngIf="item.selected">
+
+                <replica-component [replicas]="item.replicas"
+                                   [selectedColors]="selectedColors"
+                                   [selectedMetricName]="selectedMetricName"
+                                   [parentCapacity]="getSelectedMetric(item.service.metrics)"
+                                   [parentContainerSize]="getContainerSize(getSelectedMetric(item.service.metrics))">
+                </replica-component>
+            </div>
+        </div>
+    </li>
+</ul>

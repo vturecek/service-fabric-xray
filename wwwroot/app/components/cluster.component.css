@@ -1,0 +1,20 @@
+﻿.nodes li { float: left; display: inline-block; width: 175px; min-height: 120px; list-style: none; }
+label { margin: 0; padding: 0; }
+.node { background: #252525; padding: 0 5px; border: 1px solid #000; margin: 5px; height: auto; }
+
+/* common */
+.invalid { }
+.unknown { }
+
+/* statuses */
+.up { }
+.down { }
+.enabling { }
+.disabling { }
+.disabled { }
+.removed { }
+
+/* health states */
+.ok { border-color: #7FBA00; }
+.warning { border-color: #FCD116}
+.error { border-color: #E81123 }

@@ -15,35 +15,35 @@ export var ClusterNodeList: ClusterNode[] = [
         'name': 'node1', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': 500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok'
     },
     {
         'name': 'node2', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5400, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 10800, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': 500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 2, 'upgradeDomain': 2, 'status': 'Down', 'healthState': 'Warning'
     }, 
     {
         'name': 'node3', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5900, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 11800, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': 500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 3, 'upgradeDomain': 3, 'status': 'Enabling', 'healthState': 'Error'
     },
     { 
         'name': 'node4', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 4000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 8000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': 500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 4, 'upgradeDomain': 4, 'status': 'Disabled', 'healthState': 'Unknown'
     },
     {
         'name': 'node5', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 4500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 9000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': 500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 5, 'upgradeDomain': 5, 'status': 'Removed', 'healthState': 'Invalid'
     }
 ];

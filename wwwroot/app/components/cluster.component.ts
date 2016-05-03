@@ -19,6 +19,8 @@ import {DataService} from './../services/data.service';
 
 export class ClusterComponent extends MetricComponent implements OnInit {
 
+    private DefaultCapacitySize: number = 500;
+
     @ViewChild("container")
     protected container: ElementRef;
 
@@ -43,15 +45,36 @@ export class ClusterComponent extends MetricComponent implements OnInit {
         this.capacities = [];
     }
 
+    protected getElementHeightStyle(height: number): string {
+        return height < 0 ? 'auto' : height + 'px';
+    }
+
     protected getElementHeight(capacity: number): number {
+        if (capacity < 0) {
+            return -1;
+        }
 
         return Math.max(0, (capacity * this.scaleFactor) - this.getOuterVerticalSpacing(this.container));
     }
 
-    private getSelectedCapacity(capacities: NodeCapacityViewModel[]): number {
+    protected getContainerSize(capacity: number): number {
+        if (capacity < 0) {
+            return this.DefaultCapacitySize * this.scaleFactor;
+        }
+        
+        return Math.max(0, this.getElementHeight(capacity) - this.getInnerVerticalSpacing(this.container));
+    }
+
+    protected getSelectedCapacity(capacities: NodeCapacityViewModel[], useDefault?:boolean): number {
         let result = capacities.find(x => x.name == this.selectedMetricName);
         
-        return result ? result.capacity : 0;
+        let capacity = result ? result.capacity : 0;
+
+        if (capacity < 0 && useDefault) {
+            return this.DefaultCapacitySize;
+        }
+
+        return capacity;
     }
 
     private toggleExpand() {

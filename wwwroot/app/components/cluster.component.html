@@ -17,12 +17,12 @@
             <label>{{node.name}}</label>
             <div #container
                  [ngClass]="getDeployedEntityClass(node, ['node'])"
-                 [style.height.px]="getElementHeight(getSelectedCapacity(node.capacities))">
+                 [style.height]="getElementHeightStyle(getElementHeight(getSelectedCapacity(node.capacities)))">
 
                 <application-component [nodeName]="node.name"
                                        [selectedColors]="selectedColors"
                                        [selectedMetricName]="selectedMetricName"
-                                       [parentCapacity]="getSelectedCapacity(node.capacities)"
+                                       [parentCapacity]="getSelectedCapacity(node.capacities, true)"
                                        [parentContainerSize]="getContainerSize(getSelectedCapacity(node.capacities))">
                 </application-component>
                    

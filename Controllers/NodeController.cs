@@ -17,7 +17,7 @@ namespace Xray.Controllers
     {
         private static readonly IEnumerable<ClusterNodeCapacity> defaultCapacities = new[]
         {
-            new ClusterNodeCapacity("Default Replica Count", false, 0, 500, 0, 0, 0)
+            new ClusterNodeCapacity("Default Replica Count", false, 0, -1, 0, 0, 0)
         };
 
         private readonly FabricClient client;

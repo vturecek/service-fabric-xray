@@ -1,6 +1,5 @@
-﻿<h3>Nodes</h3>
-<a (click)="toggleExpand()">{{!expanded && 'Expand all' || 'Collapse all'}}</a>
-<label for="scaleFactor">Scale: </label> <input name="scaleFactor"[(ngModel)]="scaleFactor" />
+﻿<a (click)="toggleExpand()">{{!expanded && 'Expand all' || 'Collapse all'}}</a>
+<label for="scaleFactor">Scale: </label> <input name="scaleFactor" [(ngModel)]="scaleFactor" />
 
 <select [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
     <option *ngFor="#capacity of capacities">{{capacity.name}}</option>
@@ -13,8 +12,25 @@
 
 <div class="nodes">
     <ul>
-        <li *ngFor="#node of nodes">
-            <label>{{node.name}}</label>
+        <li *ngFor="#node of nodes" class="nodeListItem">
+            <div class="nodeHeader">
+                <div [ngClass]="getDeployedEntityClass(node, ['nodeTitle'])">
+                    <label class="nodeName">My_{{node.name}}</label>
+                    <label class="nodeType">FrontEndType</label>
+                </div>
+                <div *ngIf="getSelectedCapacity(node.capacities) > -1" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityViolation': true}">
+                    <h3>36%</h3>
+                    <h5>34234 of 12123434</h5>
+                </div>
+                <div *ngIf="getSelectedCapacity(node.capacities) < 0" class="nodeApplicationStats">
+                    <ul>
+                        <li>applications: 2</li>
+                        <li>services: 10</li>
+                        <li>stateful replicas: 50</li>
+                        <li>stateless instances: 3</li>
+                    </ul>
+                </div>
+            </div>
             <div #container
                  [ngClass]="getDeployedEntityClass(node, ['node'])"
                  [style.height]="getElementHeightStyle(getElementHeight(getSelectedCapacity(node.capacities)))">
@@ -25,7 +41,7 @@
                                        [parentCapacity]="getSelectedCapacity(node.capacities, true)"
                                        [parentContainerSize]="getContainerSize(getSelectedCapacity(node.capacities))">
                 </application-component>
-                   
+
             </div>
         </li>
     </ul>

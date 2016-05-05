@@ -1,25 +1,22 @@
-﻿<ul class="service-list">
-    <li *ngFor="#item of services">
-        <div *ngIf="hasSelectedMetric(item.service.metrics)"
-             #container
-             [ngClass]="getDeployedEntityClass(item.service, ['service'])"
-             [style.height.px]="getElementHeight(getSelectedMetric(item.service.metrics))">
+﻿<div #container
+     [ngClass]="getDeployedEntityClass(serviceViewModel.service, ['service'])"
+     [style.height.px]="elementHeight">
 
-            <div *ngIf="item.selected" class="selectorButton"
-                 (click)="selectService(item)">[>]</div>
+    <div *ngIf="serviceViewModel.selected" class="selectorButton"
+         (click)="selectService(serviceViewModel)">[>]</div>
 
-            <div [ngClass]="{'label-selected': item.selected, 'label-collapsed': !item.selected }"
-                 (click)="selectService(item)">{{item.service.name}}</div>
+    <div [ngClass]="{'label-selected': serviceViewModel.selected, 'label-collapsed': !serviceViewModel.selected }"
+         (click)="selectService(serviceViewModel)">{{serviceViewModel.service.name}}</div>
 
-            <div *ngIf="item.selected">
-
-                <replica-component [replicas]="item.replicas"
-                                   [selectedColors]="selectedColors"
-                                   [selectedMetricName]="selectedMetricName"
-                                   [parentCapacity]="getSelectedMetric(item.service.metrics)"
-                                   [parentContainerSize]="getContainerSize(getSelectedMetric(item.service.metrics))">
-                </replica-component>
-            </div>
-        </div>
-    </li>
-</ul>
+    <ul class="replica-list">
+        <li *ngFor="#item of serviceViewModel.replicas">
+            <replica-component *ngIf="serviceViewModel.selected && hasSelectedMetric(item.metrics)"
+                               [replicaViewModel]="item"
+                               [selectedColors]="selectedColors"
+                               [selectedMetricName]="selectedMetricName"
+                               [parentCapacity]="selectedLoadMetric.value"
+                               [parentContainerSize]="containerSize">
+            </replica-component>
+        </li>
+    </ul>
+</div>

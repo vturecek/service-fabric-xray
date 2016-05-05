@@ -7,7 +7,8 @@ import {Replica} from './../../models/replica';
 export var ClusterCapacityList: ClusterCapacity[] = [
     { 'name': 'MemoryKB', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 20000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 4800, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
     { 'name': 'DiskKB', 'capacity': 49600, 'bufferedCapacity': 49600, 'load': 30000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 19600, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'Default Replica Count', 'capacity': 500, 'bufferedCapacity': 49600, 'load': 30000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 19600, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 }
+    { 'name': 'Default Replica Count', 'capacity': 500, 'bufferedCapacity': 49600, 'load': 30000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 19600, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
+    { 'name': 'WTFBBQ', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 20000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 4800, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 }
 ];
 
 export var ClusterNodeList: ClusterNode[] = [
@@ -15,7 +16,8 @@ export var ClusterNodeList: ClusterNode[] = [
         'name': 'node1', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+            { 'name': 'Default Replica Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+            { 'name': 'WTFBBQ', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
         ], 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok'
     },
     {

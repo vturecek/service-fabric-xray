@@ -1,25 +1,22 @@
-﻿<ul class="application-list">
-    <li *ngFor="#item of applications">
-        <div *ngIf="hasSelectedMetric(item.application.metrics)"
-             #container
-             [ngClass]="getDeployedEntityClass(item.application, ['application'])"
-             [style.height.px]="getElementHeight(getSelectedMetric(item.application.metrics))">
+﻿<div #container
+     [ngClass]="getDeployedEntityClass(applicationViewModel.application, ['application'])"
+     [style.height.px]="elementHeight">
 
-            <div *ngIf="item.selected" class="selectorButton"
-                 (click)="selectApplication(item)">[>]</div>
+    <div *ngIf="applicationViewModel.selected" class="selectorButton"
+         (click)="selectApplication()">[>]</div>
 
-            <div [ngClass]="{'label-selected': item.selected, 'label-collapsed': !item.selected }"
-                   (click)="selectApplication(item)">{{item.application.name}}</div>
+    <div [ngClass]="{'label-selected': applicationViewModel.selected, 'label-collapsed': !applicationViewModel.selected }"
+         (click)="selectApplication()">{{applicationViewModel.application.name}}</div>
 
-            <div *ngIf="item.selected">
-
-                <service-component [services]="item.services"
-                                   [selectedColors]="selectedColors"
-                                   [selectedMetricName]="selectedMetricName"
-                                   [parentCapacity]="getSelectedMetric(item.application.metrics)"
-                                   [parentContainerSize]="getContainerSize(getSelectedMetric(item.application.metrics))">
-                </service-component>
-            </div>
-        </div>
-    </li>
-</ul>
+    <ul *ngIf="applicationViewModel.selected" class="service-list">
+        <li *ngFor="#item of applicationViewModel.services">
+            <service-component *ngIf="hasSelectedMetric(item.service.metrics)"
+                               [serviceViewModel]="item"
+                               [selectedColors]="selectedColors"
+                               [selectedMetricName]="selectedMetricName"
+                               [parentCapacity]="selectedLoadMetric.value"
+                               [parentContainerSize]="containerSize">
+            </service-component>
+        </li>
+    </ul>
+</div>

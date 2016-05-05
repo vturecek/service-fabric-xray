@@ -1,0 +1,34 @@
+﻿<div class="nodeHeader">
+    <div [ngClass]="getDeployedEntityClass(node, ['nodeTitle'])">
+        <label class="nodeName">My_{{node.name}}</label>
+        <label class="nodeType">FrontEndType</label>
+    </div>
+    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
+        <h3>36%</h3>
+        <h5>34234 of 12123434</h5>
+    </div>
+    <div *ngIf="selectedCapacity.capacity < 0" class="nodeApplicationStats">
+        <ul>
+            <li>applications: 2</li>
+            <li>services: 10</li>
+            <li>stateful replicas: 50</li>
+            <li>stateless instances: 3</li>
+        </ul>
+    </div>
+</div>
+<div #container
+     [ngClass]="getDeployedEntityClass(node, ['node'])"
+     [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
+    <ul class="application-list">
+        <li *ngFor="#item of applications">
+            <application-component *ngIf="hasSelectedMetric(item.application.metrics)"
+                                   [nodeName]="node.name"
+                                   [applicationViewModel] ="item"
+                                   [selectedColors]="selectedColors"
+                                   [selectedMetricName]="selectedMetricName"
+                                   [parentCapacity]="parentCapacity"
+                                   [parentContainerSize]="parentContainerSize">
+            </application-component>
+        </li>
+    </ul>
+</div>

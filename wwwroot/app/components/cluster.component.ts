@@ -1,7 +1,7 @@
 ﻿import {Component, OnInit, OnDestroy, ElementRef, ViewChildren, ViewChild, QueryList} from 'angular2/core';
 import {Observable}     from 'rxjs/Observable';
 import {MetricComponent} from './metriccomponent';
-import {ApplicationComponent} from './application.component';
+import {NodeComponent} from './node.component';
 
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
@@ -14,20 +14,18 @@ import {DataService} from './../services/data.service';
     selector: 'cluster-component',
     templateUrl: 'app/components/cluster.component.html',
     styleUrls: ['app/components/cluster.component.css'],
-    directives: [ApplicationComponent]
+    directives: [NodeComponent]
 })
 
-export class ClusterComponent extends MetricComponent implements OnInit {
+export class ClusterComponent implements OnInit {
 
     private DefaultCapacitySize: number = 500;
 
     @ViewChild("container")
     protected container: ElementRef;
 
-    @ViewChildren(ApplicationComponent)
-    private applicationComponents: QueryList<ApplicationComponent>
-
-    private containerHeight = 0;
+    private selectedMetricName: string = "Default Replica Count";
+    private selectedColors: string = 'status';
     private expanded: boolean;
     private scaleFactor: number;
     private nodes: NodeViewModel[];
@@ -36,50 +34,14 @@ export class ClusterComponent extends MetricComponent implements OnInit {
     constructor(
         private dataService: DataService)
     {
-        super();
-        
         this.scaleFactor = 1;
         this.expanded = true;
-        this.selectedColors = 'status';
         this.nodes = [];
         this.capacities = [];
     }
 
-    protected getElementHeightStyle(height: number): string {
-        return height < 0 ? 'auto' : height + 'px';
-    }
-
-    protected getElementHeight(capacity: number): number {
-        if (capacity < 0) {
-            return -1;
-        }
-
-        return Math.max(0, (capacity * this.scaleFactor) - this.getOuterVerticalSpacing(this.container));
-    }
-
-    protected getContainerSize(capacity: number): number {
-        if (capacity < 0) {
-            return this.DefaultCapacitySize * this.scaleFactor;
-        }
-        
-        return Math.max(0, this.getElementHeight(capacity) - this.getInnerVerticalSpacing(this.container));
-    }
-
-    protected getSelectedCapacity(capacities: NodeCapacityViewModel[], useDefault?:boolean): number {
-        let result = capacities.find(x => x.name == this.selectedMetricName);
-        
-        let capacity = result ? result.capacity : 0;
-
-        if (capacity < 0 && useDefault) {
-            return this.DefaultCapacitySize;
-        }
-
-        return capacity;
-    }
-
-    private toggleExpand() {
-        this.expanded = !this.expanded;
-        this.applicationComponents.forEach(x => x.toggleSelectAll(this.expanded));
+    private hasSelectedCapacity(node: NodeViewModel): boolean {
+        return node.capacities.find(x => x.name == this.selectedMetricName) != undefined;
     }
 
     private onChangeCapacity(newValue) {

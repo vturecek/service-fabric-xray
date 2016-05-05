@@ -2,6 +2,7 @@
 import {MetricComponent} from './metriccomponent';
 import {DeployedServiceViewModel} from './../viewmodels/deployedserviceviewmodel';
 import {ReplicaComponent} from './replica.component';
+import {LoadMetric} from './../models/loadmetric';
 
 @Component({
     selector: 'service-component',
@@ -28,7 +29,11 @@ export class ServiceComponent extends MetricComponent {
     protected selectedMetricName: string;
     
     @Input()
-    private services: DeployedServiceViewModel[];
+    private serviceViewModel: DeployedServiceViewModel;
+
+    protected getMetrics(): LoadMetric[] {
+        return this.serviceViewModel.service.metrics;
+    }
 
     constructor()
     {

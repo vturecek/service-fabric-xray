@@ -1,4 +1,4 @@
-﻿.service-list { list-style: none; margin: 0; padding: 0; }
+﻿.replica-list { list-style: none; margin: 0; padding: 0; }
 .service { font-size: 10px; position:relative; overflow:hidden; list-style: none; margin: 0 0 0 15px; padding: 0; border: 1px solid #000000; }
 .selectorButton { cursor: pointer; position: absolute; line-height: 1em; }
 .label-selected { cursor: pointer; float: left; left: 16px; position: absolute; top: 18px; transform: rotate(90deg); transform-origin: left top 0; white-space: nowrap; }

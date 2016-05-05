@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
-import {ElementRef} from 'angular2/core';
+import {ElementRef, DoCheck, SimpleChange} from 'angular2/core';
 import {LoadMetric} from './../models/loadmetric';
 import {DeployedEntityViewModel} from './../viewmodels/deployedentityviewmodel';
 
@@ -12,38 +12,37 @@ Each component height = % capacity of parent mapped to available element space l
 Node is the root component that determines available container height.
 A node's capacity is normalized to a screen view size yielding an absolute height in pixels representing capacity.
 */
-export abstract class MetricComponent {
-    
+export abstract class MetricComponent implements DoCheck {
+
+    // inputs
     protected parentCapacity: number;
     protected parentContainerSize: number;
     protected selectedColors: string = "status";
     protected selectedMetricName: string = "Default Replica Count";
     protected container: ElementRef;
 
-    /**
-     * Computes the height in pixels for the given metric.
-     * @param metric
-     */
-    protected getElementHeight(metric: number): number {
-        return Math.max(0, ((metric / this.parentCapacity) * this.parentContainerSize) - this.getOuterVerticalSpacing(this.container));
-    }
+    // component data
+    protected selectedLoadMetric: LoadMetric;
+    protected elementHeight: number;
+    protected containerSize: number;
 
-    /**
-     * Computes the height in pixels of the inner container for the given metric
-     * @param metric
-     */
-    protected getContainerSize(metric: number): number {
-        return Math.max(0, this.getElementHeight(metric) - this.getInnerVerticalSpacing(this.container));
-    }
-
-    /**
-     * Gets the value of the currently selected metric.
-     * @param metrics
-     */
-    protected getSelectedMetric(metrics: LoadMetric[]): number {
-        let metric = metrics.find(x => x.name == this.selectedMetricName);
+    public ngDoCheck() {
         
-        return metric ? metric.value : 1;
+        this.selectedLoadMetric = this.getMetrics().find(x => x.name == this.selectedMetricName) || null;
+
+        if (this.selectedLoadMetric) {
+
+            this.elementHeight = Math.max(0, ((this.selectedLoadMetric.value / this.parentCapacity) * this.parentContainerSize) - this.getOuterVerticalSpacing(this.container));
+
+            this.containerSize = Math.max(0, this.elementHeight - this.getInnerVerticalSpacing(this.container));
+
+            console.log(this.elementHeight);
+        }
+
+    }
+
+    protected getMetrics(): LoadMetric[] {
+        return null;
     }
 
     /**

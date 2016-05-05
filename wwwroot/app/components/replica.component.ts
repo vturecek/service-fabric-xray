@@ -28,7 +28,7 @@ export class ReplicaComponent extends MetricComponent  {
     protected selectedMetricName: string;
     
     @Input()
-    private replicas: ReplicaViewModel[];
+    private replicaViewModel: ReplicaViewModel;
 
     constructor(
         private router: Router)
@@ -36,9 +36,10 @@ export class ReplicaComponent extends MetricComponent  {
         super();
     }
 
-    protected getSelectedMetric(metrics: LoadMetric[]): number {
-        return super.getSelectedMetric(metrics);
+    protected getMetrics(): LoadMetric[] {
+        return this.replicaViewModel.metrics;
     }
+
 
     private onselect(item: ReplicaViewModel) {
         //item.selected = !item.selected;

@@ -43,19 +43,20 @@ export class NodeComponent extends MetricComponent implements OnInit {
 
     @Input()
     protected selectedMetricName: string;
-
+    
     private applications: DeployedApplicationViewModel[];
     protected selectedCapacity: NodeCapacityViewModel;
     protected parentContainerSize: number;
     protected parentCapacity: number;
     protected elementHeight: number;
     protected expanded: boolean;
+    private loadPercent: number;
 
     constructor(
         private dataService: DataService)
     {
         super();
-
+        
         this.applications = [];
         this.expanded = true;
     }
@@ -76,13 +77,15 @@ export class NodeComponent extends MetricComponent implements OnInit {
             this.parentContainerSize = this.selectedCapacity.capacity < 0
                 ? this.DefaultCapacitySize * this.scaleFactor
                 : Math.max(0, this.elementHeight - super.getInnerVerticalSpacing(this.container));
+
+            this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
         }
 
         console.log("parentCapacity: " + this.parentCapacity);
         console.log("parentContainerSize: " + this.parentContainerSize);
         console.log("selectedCapacity: " + this.selectedCapacity.capacity);
     }
-
+    
 
     public ngOnInit() {
         this.dataService.getApplicationModels(this.node.name).subscribe(

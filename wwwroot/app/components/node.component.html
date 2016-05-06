@@ -1,11 +1,11 @@
-﻿<div class="nodeHeader">
-    <div [ngClass]="getDeployedEntityClass(node, ['nodeTitle'])">
-        <label class="nodeName">My_{{node.name}}</label>
+﻿<div [ngClass]="getDeployedEntityClass(node, ['nodeHeader'])">
+    <div class="nodeTitle">
+        <label class="nodeName">{{node.name}}</label>
         <label class="nodeType">FrontEndType</label>
     </div>
-    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
-        <h3>36%</h3>
-        <h5>34234 of 12123434</h5>
+    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
+        <h3>{{loadPercent}}%</h3>
+        <h5>{{selectedCapacity.load}} of {{selectedCapacity.capacity}}</h5>
     </div>
     <div *ngIf="selectedCapacity.capacity < 0" class="nodeApplicationStats">
         <ul>

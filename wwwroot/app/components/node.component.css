@@ -1,8 +1,8 @@
 ﻿.application-list { list-style: none; margin: 0; padding: 0; }
 .nodeListItem { float: left; display: inline-block; width: 175px; min-height: 120px; list-style: none; }
 .node { padding: 3px 7px; margin:3px 5px; background: #222222; height: auto; }
-.nodeHeader { margin: 0 5px; padding:8px; text-align: center;  background: #222222;}
-.nodeTitle { border-bottom: 1px solid #666666; padding-bottom:5px; border-bottom: 3px solid #000000; }
+.nodeHeader { margin: 0 5px; padding:8px; text-align: center;  background: #222222; border-left: 4px solid #000000; }
+.nodeTitle { padding-bottom:5px; }
 .nodeName { font-size:12px; font-weight:bold; margin-right: 5px }
 .nodeType { font-size:9px; font-weight: normal }
 .nodeCapacityStats {  margin-top: 5px; }
@@ -10,6 +10,7 @@
 .nodeCapacityStats h3 { font-size: 32px; margin-bottom:5px; font-weight:lighter; }
 .nodeCapacityStats h5 { font-size: 12px; }
 .nodeCapacityViolation { color: #e81123 }
+.nodeCapacityWarning { color: #FCD116 }
 
 /* common */
 .invalid { }

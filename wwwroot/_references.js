@@ -6,7 +6,6 @@
 /// <reference path="app/components/cluster.component.js" />
 /// <reference path="app/components/dashboard.component.js" />
 /// <reference path="app/components/metriccomponent.js" />
-/// <reference path="app/components/node.component.js" />
 /// <reference path="app/components/replica.component.js" />
 /// <reference path="app/components/service.component.js" />
 /// <reference path="app/components/service-detail.component.js" />

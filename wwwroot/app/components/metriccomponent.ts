@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
-import {ElementRef, DoCheck, SimpleChange} from 'angular2/core';
+import {ElementRef, OnChanges, SimpleChange} from 'angular2/core';
 import {LoadMetric} from './../models/loadmetric';
 import {DeployedEntityViewModel} from './../viewmodels/deployedentityviewmodel';
 
@@ -12,7 +12,7 @@ Each component height = % capacity of parent mapped to available element space l
 Node is the root component that determines available container height.
 A node's capacity is normalized to a screen view size yielding an absolute height in pixels representing capacity.
 */
-export abstract class MetricComponent implements DoCheck {
+export abstract class MetricComponent implements OnChanges {
 
     // inputs
     protected parentCapacity: number;
@@ -26,7 +26,7 @@ export abstract class MetricComponent implements DoCheck {
     protected elementHeight: number;
     protected containerSize: number;
 
-    public ngDoCheck() {
+    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         
         this.selectedLoadMetric = this.getMetrics().find(x => x.name == this.selectedMetricName) || null;
 

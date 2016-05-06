@@ -60,7 +60,7 @@ export class NodeComponent extends MetricComponent implements OnInit {
         this.expanded = true;
     }
 
-    public ngDoCheck() {
+    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
 
         this.selectedCapacity = this.node.capacities.find(x => x.name == this.selectedMetricName) || null;
 
@@ -91,7 +91,7 @@ export class NodeComponent extends MetricComponent implements OnInit {
                     return;
                 }
 
-                List.updateList(this.applications, result.map(x =>
+                this.applications = result.map(x =>
                     new DeployedApplicationViewModel(
                         true,
                         new ApplicationViewModel(
@@ -118,7 +118,7 @@ export class NodeComponent extends MetricComponent implements OnInit {
                                         z.status,
                                         z.healthState,
                                         z.role,
-                                        z.metrics)))))));
+                                        z.metrics))))));
             },
             error => console.log("error from observable: " + error));
     }

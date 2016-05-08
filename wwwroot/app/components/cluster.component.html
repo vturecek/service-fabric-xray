@@ -1,4 +1,4 @@
-﻿<a (click)="toggleExpand()">{{!expanded && 'Expand all' || 'Collapse all'}}</a>
+﻿<a>{{!expanded && 'Expand all' || 'Collapse all'}}</a>
 <label for="scaleFactor">Scale: </label> <input name="scaleFactor" [(ngModel)]="scaleFactor" />
 
 <select [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
@@ -14,7 +14,8 @@
     <ul>
         <li *ngFor="#node of nodes" class="nodeListItem">
             <node-component *ngIf="hasSelectedCapacity(node)"
-                            [node] ="node"
+                            [node]="node"
+                            [nodeCapacities]="node.capacities"
                             [scaleFactor]="scaleFactor"
                             [capacities]="capacities"
                             [selectedColors]="selectedColors"

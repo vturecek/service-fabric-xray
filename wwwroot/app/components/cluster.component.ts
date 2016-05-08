@@ -1,4 +1,4 @@
-﻿import {Component, OnInit, OnDestroy, ElementRef, ViewChildren, ViewChild, QueryList} from 'angular2/core';
+﻿import {Component, OnInit, ElementRef, ViewChild} from 'angular2/core';
 import {Observable}     from 'rxjs/Observable';
 import {MetricComponent} from './metriccomponent';
 import {NodeComponent} from './node.component';
@@ -32,7 +32,7 @@ export class ClusterComponent implements OnInit {
     private capacities: ClusterCapacityViewModel[];
 
     constructor(
-        private dataService: DataService)
+        private dataService: DataService )
     {
         this.scaleFactor = 1;
         this.expanded = true;
@@ -76,6 +76,7 @@ export class ClusterComponent implements OnInit {
                                 y.load,
                                 y.remainingBufferedCapacity,
                                 y.remainingCapacity)))));
+                
             },
             error => console.log("error from observable: " + error));
                 

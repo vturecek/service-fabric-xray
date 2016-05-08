@@ -33,6 +33,9 @@ export class NodeComponent extends MetricComponent implements OnInit {
     private applicationComponents: QueryList<ApplicationComponent>
 
     @Input()
+    private nodeCapacities: NodeCapacityViewModel[];
+
+    @Input()
     private node: NodeViewModel;
 
     @Input()

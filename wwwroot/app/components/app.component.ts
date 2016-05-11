@@ -1,6 +1,6 @@
 ﻿import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
-import {ServiceComponent} from './service.component';
+import {ClusterComponent} from './cluster.component';
 import {ServiceDetailComponent} from './service-detail.component';
 import {DataService} from './../services/data.service';
 import {DashboardComponent} from './dashboard.component';
@@ -8,9 +8,9 @@ import { HTTP_PROVIDERS }    from 'angular2/http';
 
 @RouteConfig([
     {
-        path: '/services',
-        name: 'Services',
-        component: ServiceComponent
+        path: '/cluster',
+        name: 'Cluster',
+        component: ClusterComponent
     },
     {
         path: '/dashboard',

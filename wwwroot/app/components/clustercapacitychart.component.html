@@ -1,0 +1,11 @@
+﻿
+    <base-chart class="chart"
+                [data]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [series]="lineChartSeries"
+                [colours]="lineChartColours"
+                [legend]="false"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></base-chart>

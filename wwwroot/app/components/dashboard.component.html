@@ -1,2 +1,9 @@
 ﻿<h1>Dashboard</h1>
-<cluster-capacity-chart></cluster-capacity-chart>
+<cluster-capacity-graph *ngIf="capacityHistory.length > 0" [capacityHistory]="capacityHistory">
+</cluster-capacity-graph>
+<ul class="capacityDonuts">
+    <li *ngFor="#capacity of capacities">
+        <cluster-capacity-donut [capacityViewModel]="capacity">
+        </cluster-capacity-donut>
+    </li>
+</ul>

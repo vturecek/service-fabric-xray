@@ -1,1 +1,2 @@
-﻿
+﻿.capacityDonuts { margin: 0; padding: 0; }
+    .capacityDonuts li { float: left; display: inline-block; list-style: none; margin: 0 2px; }

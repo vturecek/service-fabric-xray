@@ -1,45 +1,29 @@
-﻿import {Component, Input} from 'angular2/core';
+﻿import {Component, Input, SimpleChange, OnChanges} from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from 'angular2/common';
 import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts';
-
+import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 import {DataService} from './../services/data.service';
 
 declare var Chart: any;
 
-class CapacityHistoryDataPoint {
-
-    public constructor(
-        public capacity: number,
-        public timestamp: Date) {
-    }
-}
-
-class CapacityHistory {
-
-    public constructor(
-        public capacityName: string,
-        public capacityData: CapacityHistoryDataPoint[]) {
-    }
-}
-
 @Component({
-    selector: 'cluster-capacity-chart',
-    templateUrl: 'app/components/clustercapacitychart.component.html',
-    styleUrls: ['app/components/clustercapacitychart.component.css'],
+    selector: 'cluster-capacity-graph',
+    templateUrl: 'app/components/clustercapacitygraph.component.html',
+    styleUrls: ['app/components/clustercapacitygraph.component.css'],
     directives: [CHART_DIRECTIVES, NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
-export class ClusterCapacityChart {
+export class ClusterCapacityGraph implements OnChanges {
 
     @Input()
-    private loadMetricHistory: CapacityHistory[];
+    private capacityHistory: ClusterCapacityHistory[];
 
-    
-    private lineChartData: Array<any>;
-    private lineChartLabels: Array<any>;
-    private lineChartSeries: Array<any>;
+
+    private lineChartData: Array<any> = [];
+    private lineChartLabels: Array<any> = [];
+    private lineChartSeries: Array<any> = [];
     
     private lineChartOptions: any = {
-        animation: true,
+        animation: false,
         responsive: true,
         maintainAspectRatio: false,
         fontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
@@ -83,32 +67,15 @@ export class ClusterCapacityChart {
 
     public constructor(private dataService: DataService)
     {
-        
-        Chart.defaults.global.defaultFontFamily = '"Segoe UI","Segoe",Arial,sans-serif';
-        this.loadMetricHistory = [];
-        
-        var points1: CapacityHistoryDataPoint[] = [];
-        for (let i = 0; i < 20; ++i) {
-            points1.push(new CapacityHistoryDataPoint(Math.random() * 100, new Date(2016, 5, 9, 1, i)));
+    }
+
+    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+
+        if (this.capacityHistory && this.capacityHistory.length > 0) {
+            this.lineChartData = this.capacityHistory.map(x => x.capacityData.map(y => y.capacity.load));
+            this.lineChartSeries = this.capacityHistory.map(x => x.capacityName);
+            this.lineChartLabels = this.capacityHistory[0].capacityData.map(x => x.timestamp.toLocaleTimeString());
         }
-
-        var points2: CapacityHistoryDataPoint[] = [];
-        for (let i = 0; i < 20; ++i) {
-            points2.push(new CapacityHistoryDataPoint(Math.random() * 200, new Date(2016, 5, 9, 1, i)));
-        }
-
-        this.loadMetricHistory.push(new CapacityHistory("MemoryKB", points1));
-        this.loadMetricHistory.push(new CapacityHistory("DiskKB", points2));
-
-        
-        //data
-        this.lineChartData = this.loadMetricHistory.map(x => x.capacityData.map(y => y.capacity));
-
-        // series
-        this.lineChartSeries = this.loadMetricHistory.map(x => x.capacityName);
-
-        // labels
-        this.lineChartLabels = this.loadMetricHistory[0].capacityData.map(x => x.timestamp.toLocaleTimeString());
     }
 
     // events

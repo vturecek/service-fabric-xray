@@ -1,4 +1,4 @@
-﻿
+﻿/*
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
@@ -60,8 +60,8 @@ export class DataService {
         return Observable.empty();
     }
 }
+*/
 
-/*
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
@@ -71,9 +71,13 @@ import {ClusterNode} from './../models/clusternode';
 import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
+import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {ClusterCapacityDataPoint} from './../models/clustercapacitydatapoint';
 
 @Injectable()
 export class DataService {
+
+    private refreshInterval: number = 6;
 
     public getApplicationModels(nodeName: string): Observable<DeployedApplication[]> {
 
@@ -97,6 +101,43 @@ export class DataService {
         
     }
 
+    public getClusterCapacityHistory(): Observable<ClusterCapacityHistory[]> {
+
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .flatMap(() => {
+                let loadMetricHistory = [];
+
+                var points1: ClusterCapacityDataPoint[] = [];
+                for (let i = 0; i < 20; ++i) {
+                    let load = Math.random() * 100;
+                    let capacity = 200;
+                    let now = new Date(Date.now());
+                    now.setMinutes(now.getMinutes() - i);
+                    points1.push(new ClusterCapacityDataPoint(
+                        { 'name': '', 'capacity': capacity, 'bufferedCapacity': 0, 'load': load, 'remainingBufferedCapacity': 0, 'remainingCapacity': capacity - load, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 },
+                        now));
+                }
+
+                var points2: ClusterCapacityDataPoint[] = [];
+                for (let i = 0; i < 20; ++i) {
+                    let load = Math.random() * 500;
+                    let capacity = 500;
+                    let now = new Date(Date.now());
+                    now.setMinutes(now.getMinutes() - i);
+                    points2.push(new ClusterCapacityDataPoint(
+                        { 'name': '', 'capacity': capacity, 'bufferedCapacity': 0, 'load': load, 'remainingBufferedCapacity': 0, 'remainingCapacity': capacity - load, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 },
+                        now));
+                }
+
+                loadMetricHistory.push(new ClusterCapacityHistory("MemoryKB", points1));
+                loadMetricHistory.push(new ClusterCapacityHistory("DiskKB", points2));
+
+                return Observable.of(loadMetricHistory);
+            })
+        
+    }
+
     public getClusterCapacity(): Observable<ClusterCapacity[]> {
         return Observable.of(ClusterCapacityList);
     }
@@ -105,4 +146,3 @@ export class DataService {
         return Observable.of(ClusterNodeList);
     }
 }
-*/

@@ -1,6 +1,7 @@
 ﻿
-header { height: 75px; background: #111111; }
-header h1 { display: inline-block; padding: 10px 0 0 100px }
+header { height: 60px; background: #111111; }
+header img { margin:0; vertical-align: top; padding: 5px 0 0 10px}
+header h1 { display: inline-block; padding: 5px 0 0 10px }
 nav {display: inline-block; margin: 0 0 0 10px; vertical-align: text-bottom; }
 nav a { padding: 5px 10px; text-decoration: none; display: inline-block; color: #DDDDDD; }
     nav a:visited, a:link { color: #DDDDDD; }

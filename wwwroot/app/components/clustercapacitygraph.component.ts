@@ -1,7 +1,7 @@
 ﻿import {Component, Input, SimpleChange, OnChanges} from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from 'angular2/common';
 import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts';
-import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {ClusterCapacityHistoryViewModel} from './../viewmodels/clustercapacityhistoryviewmodel';
 import {DataService} from './../services/data.service';
 
 declare var Chart: any;
@@ -15,14 +15,13 @@ declare var Chart: any;
 export class ClusterCapacityGraph implements OnChanges {
 
     @Input()
-    private capacityHistory: ClusterCapacityHistory[];
-
-
-    private lineChartData: Array<any> = [];
-    private lineChartLabels: Array<any> = [];
-    private lineChartSeries: Array<any> = [];
+    private capacityHistory: ClusterCapacityHistoryViewModel[];
     
-    private lineChartOptions: any = {
+    private chartData: Array<Array<number>> = [];
+    private chartLabels: Array<string> = [];
+    private chartSeries: Array<string> = [];
+    
+    private chartOptions: any = {
         animation: false,
         responsive: true,
         maintainAspectRatio: false,
@@ -43,7 +42,7 @@ export class ClusterCapacityGraph implements OnChanges {
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
 
-    private lineChartColours: Array<any> = [
+    private chartColours: Array<any> = [
         { // grey
             fillColor: 'rgba(148,159,177,0.2)',
             strokeColor: 'rgba(148,159,177,1)',
@@ -62,8 +61,8 @@ export class ClusterCapacityGraph implements OnChanges {
         }
     ];
 
-    private lineChartLegend: boolean = true;
-    private lineChartType: string = 'Line';
+    private chartLegend: boolean = true;
+    private chartType: string = 'Line';
 
     public constructor(private dataService: DataService)
     {
@@ -72,9 +71,10 @@ export class ClusterCapacityGraph implements OnChanges {
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
 
         if (this.capacityHistory && this.capacityHistory.length > 0) {
-            this.lineChartData = this.capacityHistory.map(x => x.capacityData.map(y => y.capacity.load));
-            this.lineChartSeries = this.capacityHistory.map(x => x.capacityName);
-            this.lineChartLabels = this.capacityHistory[0].capacityData.map(x => x.timestamp.toLocaleTimeString());
+
+            this.chartData = this.capacityHistory.filter(x => x.selected).map(x => x.history.map(y => y.capacity.load));
+            this.chartSeries = this.capacityHistory.filter(x => x.selected).map(x =>  x.name);
+            this.chartLabels = this.capacityHistory[0].history.map(x => x.timestamp.toLocaleTimeString());
         }
     }
 

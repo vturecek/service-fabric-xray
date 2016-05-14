@@ -1,6 +1,6 @@
 ﻿import { ClusterCapacity } from './clustercapacity';
 
-export class ClusterCapacityDataPoint {
+export class ClusterCapacityPoint {
 
     public constructor(
         public capacity: ClusterCapacity,

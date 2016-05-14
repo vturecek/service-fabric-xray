@@ -1,9 +1,11 @@
-﻿import { ClusterCapacityDataPoint } from './clustercapacitydatapoint';
+﻿import { ClusterCapacityPoint } from './clustercapacitypoint';
+import { ClusterCapacity} from './clustercapacity';
 
 export class ClusterCapacityHistory {
 
     public constructor(
-        public capacityName: string,
-        public capacityData: ClusterCapacityDataPoint[]) {
+        public name: string,
+        public current: ClusterCapacity,
+        public history: ClusterCapacityPoint[]) {
     }
 }

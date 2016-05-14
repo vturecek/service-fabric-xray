@@ -1,6 +1,10 @@
-﻿<h1>{{title}}</h1>
-<nav>
-    <a [routerLink]="['Dashboard']">Dashboard</a>
-    <a [routerLink]="['Cluster']">Cluster</a>
-</nav>
-<router-outlet></router-outlet>
+﻿<header>
+    <h1>x-ray</h1>
+    <nav>
+        <a [routerLink]="['Dashboard']">Cluster overview</a>
+        <a [routerLink]="['Cluster']">Nodes</a>
+    </nav>
+</header>
+<div class="main">
+    <router-outlet></router-outlet>
+</div>

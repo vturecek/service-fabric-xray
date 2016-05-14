@@ -5,7 +5,7 @@ import {ClusterCapacityDonut} from './clustercapacitydonut.component';
 import {DataService} from './../services/data.service';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
 import {List} from './../viewmodels/list';
-import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {ClusterCapacityHistoryViewModel} from './../viewmodels/clustercapacityhistoryviewmodel';
 
 @Component({
     selector: 'dashboard-component',
@@ -15,44 +15,27 @@ import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 })
 
 export class DashboardComponent implements OnInit {
-
+    
     private capacities: ClusterCapacityViewModel[] = [];
 
-    private capacityHistory: ClusterCapacityHistory[] = [];
-
+    private capacityHistory: ClusterCapacityHistoryViewModel[] = [];
+    
     public constructor(
         private dataService: DataService,
         private router: Router)
     {
     }
-
+    
     public ngOnInit() {
-        this.dataService.getClusterCapacity().subscribe(
-            result => {
-                if (!result) {
-                    return;
-                }
-
-                List.updateList(this.capacities, result.map(x =>
-                    new ClusterCapacityViewModel(
-                        x.bufferedCapacity,
-                        x.capacity,
-                        x.load,
-                        x.remainingBufferedCapacity,
-                        x.remainingCapacity,
-                        x.isClusterCapacityViolation,
-                        x.name,
-                        x.bufferPercentage)));
-            },
-            error => console.log("error from observable: " + error));
-
+       
         this.dataService.getClusterCapacityHistory().subscribe(
             result => {
                 if (!result) {
                     return;
                 }
 
-                this.capacityHistory = result;
+                this.capacityHistory = result.map(x =>
+                    new ClusterCapacityHistoryViewModel(x.name, true, x.current, x.history));
             },
             error => console.log("error from observable: " + error));
     }

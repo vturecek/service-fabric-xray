@@ -1,28 +1,9 @@
-﻿h1 {
-  font-size: 1.2em;
-  color: #999;
-  margin-bottom: 0;
-}
-h2 {
-  font-size: 2em;
-  margin-top: 0;
-  padding-top: 0;
-}
-nav a {
-  padding: 5px 10px;
-  text-decoration: none;
-  margin-top: 10px;
-  display: inline-block;
-  background-color: #eee;
-  border-radius: 4px;
-}
-nav a:visited, a:link {
-  color: #607D8B;
-}
-nav a:hover {
-  color: #039be5;
-  background-color: #CFD8DC;
-}
-nav a.router-link-active {
-  color: #039be5;
-}
+﻿
+header { height: 75px; background: #111111; }
+header h1 { display: inline-block; padding: 10px 0 0 100px }
+nav {display: inline-block; margin: 0 0 0 10px; vertical-align: text-bottom; }
+nav a { padding: 5px 10px; text-decoration: none; display: inline-block; color: #DDDDDD; }
+    nav a:visited, a:link { color: #DDDDDD; }
+    nav a:hover { color: #FFFFFF; }
+    nav a.router-link-active { color: #FFFFFF; }
+    .main { margin-top: 15px; }

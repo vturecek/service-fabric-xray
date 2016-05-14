@@ -1,9 +1,17 @@
-﻿<h1>Dashboard</h1>
-<cluster-capacity-graph *ngIf="capacityHistory.length > 0" [capacityHistory]="capacityHistory">
-</cluster-capacity-graph>
-<ul class="capacityDonuts">
-    <li *ngFor="#capacity of capacities">
-        <cluster-capacity-donut [capacityViewModel]="capacity">
-        </cluster-capacity-donut>
-    </li>
-</ul>
+﻿<div class="series">
+    <ul class="series-legend">
+        <li *ngFor="#capacity of capacityHistory">
+            <input type="checkbox" [ngModel]="capacity.selected" /><label>{{capacity.name}}</label>
+        </li>
+    </ul>
+</div>
+<div class="charts">
+    <cluster-capacity-graph class="capacityGraph" *ngIf="capacityHistory.length > 0" [capacityHistory]="capacityHistory">
+    </cluster-capacity-graph>
+    <ul class="capacityDonuts">
+        <li *ngFor="#capacity of capacityHistory">
+            <cluster-capacity-donut *ngIf="capacity.selected" [capacityViewModel]="capacity.current">
+            </cluster-capacity-donut>
+        </li>
+    </ul>
+</div>

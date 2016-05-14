@@ -23,7 +23,7 @@ export class ClusterCapacityDonut implements OnChanges {
     private chartType = 'Doughnut';
     private chartOptions =
     {
-        animation: true,
+        animation: false,
         responsive: true,
         maintainAspectRatio: false,
         tooltipCornerRadius: 0,

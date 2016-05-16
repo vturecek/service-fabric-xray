@@ -118,7 +118,7 @@ export class ClusterCapacityGraph implements AfterViewInit {
                 pointBackgroundColor: fillColor.toRBGAString(0.2),
                 pointRadius: 1,
                 pointHoverRadius: 2,
-                pointHitRadius: 5,
+                pointHitRadius: 15,
                 pointHoverBorderColor: "rgba(255, 255, 255, 1)",
                 pointHoverBackgroundColor: fillColor.toRBGAString(1),
                 borderWidth: 1,

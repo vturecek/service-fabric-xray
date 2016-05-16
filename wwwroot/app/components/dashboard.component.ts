@@ -44,18 +44,18 @@ export class DashboardComponent implements AfterViewInit {
                     return;
                 }
 
-                List.updateList(this.clusterCapacities, result.map(x =>
+                this.clusterCapacities = result.map(x =>
                     new ClusterCapacityViewModel(
                         x.bufferedCapacity,
                         x.capacity,
-                        x.load + (10000 - Math.random() * 5000),
+                        x.load,
                         x.remainingBufferedCapacity,
                         x.remainingCapacity,
                         x.isClusterCapacityViolation,
                         x.name,
                         x.bufferPercentage,
                         true
-                    )));
+                    ));
 
                 for (let i = 0; i < this.dataStreams.length; ++i) {
                     let item = this.dataStreams[i];

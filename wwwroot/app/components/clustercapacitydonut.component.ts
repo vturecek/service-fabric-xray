@@ -33,6 +33,10 @@ export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
                 ]
             },
             options: {
+                animation: {
+                    duration: 0,
+                    animateRotate: false
+                },
                 responsive: false,
                 cutoutPercentage: 90,
                 legend: {
@@ -47,10 +51,8 @@ export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-
-        console.log("CHANGE");
-
-        if (this.chart != undefined && this.chart != null) {
+        
+        if (this.chart) {
             this.update();
         }
     }
@@ -58,13 +60,10 @@ export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
     private update(): void {
         
         let dataset = this.chart.config.data.datasets[0];
-
-        console.log("Current: " + dataset.data[0]);
-
-        dataset.data = [this.capacityViewModel.load, this.capacityViewModel.remainingCapacity];
+        
+        dataset.data[0] = this.capacityViewModel.load
+        dataset.data[1] = this.capacityViewModel.remainingCapacity;
         dataset.backgroundColor = [this.getLoadColor(), "#666666"];
-
-        console.log("Updating to " + this.capacityViewModel.load);
         
         this.chart.update();
     }

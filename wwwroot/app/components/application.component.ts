@@ -1,4 +1,4 @@
-﻿import {Component, OnChanges, Input, ElementRef, ViewChild, SimpleChange} from 'angular2/core';
+﻿import {Component, Input, ElementRef, ViewChild} from 'angular2/core';
 import {MetricComponent} from './metriccomponent';
 import {ServiceComponent} from './service.component';
 

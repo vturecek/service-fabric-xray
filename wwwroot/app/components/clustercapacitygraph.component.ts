@@ -1,90 +1,142 @@
-﻿import {Component, Input, SimpleChange, OnChanges} from 'angular2/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from 'angular2/common';
-import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts';
-import {ClusterCapacityHistoryViewModel} from './../viewmodels/clustercapacityhistoryviewmodel';
-import {DataService} from './../services/data.service';
+﻿import {Component, Input, AfterViewInit, ViewChild, ElementRef} from 'angular2/core';
+import {Observable}     from 'rxjs/Rx';
+import { ClusterCapacityHistory } from './../models/clustercapacityhistory';
+import {Color} from './../color';
 
 declare var Chart: any;
+
+export class DataStream {
+    public constructor(
+        public name: string,
+        public stream: Observable<ClusterCapacityHistory[]>)
+    { }
+}
 
 @Component({
     selector: 'cluster-capacity-graph',
     templateUrl: 'app/components/clustercapacitygraph.component.html',
-    styleUrls: ['app/components/clustercapacitygraph.component.css'],
-    directives: [CHART_DIRECTIVES, NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
+    styleUrls: ['app/components/clustercapacitygraph.component.css']
 })
-export class ClusterCapacityGraph implements OnChanges {
+export class ClusterCapacityGraph implements AfterViewInit {
+
+    @ViewChild("chartCanvas")
+    private chartCanvasElement: ElementRef;
 
     @Input()
-    private capacityHistory: ClusterCapacityHistoryViewModel[];
-    
-    private chartData: Array<Array<number>> = [];
-    private chartLabels: Array<string> = [];
-    private chartSeries: Array<string> = [];
-    
-    private chartOptions: any = {
-        animation: false,
-        responsive: true,
-        maintainAspectRatio: false,
-        fontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
-        scaleFontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
-        scaleFontSize: 11,
-        showTooltips: true,
-        pointLabelFontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
-        tooltipCornerRadius: 0,
-        tooltipFontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
-        tooltipFontSize: 12,
-        tooltipXPadding: 10,
-        tooltipYPadding: 10,
-        pointDotRadius: 2,
-        bezierCurveTension: 0.2,
-        datasetStrokeWidth: 1,
-        scaleGridLineColor: "#333333",
-        multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
-    };
+    private capacityHistory: Observable<DataStream>;
 
-    private chartColours: Array<any> = [
-        { // grey
-            fillColor: 'rgba(148,159,177,0.2)',
-            strokeColor: 'rgba(148,159,177,1)',
-            pointColor: 'rgba(148,159,177,1)',
-            pointStrokeColor: '#CCC',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(148,159,177,0.8)'
-        },
-        { // dark grey
-            fillColor: 'rgba(77,83,96,0.2)',
-            strokeColor: 'rgba(77,83,96,1)',
-            pointColor: 'rgba(77,83,96,1)',
-            pointStrokeColor: '#CCC',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(77,83,96,1)'
+    private chart: any;
+
+    public constructor() {
+    }
+
+    public ngAfterViewInit(): void {
+        this.chart = new Chart(this.chartCanvasElement.nativeElement, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            color: "#333333",
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            color: "#333333",
+                        }
+                    }]
+                }
+            }
+        });
+
+        this.capacityHistory.subscribe(
+            dataStream => {
+
+                if (!dataStream) {
+                    return;
+                }
+
+                console.log("received stream for " + dataStream.name);
+
+                dataStream.stream.subscribe(
+                    next => {
+                        console.log("received data for " + dataStream.name + ". Count: " + next.length);
+                        this.addData(dataStream.name, next);
+                    },
+                    error => {
+                        // this.removeData(dataStream.name);
+                    },
+                    () => {
+                        //this.removeData(dataStream.name);
+                    }
+                );
+            },
+            error => {
+                console.log("error: " + error);
+            },
+            () => {
+                console.log("complete");
+            }
+        );
+    }
+
+    private removeData(label: string) {
+        let ix = this.chart.config.data.datasets.findIndex(x => x.label == label);
+
+        if (ix >= 0) {
+            this.chart.config.data.datasets.splice(ix, 1);
         }
-    ];
 
-    private chartLegend: boolean = true;
-    private chartType: string = 'Line';
-
-    public constructor(private dataService: DataService)
-    {
+        this.chart.update();
     }
 
-    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+    private addData(name: string, data: ClusterCapacityHistory[]): void {
 
-        if (this.capacityHistory && this.capacityHistory.length > 0) {
+        let dataset = this.chart.config.data.datasets.find(x => x.label == name);
 
-            this.chartData = this.capacityHistory.filter(x => x.selected).map(x => x.history.map(y => y.capacity.load));
-            this.chartSeries = this.capacityHistory.filter(x => x.selected).map(x =>  x.name);
-            this.chartLabels = this.capacityHistory[0].history.map(x => x.timestamp.toLocaleTimeString());
+        if (!dataset) {
+
+            let ix = this.chart.config.data.datasets.length;
+
+            let h = 196;
+            let s = (35 - ((ix % 6) * 5));
+            let v = (70 - ((ix % 6) * 10));
+
+            let fillColor: Color = Color.fromHSV(h, s, v);
+            let highlightColor: Color = Color.fromHSV(h, s, 100);
+
+            dataset = {
+                label: name,
+                lineTension: 0.2,
+                borderColor: fillColor.toRBGAString(1),
+                pointBorderColor: fillColor.toRBGAString(1),
+                backgroundColor: fillColor.toRBGAString(0.2),
+                pointBackgroundColor: fillColor.toRBGAString(0.2),
+                pointRadius: 1,
+                pointHoverRadius: 2,
+                pointHitRadius: 5,
+                pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+                pointHoverBackgroundColor: fillColor.toRBGAString(1),
+                borderWidth: 1,
+                data: []
+            };
+
+            this.chart.config.data.datasets.push(dataset);
         }
-    }
 
-    // events
-    chartClicked(e: any) {
-        //console.log(e);
-    }
+        for (var item of data) {
 
-    chartHovered(e: any) {
-       // console.log(e);
-    }
+            if (!this.chart.config.data.labels.find(x => x == item.timestamp.toLocaleString())) {
+                this.chart.config.data.labels.push(item.timestamp.toLocaleString());
+            }
 
+            dataset.data.push(item.data);
+        }
+
+        this.chart.update();
+    }
 }

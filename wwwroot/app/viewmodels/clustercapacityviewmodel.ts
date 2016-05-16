@@ -10,7 +10,8 @@ export class ClusterCapacityViewModel extends ViewModel<ClusterCapacityViewModel
         public remainingCapacity: number,
         public isClusterCapacityViolation: boolean,
         public name: string,
-        public bufferPercentage: number) {
+        public bufferPercentage: number,
+        public selected: boolean) {
 
         super(name);
     }

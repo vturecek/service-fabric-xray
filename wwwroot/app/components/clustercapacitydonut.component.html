@@ -1,14 +1,12 @@
 ﻿<div class="donut">
-    <base-chart class="donut-chart"
-                [data]="chartData"
-                [labels]="chartLabels"
-                [options]="chartOptions"
-                [colours]="chartColors"
-                [chartType]="chartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></base-chart>
+    <canvas #chartCanvas class="donut-chart" width="150" height="150"></canvas>
     <div class="donut-inner">
         <h5>{{capacityViewModel.load / capacityViewModel.capacity * 100 | number:'.1-1'}}<span class="percent">%</span></h5>
         <span>{{capacityViewModel.name}}</span>
     </div>
+    <ul class="donut-outer">
+        <li><label>Load:</label> {{capacityViewModel.load}}</li>
+        <li><label>Capacity:</label> {{capacityViewModel.capacity}}</li>
+        <li><label>Remaining:</label> {{capacityViewModel.remainingCapacity}}</li>
+    </ul>
 </div>

@@ -1,55 +1,72 @@
-﻿import {Component, Input, OnChanges, SimpleChange} from 'angular2/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from 'angular2/common';
-import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts';
-import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
+﻿import {Component, Input, AfterViewInit, OnChanges, SimpleChange, ViewChild, ElementRef} from 'angular2/core';
+import {ClusterCapacity} from './../models/clustercapacity';
 
 declare var Chart: any;
 
 @Component({
     selector: 'cluster-capacity-donut',
     templateUrl: 'app/components/clustercapacitydonut.component.html',
-    styleUrls: ['app/components/clustercapacitydonut.component.css'],
-    directives: [CHART_DIRECTIVES, NgClass, CORE_DIRECTIVES, FORM_DIRECTIVES]
+    styleUrls: ['app/components/clustercapacitydonut.component.css']
 })
-export class ClusterCapacityDonut implements OnChanges {
+export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
 
     @Input()
-    private capacityViewModel: ClusterCapacityViewModel;
+    private capacityViewModel: ClusterCapacity;
 
+    @ViewChild("chartCanvas")
+    private chartCanvasElement: ElementRef;
 
-    private chartColors: Array<any>;
-    private chartData: Array<number>;
-    private chartLabels = ['Load', 'Remaining capacity'];
-    private chartType = 'Doughnut';
-    private chartOptions =
-    {
-        animation: false,
-        responsive: true,
-        maintainAspectRatio: false,
-        tooltipCornerRadius: 0,
-        tooltipFontFamily: "'Segoe UI', 'Segoe', Arial, sans-serif",
-        tooltipFontSize: 12,
-        segmentShowStroke: true,
-        segmentStrokeColor: "#000000",
-        segmentStrokeWidth: 1,
-        percentageInnerCutout: 90,
-        animationEasing: "easeOutQuint",
+    private chart: any;
+    
+    public ngAfterViewInit(): void {
+        this.chart = new Chart(this.chartCanvasElement.nativeElement, {
+            type: 'doughnut',
+            data: {
+                labels: ['Load', 'Remaining capacity'],
+                datasets: [
+                    {
+                        data: [0, 0],
+                        hoverBackgroundColor: ["#FFFFFF", "#CCCCCC"],
+                        borderWidth: 1,
+                        borderColor: "#000000"
+                    }
+                ]
+            },
+            options: {
+                responsive: false,
+                cutoutPercentage: 90,
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        if (this.capacityViewModel) {
+            this.update();
+        }
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
 
-        this.chartData = [this.capacityViewModel.load, this.capacityViewModel.remainingCapacity];
+        console.log("CHANGE");
 
-        this.chartColors = [
-            {
-                color: this.getLoadColor(),
-                highlight: "#FFFFFF"
-            },
-            {
-                color: "#666666",
-                highlight: "#CCCCCC"
-            }
-        ];
+        if (this.chart != undefined && this.chart != null) {
+            this.update();
+        }
+    }
+
+    private update(): void {
+        
+        let dataset = this.chart.config.data.datasets[0];
+
+        console.log("Current: " + dataset.data[0]);
+
+        dataset.data = [this.capacityViewModel.load, this.capacityViewModel.remainingCapacity];
+        dataset.backgroundColor = [this.getLoadColor(), "#666666"];
+
+        console.log("Updating to " + this.capacityViewModel.load);
+        
+        this.chart.update();
     }
 
     private getLoadColor(): string {
@@ -62,13 +79,5 @@ export class ClusterCapacityDonut implements OnChanges {
         }
 
         return "#00ABEC";
-    }
-
-    private chartClicked(e: any) {
-        console.log(e);
-    }
-
-    private chartHovered(e: any) {
-        console.log(e);
     }
 }

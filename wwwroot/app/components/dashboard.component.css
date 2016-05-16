@@ -1,6 +1,6 @@
 ﻿.series { display: inline-block; vertical-align: top }
 .series li { list-style: none; margin: 0; padding : 0}
-.charts { display: inline-block; width: 80% }
+.charts { display: inline-block; width: 80%;}
 .capacityGraph { }
 .capacityDonuts { margin: 0; padding: 0; }
     .capacityDonuts li { float: left; display: inline-block; list-style: none; margin: 0; }

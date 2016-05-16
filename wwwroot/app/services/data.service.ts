@@ -72,12 +72,35 @@ import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
-import {ClusterCapacityPoint} from './../models/clustercapacitypoint';
 
 @Injectable()
 export class DataService {
 
-    private refreshInterval: number = 30;
+    private refreshInterval: number = 3;
+    private history: any;
+
+    public constructor() {
+        this.history = {};
+
+        let times: Date[] = [];
+
+        let now:Date = new Date(Date.now());
+
+        for (var i = 0; i < 50; ++i) {
+            times.push(new Date(now.setMinutes(now.getMinutes() + i)));
+        }
+
+        for (var capacity of ClusterCapacityList) {
+           
+            let items: ClusterCapacityHistory[] = [];
+            
+            for (var i = 0; i < 50; ++i) {
+                items.push(new ClusterCapacityHistory(times[i], Math.random()*1000));
+            }
+
+            this.history[capacity.name] = items;
+        }
+    }
 
     public getApplicationModels(nodeName: string): Observable<DeployedApplication[]> {
 
@@ -101,37 +124,19 @@ export class DataService {
         
     }
 
-    public getClusterCapacityHistory(): Observable<ClusterCapacityHistory[]> {
+    public getClusterCapacityHistory(capacityName: string, startDate?: Date): Observable<ClusterCapacityHistory[]> {
+        if (!startDate) {
+            startDate = new Date(0);
+        }
 
-        return Observable
-            .interval(this.refreshInterval * 1000)
-            .startWith(-1)
-            .flatMap(() => {
-                let loadMetricHistory = [];
-
-                for (let item of ClusterCapacityList) {
-
-                    var points1: ClusterCapacityPoint[] = [];
-                    for (let i = 0; i < 20; ++i) {
-                        let load = Math.random() * 100;
-                        let capacity = 200;
-                        let now = new Date(Date.now());
-                        now.setMinutes(now.getMinutes() - i);
-                        points1.push(new ClusterCapacityPoint(
-                            { 'name': '', 'capacity': capacity, 'bufferedCapacity': 0, 'load': load, 'remainingBufferedCapacity': 0, 'remainingCapacity': capacity - load, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 },
-                            now));
-                    }
-
-                    loadMetricHistory.push(new ClusterCapacityHistory(item.name, item, points1));
-                }
-
-                return Observable.of(loadMetricHistory);
-            })
-        
+        return Observable.of(this.history[capacityName].filter(x => x.timestamp > startDate));
     }
 
     public getClusterCapacity(): Observable<ClusterCapacity[]> {
-        return Observable.of(ClusterCapacityList);
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => Observable.of(ClusterCapacityList));
     }
 
     public getNodes(): Observable<ClusterNode[]> {

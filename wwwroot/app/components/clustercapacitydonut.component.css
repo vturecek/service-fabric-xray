@@ -1,6 +1,9 @@
-﻿.donut { background: #222222; width: 250px; height: 250px; padding: 25px 0 0 25px; position: relative; }
-.donut-chart { display: block; width: 200px; height: 200px; }
-.donut-inner { position: absolute; text-align: center; top: 95px; width: 200px; }
+﻿.donut { background: #222222; width: 200px; height: 250px; padding: 25px 0 0 25px; margin-right:5px; position: relative; }
+.donut-chart { display: block; width: 150px; height: 150px; }
+.donut-inner { position: absolute; text-align: center; top: 75px; width: 150px; }
     .donut-inner h5 { font-size: 28px; margin-bottom: 5px; margin-top: 0; }
     .donut-inner span { font-size: 12px; }
     .donut-inner .percent { font-size: 14px; vertical-align:super }
+.donut-outer { margin:10px 0 0 25px; padding: 0; color:#AAA;}
+.donut-outer li { list-style: none; font-weight:bold; }
+.donut-outer li label { width: 70px; font-weight:normal; }

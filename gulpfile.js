@@ -70,16 +70,10 @@ gulp.task("copy-deps:jquery", function () {
     return gulp.src(paths.npmSrc + '/jquery/dist/*.*', { base: paths.npmSrc + '/jquery/dist/' })
          .pipe(gulp.dest(paths.npmLibs + '/jquery/'));
 });
-
-gulp.task("copy-deps:ng2-charts", function () {
-    return gulp.src(paths.npmSrc + '/ng2-charts/bundles/*.*', { base: paths.npmSrc + '/ng2-charts/bundles/' })
-         .pipe(gulp.dest(paths.npmLibs + '/ng2-charts/'));
-});
-
 gulp.task("copy-deps:chartjs", function () {
-    return gulp.src(paths.npmSrc + '/chart.js/*.*', { base: paths.npmSrc + '/chart.js/' })
+    return gulp.src(paths.npmSrc + '/chart.js/dist/*.*', { base: paths.npmSrc + '/chart.js/dist/' })
          .pipe(gulp.dest(paths.npmLibs + '/chart.js/'));
 });
 
 
-gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:jquery', 'copy-deps:ng2-charts', 'copy-deps:chartjs']);
+gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:jquery', 'copy-deps:chartjs']);

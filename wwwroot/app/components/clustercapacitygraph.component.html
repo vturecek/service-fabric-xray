@@ -1,10 +1,3 @@
-﻿<base-chart class="graph-chart"
-            [data]="chartData"
-            [labels]="chartLabels"
-            [options]="chartOptions"
-            [series]="chartSeries"
-            [colours]="chartColours"
-            [legend]="false"
-            [chartType]="chartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></base-chart>
+﻿<div class="chart">
+    <canvas #chartCanvas></canvas>
+</div>

@@ -96,7 +96,9 @@ export class ClusterComponent implements OnInit {
                         x.remainingCapacity,
                         x.isClusterCapacityViolation,
                         x.name,
-                        x.bufferPercentage)));
+                        x.bufferPercentage,
+                        true
+                    )));
             },
             error => console.log("error from observable: " + error));
     }

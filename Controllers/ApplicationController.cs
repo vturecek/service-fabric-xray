@@ -110,51 +110,5 @@ namespace Xray.Controllers
 
             return applicationModels;
         }
-
-        /*
-        [HttpGet("metrics/{nodeName}")]
-        public async Task<IEnumerable<ApplicationModel>> Metrics(string nodeName)
-        {
-            FabricClient client = new FabricClient("localhost:19000");
-            DeployedApplicationList applications = await client.QueryManager.GetDeployedApplicationListAsync(nodeName);
-
-            List<ApplicationModel> result = new List<ApplicationModel>(applications.Count);
-
-            foreach (DeployedApplication application in applications)
-            {
-
-                Dictionary<string, int> load = new Dictionary<string, int>();
-                DeployedServiceReplicaList replicas = await client.QueryManager.GetDeployedReplicaListAsync(nodeName, application.ApplicationName);
-
-                foreach (DeployedServiceReplica item in replicas)
-                {
-                    DeployedStatefulServiceReplica replica = item as DeployedStatefulServiceReplica;
-
-                    if (replica != null)
-                    {
-                        DeployedStatefulServiceReplicaDetail detail = await client.QueryManager.GetDeployedReplicaDetailAsync(nodeName, replica.Partitionid, replica.ReplicaId) as DeployedStatefulServiceReplicaDetail;
-                        foreach (LoadMetricReport loadReport in detail.ReportedLoad)
-                        {
-                            if (load.ContainsKey(loadReport.Name))
-                            {
-                                load[loadReport.Name] += loadReport.Value;
-                            }
-                            else
-                            {
-                                load[loadReport.Name] = loadReport.Value;
-                            }
-
-                        }
-                    }
-                }
-
-                result.Add(new ApplicationModel(application.ApplicationName.ToString(), application.ApplicationTypeName, "",
-                    load.Select(x => new LoadMetric(x.Key, x.Value))));
-
-            }
-
-            return result;
-        }
-        */
     }
 }

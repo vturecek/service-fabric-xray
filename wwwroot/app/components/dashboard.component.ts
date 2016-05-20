@@ -6,6 +6,7 @@ import {ClusterCapacityDonut} from './clustercapacitydonut.component';
 import {DataService} from './../services/data.service';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {List} from './../viewmodels/list';
 
 declare var Chart: any;
 
@@ -43,18 +44,18 @@ export class DashboardComponent implements AfterViewInit {
                     return;
                 }
 
-                this.clusterCapacities = result.map(x =>
+                List.updateList(this.clusterCapacities, result.map(x =>
                     new ClusterCapacityViewModel(
                         x.bufferedCapacity,
                         x.capacity,
-                        x.load,
+                        x.load + 5000 - (Math.random() * 10000),
                         x.remainingBufferedCapacity,
                         x.remainingCapacity,
                         x.isClusterCapacityViolation,
                         x.name,
                         x.bufferPercentage,
                         true
-                    ));
+                    )));
 
                 for (let i = 0; i < this.dataStreams.length; ++i) {
                     let item = this.dataStreams[i];
@@ -65,7 +66,9 @@ export class DashboardComponent implements AfterViewInit {
                 }
 
                 this.clusterCapacities.forEach(x => {
-                    this.createDataStream(x.name);
+                    if (x.selected) {
+                        this.createDataStream(x.name);
+                    }
                 });
             },
             error => console.log("error from observable: " + error));

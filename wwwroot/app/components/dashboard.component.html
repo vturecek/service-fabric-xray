@@ -10,7 +10,12 @@
     </cluster-capacity-graph>
     <ul class="capacityDonuts">
         <li *ngFor="#item of clusterCapacities">
-            <cluster-capacity-donut *ngIf="item.capacity > 0" [capacityViewModel]="item">
+            <cluster-capacity-donut *ngIf="item.selected && item.capacity > 0" 
+                                    [capacity]="item.capacity"
+                                    [load]="item.load"
+                                    [name]="item.name"
+                                    [remainingCapacity]="item.remainingCapacity"
+                                    [isClusterCapacityViolation]="item.isClusterCapacityViolation">
             </cluster-capacity-donut>
         </li>
     </ul>

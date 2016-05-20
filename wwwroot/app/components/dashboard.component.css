@@ -1,6 +1,11 @@
-﻿.series { display: inline-block; vertical-align: top }
-.series li { list-style: none; margin: 0; padding : 0}
-.charts { display: inline-block; width: 80%;}
+﻿.charts { margin: 0 5px 0 175px; }
 .capacityGraph { }
-.capacityDonuts { margin: 0; padding: 0; }
-    .capacityDonuts li { float: left; display: inline-block; list-style: none; margin: 0; }
+.capacityDonuts { height: 300px; margin: 5px 0 0 0; padding: 0; }
+    .capacityDonuts li { float: left; list-style: none; margin: 0; }
+.capacityList { padding-left: 10px; float: left; width: 170px; height: 555px; overflow-y: auto; background:#222222 }
+    .capacityList h4 { font-size: 14px; }
+    .capacityList ul { margin: 0; padding: 0; }
+    .capacityList li { list-style: none; padding: 0; margin: 0; }
+        .capacityList li label { margin-left: 5px; }
+.capacityWarning { color:#FCD116 }
+.capacityViolation { color:#E81123 }

@@ -48,7 +48,7 @@ export class DashboardComponent implements AfterViewInit {
                     new ClusterCapacityViewModel(
                         x.bufferedCapacity,
                         x.capacity,
-                        x.load + 5000 - (Math.random() * 10000),
+                        x.load,
                         x.remainingBufferedCapacity,
                         x.remainingCapacity,
                         x.isClusterCapacityViolation,
@@ -109,6 +109,10 @@ export class DashboardComponent implements AfterViewInit {
         else {
             this.removeDataStream(name);
         }
+    }
+
+    private isCapacityWarning(item: ClusterCapacityViewModel): boolean {
+        return item.load / item.capacity > 0.9;
     }
 }
 

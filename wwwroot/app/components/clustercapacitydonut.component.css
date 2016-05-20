@@ -4,6 +4,6 @@
     .donut-inner h5 { font-size: 28px; margin-bottom: 5px; margin-top: 0; }
     .donut-inner span { font-size: 12px; }
     .donut-inner .percent { font-size: 14px; vertical-align:super }
-.donut-outer { margin:10px 0 0 25px; padding: 0; color:#AAA;}
+.donut-outer { margin:10px 0 0 0; padding: 0; color:#AAA;}
 .donut-outer li { list-style: none; font-weight:bold; }
-.donut-outer li label { width: 70px; font-weight:normal; }
+.donut-outer li label { width: 70px; font-weight:normal; text-align:right; margin-right:10px }

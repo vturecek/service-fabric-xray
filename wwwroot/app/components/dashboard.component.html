@@ -1,7 +1,9 @@
-﻿<div>
+﻿<div class="capacityList">
+    <h4>Cluster capacities</h4>
     <ul>
-        <li *ngFor="#item of clusterCapacities">
-            <input type="checkbox" [(ngModel)]="item.selected" (change)="onSelectCapacity(item.name, $event)" /><label>{{item.name}}</label>
+        <li *ngFor="#item of clusterCapacities"
+            [ngClass]="{ 'capacityWarning': isCapacityWarning(item) && !item.isClusterCapacityViolation, 'capacityViolation': item.isClusterCapacityViolation }">
+            <input id="{{item.name}}" type="checkbox" [(ngModel)]="item.selected" (change)="onSelectCapacity(item.name, $event)" /><label attr.for="{{item.name}}">{{item.name}}</label>
         </li>
     </ul>
 </div>

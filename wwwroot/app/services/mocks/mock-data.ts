@@ -6,7 +6,7 @@ import {Replica} from './../../models/replica';
 
 export var ClusterCapacityList: ClusterCapacity[] = [
     { 'name': 'MemoryKB', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 20000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 4800, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'DiskKB', 'capacity': 49600, 'bufferedCapacity': 49600, 'load': 30000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 19600, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
+    { 'name': 'DiskKB', 'capacity': 49600, 'bufferedCapacity': 49600, 'load': 30000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 19600, 'isClusterCapacityViolation': true, 'bufferPercentage': 20 },
     { 'name': 'Default Replica Count', 'capacity': -1, 'bufferedCapacity': -1, 'load': 3, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
     { 'name': 'WTFBBQ', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 24000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 800, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 }
 ];

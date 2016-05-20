@@ -129,7 +129,7 @@ export class ClusterCapacityGraph implements AfterViewInit {
         }
 
         for (var item of data) {
-
+            
             if (!this.chart.config.data.labels.find(x => x == item.timestamp.toLocaleString())) {
                 this.chart.config.data.labels.push(item.timestamp.toLocaleString());
             }

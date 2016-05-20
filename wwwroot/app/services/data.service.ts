@@ -64,7 +64,7 @@ export class DataService {
 
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
-import {Observable}     from 'rxjs/Observable';
+import {Observable}     from 'rxjs/Rx';
 import {ReplicaList, ServiceList, ClusterNodeList, ClusterCapacityList, ApplicationList} from './mocks/mock-data';
 import {ClusterCapacity} from './../models/clustercapacity';
 import {ClusterNode} from './../models/clusternode';
@@ -76,7 +76,7 @@ import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 @Injectable()
 export class DataService {
 
-    private refreshInterval: number = 3;
+    private refreshInterval: number = 5;
     private history: any;
 
     public constructor() {
@@ -87,7 +87,7 @@ export class DataService {
         let now:Date = new Date(Date.now());
 
         for (var i = 0; i < 50; ++i) {
-            times.push(new Date(now.setMinutes(now.getMinutes() + i)));
+            times.push(new Date(Date.now() - 60000 * i));
         }
 
         for (var capacity of ClusterCapacityList) {
@@ -125,11 +125,18 @@ export class DataService {
     }
 
     public getClusterCapacityHistory(capacityName: string, startDate?: Date): Observable<ClusterCapacityHistory[]> {
-        if (!startDate) {
-            startDate = new Date(0);
-        }
-
-        return Observable.of(this.history[capacityName].filter(x => x.timestamp > startDate));
+        let start = startDate ?
+            startDate :
+            new Date(Date.now() - 3600000);
+        
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => {
+                let o = Observable.of(this.history[capacityName].filter(x => x.timestamp > start));
+                start = new Date(Date.now());
+                return o
+            });
     }
 
     public getClusterCapacity(): Observable<ClusterCapacity[]> {

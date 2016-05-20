@@ -1,11 +1,10 @@
 ﻿import {Component, AfterViewInit, Inject} from 'angular2/core';
 import {Router} from 'angular2/router';
-import {Observable, BehaviorSubject} from "rxjs/Rx";
+import {Observable, Subscription, BehaviorSubject, ReplaySubject} from "rxjs/Rx";
 import {ClusterCapacityGraph, DataStream} from './clustercapacitygraph.component';
 import {ClusterCapacityDonut} from './clustercapacitydonut.component';
 import {DataService} from './../services/data.service';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
-import {List} from './../viewmodels/list';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 
 declare var Chart: any;
@@ -22,7 +21,7 @@ export class DashboardComponent implements AfterViewInit {
 
     private clusterCapacityStream: BehaviorSubject<DataStream>;
 
-    private dataStreams: DataStream[] = [];
+    private dataStreams: DataStreamSubscription[] = [];
 
     public constructor(
         private dataService: DataService,
@@ -61,23 +60,60 @@ export class DashboardComponent implements AfterViewInit {
                     let item = this.dataStreams[i];
 
                     if (!this.clusterCapacities.find(x => x.name == item.name)) {
-                        //TODO: dispose of the stream here
-                        this.dataStreams.splice(i, 1);
+                        this.removeDataStream(item.name);
                     }
                 }
 
                 this.clusterCapacities.forEach(x => {
-
-                    if (!this.dataStreams.find(item => item.name == x.name)) {
-                        console.log("subscribing to " + x.name);
-
-                        let newStream = new DataStream(x.name, this.dataService.getClusterCapacityHistory(x.name));
-
-                        this.dataStreams.push(newStream);
-                        this.clusterCapacityStream.next(newStream);
-                    }
+                    this.createDataStream(x.name);
                 });
             },
             error => console.log("error from observable: " + error));
     }
+
+    private createDataStream(name: string) {
+        if (!this.dataStreams.find(item => item.name == name)) {
+            console.log("subscribing to " + name);
+
+            let replay = new ReplaySubject<ClusterCapacityHistory[]>();
+
+            let subscription = this.dataService.getClusterCapacityHistory(name).subscribe(
+                next => replay.next(next),
+                error => replay.error(error));
+
+            this.dataStreams.push(new DataStreamSubscription(name, subscription, replay));
+            this.clusterCapacityStream.next(new DataStream(name, replay));
+        }
+    }
+
+    private removeDataStream(name:string) {
+        let ix: number = this.dataStreams.findIndex(x => x.name == name);
+        if (ix >= 0) {
+            let dataStream = this.dataStreams[ix];
+            dataStream.subject.complete();
+            dataStream.subject.unsubscribe();
+            dataStream.subscription.unsubscribe();
+            this.dataStreams.splice(ix, 1);
+        }
+    }
+
+    private onSelectCapacity(name: string, event) {
+        let isChecked: boolean = event.currentTarget.checked;
+
+        if (isChecked) {
+            this.createDataStream(name);
+        }
+        else {
+            this.removeDataStream(name);
+        }
+    }
+}
+
+class DataStreamSubscription {
+
+    public constructor(
+        public name: string,
+        public subscription: Subscription,
+        public subject: ReplaySubject<ClusterCapacityHistory[]>)
+    { }
 }

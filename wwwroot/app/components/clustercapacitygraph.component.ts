@@ -71,7 +71,7 @@ export class ClusterCapacityGraph implements AfterViewInit {
                         // this.removeData(dataStream.name);
                     },
                     () => {
-                        //this.removeData(dataStream.name);
+                        this.removeData(dataStream.name);
                     }
                 );
             },

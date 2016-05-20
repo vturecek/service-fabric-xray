@@ -1,10 +1,10 @@
 ﻿
 header { height: 60px; background: #111111; }
-header img { margin:0; vertical-align: top; padding: 5px 0 0 10px}
-header h1 { display: inline-block; padding: 5px 0 0 10px }
-nav {display: inline-block; margin: 0 0 0 10px; vertical-align: text-bottom; }
-nav a { padding: 5px 10px; text-decoration: none; display: inline-block; color: #DDDDDD; }
-    nav a:visited, a:link { color: #DDDDDD; }
-    nav a:hover { color: #FFFFFF; }
-    nav a.router-link-active { color: #FFFFFF; }
-    .main { margin-top: 15px; }
+    header img { margin: 0; vertical-align: top; padding: 5px 0 0 10px; }
+    header h1 { display: inline-block; padding: 5px 0 0 10px; }
+nav { display: inline-block; margin: 0 0 0 10px; vertical-align: text-bottom; }
+    nav a { font-size: 14px; padding: 3px 10px; text-decoration: none; display: inline-block; color: #DDDDDD; }
+        nav a:visited, a:link { color: #DDDDDD; }
+        nav a:hover { color: #FFFFFF; }
+        nav a.router-link-active { color: #FFFFFF; }
+.main { margin-top: 15px; }

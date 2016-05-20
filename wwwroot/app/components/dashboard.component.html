@@ -1,9 +1,16 @@
-﻿<div class="charts">
+﻿<div>
+    <ul>
+        <li *ngFor="#item of clusterCapacities">
+            <input type="checkbox" [(ngModel)]="item.selected" (change)="onSelectCapacity(item.name, $event)" /><label>{{item.name}}</label>
+        </li>
+    </ul>
+</div>
+<div class="charts">
     <cluster-capacity-graph class="capacityGraph" [capacityHistory]="clusterCapacityStream">
     </cluster-capacity-graph>
     <ul class="capacityDonuts">
-        <li *ngFor="#capacity of clusterCapacities">
-            <cluster-capacity-donut *ngIf="capacity.capacity > 0" [capacityViewModel]="capacity">
+        <li *ngFor="#item of clusterCapacities">
+            <cluster-capacity-donut *ngIf="item.capacity > 0" [capacityViewModel]="item">
             </cluster-capacity-donut>
         </li>
     </ul>

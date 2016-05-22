@@ -1,5 +1,5 @@
-﻿import {Component, SimpleChange, OnChanges, OnInit, Input, ElementRef, ViewChildren, ViewChild, QueryList} from 'angular2/core';
-import {Observable}     from 'rxjs/Observable';
+﻿import {Component, OnInit, OnDestroy, OnChanges, SimpleChange, Input, ElementRef, ViewChildren, ViewChild, QueryList} from 'angular2/core';
+import {Observable, Subscription}     from 'rxjs/rx';
 import {MetricComponent} from './metriccomponent';
 import {ApplicationComponent} from './application.component';
 
@@ -22,7 +22,7 @@ import {DataService} from './../services/data.service';
     directives: [ApplicationComponent]
 })
 
-export class NodeComponent extends MetricComponent implements OnInit {
+export class NodeComponent extends MetricComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
 
@@ -46,7 +46,9 @@ export class NodeComponent extends MetricComponent implements OnInit {
 
     @Input()
     protected selectedMetricName: string;
-    
+
+    private applicationSubscription: Subscription;
+
     private applications: DeployedApplicationViewModel[];
     protected selectedCapacity: NodeCapacityViewModel;
     protected parentContainerSize: number;
@@ -91,7 +93,7 @@ export class NodeComponent extends MetricComponent implements OnInit {
     
 
     public ngOnInit() {
-        this.dataService.getApplicationModels(this.node.name).subscribe(
+        this.applicationSubscription = this.dataService.getApplicationModels(this.node.name).subscribe(
             result => {
                 if (!result) {
                     return;
@@ -127,5 +129,11 @@ export class NodeComponent extends MetricComponent implements OnInit {
                                         z.metrics))))));
             },
             error => console.log("error from observable: " + error));
+    }
+
+    public ngOnDestroy() {
+        if (this.applicationSubscription) {
+            this.applicationSubscription.unsubscribe();
+        }
     }
 }

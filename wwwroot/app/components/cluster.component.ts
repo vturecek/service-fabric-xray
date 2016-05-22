@@ -1,5 +1,5 @@
-﻿import {Component, OnInit, ElementRef, ViewChild} from 'angular2/core';
-import {Observable}     from 'rxjs/Observable';
+﻿import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from 'angular2/core';
+import {Observable, Subscription}     from "rxjs/rx";
 import {MetricComponent} from './metriccomponent';
 import {NodeComponent} from './node.component';
 
@@ -17,7 +17,7 @@ import {DataService} from './../services/data.service';
     directives: [NodeComponent]
 })
 
-export class ClusterComponent implements OnInit {
+export class ClusterComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
 
@@ -30,6 +30,8 @@ export class ClusterComponent implements OnInit {
     private scaleFactor: number;
     private nodes: NodeViewModel[];
     private capacities: ClusterCapacityViewModel[];
+    private nodeSubscription: Subscription;
+    private clusterSubscription: Subscription;
 
     constructor(
         private dataService: DataService )
@@ -54,7 +56,7 @@ export class ClusterComponent implements OnInit {
 
 
     public ngOnInit() {
-        this.dataService.getNodes().subscribe(
+        this.nodeSubscription = this.dataService.getNodes().subscribe(
             result => {
                 if (!result) {
                     return;
@@ -81,7 +83,7 @@ export class ClusterComponent implements OnInit {
             error => console.log("error from observable: " + error));
                 
 
-        this.dataService.getClusterCapacity().subscribe(
+        this.clusterSubscription = this.dataService.getClusterCapacity().subscribe(
             result => {
                 if (!result) {
                     return;
@@ -101,5 +103,15 @@ export class ClusterComponent implements OnInit {
                     )));
             },
             error => console.log("error from observable: " + error));
+    }
+
+    public ngOnDestroy() {
+        if (this.nodeSubscription) {
+            this.nodeSubscription.unsubscribe();
+        }
+
+        if (this.clusterSubscription) {
+            this.clusterSubscription.unsubscribe();
+        }
     }
 }

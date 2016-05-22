@@ -1,4 +1,4 @@
-﻿import {Component, AfterViewInit, Inject} from 'angular2/core';
+﻿import {Component, AfterViewInit, OnDestroy, Inject} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable, Subscription, BehaviorSubject, ReplaySubject} from "rxjs/Rx";
 import {ClusterCapacityGraph, DataStream} from './clustercapacitygraph.component';
@@ -16,13 +16,15 @@ declare var Chart: any;
     styleUrls: ['app/components/dashboard.component.css'],
     directives: [ClusterCapacityGraph, ClusterCapacityDonut]
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit, OnDestroy {
 
     private clusterCapacities: ClusterCapacityViewModel[] = [];
 
     private clusterCapacityStream: BehaviorSubject<DataStream>;
 
     private dataStreams: DataStreamSubscription[] = [];
+
+    private clusterSubscription: Subscription;
 
     public constructor(
         private dataService: DataService,
@@ -38,7 +40,7 @@ export class DashboardComponent implements AfterViewInit {
 
     public ngAfterViewInit() {
 
-        this.dataService.getClusterCapacity().subscribe(
+        this.clusterSubscription = this.dataService.getClusterCapacity().subscribe(
             result => {
                 if (!result) {
                     return;
@@ -72,6 +74,18 @@ export class DashboardComponent implements AfterViewInit {
                 });
             },
             error => console.log("error from observable: " + error));
+    }
+
+    public ngOnDestroy() {
+        if (this.clusterSubscription) {
+            this.clusterSubscription.unsubscribe();
+        }
+
+        for (let i = 0; i < this.dataStreams.length; ++i) {
+            let item = this.dataStreams[i];
+            
+            this.removeDataStream(item.name);
+        }
     }
 
     private createDataStream(name: string) {

@@ -1,4 +1,4 @@
-﻿/*
+﻿
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
@@ -7,6 +7,7 @@ import {ClusterNode} from './../models/clusternode';
 import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
+import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 
 
 @Injectable()
@@ -23,6 +24,7 @@ export class DataService {
 
         return Observable
             .interval(this.refreshInterval * 1000)
+            .startWith(-1)
             .flatMap(() => this.http.get(this.apiUrl + 'application/' + nodeName).catch(this.handleError))
             .map(this.extractData)
             .catch(this.handleError)
@@ -32,7 +34,25 @@ export class DataService {
     public getClusterCapacity(): Observable<ClusterCapacity[]> {
         return Observable
             .interval(this.refreshInterval * 1000)
+            .startWith(-1)
             .flatMap(() => this.http.get(this.apiUrl + 'cluster/capacity').catch(this.handleError))
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getClusterCapacityHistory(capacityName: string, startDate?: Date): Observable<ClusterCapacityHistory[]> {
+        let start = startDate ?
+            startDate :
+            new Date(Date.now() - 3600000);
+
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => {
+                let result = this.http.get(this.apiUrl + 'cluster/history/' + capacityName + '/' + start.toISOString()).catch(this.handleError);
+                start = new Date(Date.now());
+                return result;
+            })
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -40,6 +60,7 @@ export class DataService {
     public getNodes(): Observable<ClusterNode[]> {
         return Observable
             .interval(this.refreshInterval * 1000)
+            .startWith(-1)
             .flatMap(() => this.http.get(this.apiUrl + 'node/capacity').catch(this.handleError))
             .map(this.extractData)
             .catch(this.handleError);
@@ -60,8 +81,8 @@ export class DataService {
         return Observable.empty();
     }
 }
-*/
 
+/*
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Rx';
@@ -150,3 +171,4 @@ export class DataService {
         return Observable.of(ClusterNodeList);
     }
 }
+*/

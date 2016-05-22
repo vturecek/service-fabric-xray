@@ -4,45 +4,33 @@
 
 namespace Xray.Controllers
 {
-    using System.Collections.Generic;
-    using System.Fabric;
-    using System.Fabric.Query;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.AspNet.Mvc;
+    using Services;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Xray.Models;
 
     [Route("api/[controller]")]
     public class ClusterController : Controller
     {
-        private static readonly IEnumerable<ClusterCapacity> defaultCapacities = new[]
-        {
-            new ClusterCapacity("Default Replica Count", 0, -1, 0, 0, 0, false, 0)
-        };
+        private readonly IClusterInformationService clusterInfoService;
 
-        private readonly FabricClient client;
-
-        public ClusterController(FabricClient client)
+        public ClusterController(IClusterInformationService historyService)
         {
-            this.client = client;
+            this.clusterInfoService = historyService;
         }
 
         [HttpGet("capacity")]
-        public async Task<IEnumerable<ClusterCapacity>> Capacity()
+        public Task<IEnumerable<ClusterCapacity>> Capacity()
         {
-            ClusterLoadInformation loadInfo = await this.client.QueryManager.GetClusterLoadInformationAsync();
+            return this.clusterInfoService.GetClusterCapacities();
+        }
 
-            return loadInfo.LoadMetricInformationList.Where(x => x.ClusterCapacity > 0).Select(
-                x => new ClusterCapacity(
-                    x.Name,
-                    x.ClusterBufferedCapacity,
-                    x.ClusterCapacity,
-                    x.ClusterLoad,
-                    x.ClusterRemainingBufferedCapacity,
-                    x.ClusterRemainingCapacity,
-                    x.IsClusterCapacityViolation,
-                    x.NodeBufferPercentage))
-                .Concat(defaultCapacities);
+        [HttpGet("history/{capacityName}/{startTime}")]
+        public Task<IEnumerable<ClusterCapacityHistory>> History(string capacityName, DateTimeOffset startTime)
+        {
+            return this.clusterInfoService.GetClusterCapacityHistory(capacityName, startTime);
         }
     }
 }

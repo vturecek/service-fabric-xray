@@ -11,7 +11,8 @@ namespace Xray
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Serialization;
-
+    using Services;
+    using Services.Mocks;
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -36,7 +37,7 @@ namespace Xray
                         new CamelCasePropertyNamesContractResolver();
                 });
 
-            services.AddInstance<FabricClient>(new FabricClient("localhost:19000"));
+            services.AddInstance<IClusterInformationService>(new ClusterInformationService(null, new MockReliableStateManager()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

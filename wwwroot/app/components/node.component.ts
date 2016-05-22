@@ -69,15 +69,15 @@ export class NodeComponent extends MetricComponent implements OnInit {
         this.selectedCapacity = this.node.capacities.find(x => x.name == this.selectedMetricName) || null;
 
         if (this.selectedCapacity) {
-            this.parentCapacity = this.selectedCapacity.capacity < 0
+            this.parentCapacity = this.selectedCapacity.capacity <= 0
                 ? this.DefaultCapacitySize
                 : this.selectedCapacity.capacity;
 
-            this.elementHeight = this.selectedCapacity.capacity < 0
+            this.elementHeight = this.selectedCapacity.capacity <= 0
                 ? -1
                 : Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - super.getOuterVerticalSpacing(this.container));
 
-            this.parentContainerSize = this.selectedCapacity.capacity < 0
+            this.parentContainerSize = this.selectedCapacity.capacity <= 0
                 ? this.DefaultCapacitySize * this.scaleFactor
                 : Math.max(0, this.elementHeight - super.getInnerVerticalSpacing(this.container));
 

@@ -34,7 +34,6 @@
 /// <reference path="app/viewmodels/deployedserviceviewmodel.js" />
 /// <reference path="app/viewmodels/list.js" />
 /// <reference path="app/viewmodels/nodecapacityviewmodel.js" />
-/// <reference path="app/viewmodels/nodeviewmodel.component.js" />
 /// <reference path="app/viewmodels/nodeviewmodel.js" />
 /// <reference path="app/viewmodels/replicaviewmodel.js" />
 /// <reference path="app/viewmodels/serviceviewmodel.js" />

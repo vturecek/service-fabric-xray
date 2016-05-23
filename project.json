@@ -32,6 +32,9 @@
     "dnx451": {
       "dependencies": {
         "Microsoft.ServiceFabric": "5.0.135"
+      },
+      "frameworkAssemblies": {
+        "System.Runtime.Caching": "4.0.0.0"
       }
     }
   },

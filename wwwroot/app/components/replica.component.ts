@@ -37,7 +37,7 @@ export class ReplicaComponent extends MetricComponent  {
     }
 
     protected getMetrics(): LoadMetric[] {
-        return this.replicaViewModel.metrics;
+        return this.replicaViewModel.metrics || [];
     }
 
 

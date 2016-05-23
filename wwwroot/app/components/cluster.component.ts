@@ -24,7 +24,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
     @ViewChild("container")
     protected container: ElementRef;
 
-    private selectedMetricName: string = "Default Replica Count";
+    private selectedMetricName: string = "Count";
     private selectedColors: string = 'status';
     private expanded: boolean;
     private scaleFactor: number;

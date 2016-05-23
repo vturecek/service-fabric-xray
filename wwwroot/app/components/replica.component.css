@@ -7,6 +7,7 @@
 
 /* replica roles*/
 .Primary { opacity:1; border-color:#DDDDDD; }
+.Stateless { opacity: 1; border-color:#DDDDDD; }
 .ActiveSecondary { opacity:0.7; border-color: #000000; }
 .IdleSecondary { opacity:0.5; border-color: #000000; }
 .None { opacity:1; border-color: #000000; }

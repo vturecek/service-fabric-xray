@@ -8,7 +8,7 @@ namespace Xray.Models
     using System.Collections.Generic;
     using System.Fabric;
 
-    public class ReplicaModel
+    public struct ReplicaModel
     {
         public ReplicaModel(
             long id,

@@ -8,6 +8,7 @@ using Xray.Models;
 using System.Threading;
 using Microsoft.ServiceFabric.Data.Collections;
 using System.Fabric.Query;
+using System.Runtime.Caching;
 
 namespace Xray.Services
 {
@@ -18,7 +19,10 @@ namespace Xray.Services
         private static readonly TimeSpan HourlyInterval = TimeSpan.FromSeconds(10);
 
         private static readonly IEnumerable<LoadMetric> defaultMetrics = new[] { new LoadMetric(CountMetricName, 20) };
-        
+
+        private readonly MemoryCache cache = new MemoryCache("ClusterInformation");
+        private readonly TimeSpan cacheDuration = TimeSpan.FromSeconds(10);
+
         private readonly FabricClient fabricClient = new FabricClient();
 
         public ClusterInformationService(StatefulServiceContext context, IReliableStateManagerReplica stateManager)
@@ -149,21 +153,59 @@ namespace Xray.Services
             return result;
         }
         
+        private async Task<Application> GetApplication(Uri applicationName)
+        {
+            ApplicationList applications = this.cache["ApplicationList"] as ApplicationList;
+
+            if (applications == null)
+            {
+                applications = await this.fabricClient.QueryManager.GetApplicationListAsync();
+
+                this.cache.Set(new CacheItem("ApplicationList", applications), new CacheItemPolicy()
+                {
+                    AbsoluteExpiration = DateTimeOffset.UtcNow + this.cacheDuration
+                });
+            }
+
+            return applications.FirstOrDefault(x => x.ApplicationName == applicationName);
+        }
+
+        private async Task<Service> GetService (Uri applicationName, Uri serviceName)
+        {
+            try
+            {
+                string key = "Services-" + applicationName.ToString();
+                ServiceList services = this.cache[key] as ServiceList;
+
+                if (services == null)
+                {
+                    services = await this.fabricClient.QueryManager.GetServiceListAsync(applicationName);
+
+                    this.cache.Set(new CacheItem(key, services), new CacheItemPolicy()
+                    {
+                        AbsoluteExpiration = DateTimeOffset.UtcNow + this.cacheDuration
+                    });
+                }
+
+                return services.FirstOrDefault(x => x.ServiceName == serviceName);
+            }
+            catch (FabricObjectClosedException)
+            {
+                return null;
+            }
+        }
+
         public async Task<IEnumerable<DeployedApplicationModel>> GetApplicationMetrics(string nodeName)
         {
             DeployedApplicationList deployedApplications = await this.fabricClient.QueryManager.GetDeployedApplicationListAsync(nodeName);
-            ApplicationList applications = await this.fabricClient.QueryManager.GetApplicationListAsync();
-
             List<DeployedApplicationModel> applicationModels = new List<DeployedApplicationModel>(deployedApplications.Count);
 
             foreach (DeployedApplication deployedApplication in deployedApplications)
             {
-                ServiceList services = await this.fabricClient.QueryManager.GetServiceListAsync(deployedApplication.ApplicationName);
                 DeployedServiceReplicaList deployedReplicas =
                     await this.fabricClient.QueryManager.GetDeployedReplicaListAsync(nodeName, deployedApplication.ApplicationName);
-
+                
                 IEnumerable<IGrouping<Uri, DeployedServiceReplica>> groups = deployedReplicas.GroupBy(x => x.ServiceName);
-
                 List<DeployedServiceModel> serviceModels = new List<DeployedServiceModel>(groups.Count());
 
                 foreach (IGrouping<Uri, DeployedServiceReplica> group in groups)
@@ -171,33 +213,69 @@ namespace Xray.Services
                     List<ReplicaModel> replicaModels = new List<ReplicaModel>(group.Count());
                     foreach (DeployedServiceReplica item in group)
                     {
-                        DeployedStatefulServiceReplica statefulDeployedReplica = item as DeployedStatefulServiceReplica;
-
-                        if (statefulDeployedReplica != null)
+                        try
                         {
-                            DeployedStatefulServiceReplicaDetail detail =
-                                await
-                                    this.fabricClient.QueryManager.GetDeployedReplicaDetailAsync(
-                                        nodeName,
+                            DeployedStatefulServiceReplica statefulDeployedReplica = item as DeployedStatefulServiceReplica;
+
+                            if (statefulDeployedReplica != null)
+                            {
+                                DeployedStatefulServiceReplicaDetail detail =
+                                    await
+                                        this.fabricClient.QueryManager.GetDeployedReplicaDetailAsync(
+                                            nodeName,
+                                            statefulDeployedReplica.Partitionid,
+                                            statefulDeployedReplica.ReplicaId) as DeployedStatefulServiceReplicaDetail;
+
+                                ServiceReplicaList replicaList = await this.fabricClient.QueryManager.GetReplicaListAsync(detail.PartitionId, detail.ReplicaId);
+
+                                Replica replica = replicaList.FirstOrDefault();
+
+                                replicaModels.Add(
+                                    new ReplicaModel(
+                                        statefulDeployedReplica.ReplicaId,
                                         statefulDeployedReplica.Partitionid,
-                                        statefulDeployedReplica.ReplicaId) as DeployedStatefulServiceReplicaDetail;
-                            ServiceReplicaList replicaList = await this.fabricClient.QueryManager.GetReplicaListAsync(detail.PartitionId, detail.ReplicaId);
+                                        statefulDeployedReplica.ReplicaRole.ToString(),
+                                        statefulDeployedReplica.ReplicaStatus.ToString(),
+                                        replica?.HealthState.ToString(),
+                                        detail.ReportedLoad.Select(x => new LoadMetric(x.Name, x.Value)).Concat(defaultMetrics)));
 
-                            Replica replica = replicaList.FirstOrDefault();
+                                continue;
+                            }
 
-                            replicaModels.Add(
-                                new ReplicaModel(
-                                    statefulDeployedReplica.ReplicaId,
-                                    statefulDeployedReplica.Partitionid,
-                                    statefulDeployedReplica.ReplicaRole.ToString(),
-                                    statefulDeployedReplica.ReplicaStatus.ToString(),
-                                    replica?.HealthState.ToString(),
-                                    detail.ReportedLoad.Select(x => new LoadMetric(x.Name, x.Value)).Concat(defaultMetrics)));
+                            DeployedStatelessServiceInstance statelessDeployedInstance = item as DeployedStatelessServiceInstance;
+
+                            if (statelessDeployedInstance != null)
+                            {
+                                DeployedStatelessServiceInstanceDetail instanceDetail =
+                                    await
+                                        this.fabricClient.QueryManager.GetDeployedReplicaDetailAsync(
+                                            nodeName,
+                                            statelessDeployedInstance.Partitionid,
+                                            statelessDeployedInstance.InstanceId) as DeployedStatelessServiceInstanceDetail;
+
+                                ServiceReplicaList replicaList = await this.fabricClient.QueryManager.GetReplicaListAsync(instanceDetail.PartitionId, instanceDetail.InstanceId);
+
+                                Replica replica = replicaList.FirstOrDefault();
+
+                                replicaModels.Add(
+                                    new ReplicaModel(
+                                        statelessDeployedInstance.InstanceId,
+                                        statelessDeployedInstance.Partitionid,
+                                        null,
+                                        statelessDeployedInstance.ReplicaStatus.ToString(),
+                                        replica?.HealthState.ToString(),
+                                        instanceDetail.ReportedLoad.Select(x => new LoadMetric(x.Name, x.Value)).Concat(defaultMetrics)));
+
+                            }
+                        }
+                        catch (FabricException)
+                        {
+                            // information may not be available yet. Skip and move on.
                         }
                     }
 
-                    Service service = services.FirstOrDefault(x => x.ServiceName == group.Key);
-
+                    Service service = await this.GetService(deployedApplication.ApplicationName, group.Key);
+                    
                     serviceModels.Add(
                         new DeployedServiceModel(
                             new ServiceModel(
@@ -214,7 +292,7 @@ namespace Xray.Services
                 }
 
 
-                Application application = applications.FirstOrDefault(x => x.ApplicationName == deployedApplication.ApplicationName);
+                Application application = await this.GetApplication(deployedApplication.ApplicationName);
 
                 applicationModels.Add(
                     new DeployedApplicationModel(

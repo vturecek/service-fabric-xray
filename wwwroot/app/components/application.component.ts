@@ -38,20 +38,30 @@ export class ApplicationComponent extends MetricComponent {
     protected nodeName: string;
 
     @Input()
-    protected applicationViewModel: DeployedApplicationViewModel;
-    
+    protected applicationName: string;
+
+    @Input()
+    protected health: string;
+
+    @Input()
+    protected status: string;
+
+    @Input()
+    protected services: DeployedServiceViewModel[];
+
+    @Input()
+    protected metrics: LoadMetric[];
+
+    @Input()
+    protected selected: boolean;
+
     constructor(
         private dataService: DataService)
     {
         super();
     }
-
-    protected getMetrics(): LoadMetric[] {
-        return this.applicationViewModel.application.metrics;
-    }
-
-    private selectApplication() {
-        this.applicationViewModel.selected = !this.applicationViewModel.selected;
-    }
     
+    private selectApplication() {
+        this.selected = !this.selected;
+    }
 }

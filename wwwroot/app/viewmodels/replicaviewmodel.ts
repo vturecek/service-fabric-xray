@@ -1,23 +1,23 @@
 ﻿import {LoadMetric} from './../models/loadmetric';
-import {DeployedEntityViewModel} from './deployedentityviewmodel';
+import {ViewModel} from './viewmodel';
 
-export class ReplicaViewModel extends DeployedEntityViewModel<ReplicaViewModel> {
+export class ReplicaViewModel extends ViewModel<ReplicaViewModel> {
 
     public constructor(
         public id: number,
         public partitionId: string,
         public status: string,
-        public healthState: string,
+        public health: string,
         public role: string,
         public metrics: LoadMetric[]) {
-        super(status, healthState, partitionId + id);
+        super(partitionId + id);
     }
     
     public copyFrom(other: ReplicaViewModel) {
         this.id = other.id;
         this.partitionId = other.partitionId;
         this.status = other.status;
-        this.healthState = other.healthState;
+        this.health = other.health;
         this.role = other.role;
         this.metrics = other.metrics;
     }

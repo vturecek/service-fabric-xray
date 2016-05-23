@@ -1,7 +1,6 @@
 ﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
 import {ElementRef, OnChanges, SimpleChange} from 'angular2/core';
 import {LoadMetric} from './../models/loadmetric';
-import {DeployedEntityViewModel} from './../viewmodels/deployedentityviewmodel';
 
 /**
 Layout is computed thusly:
@@ -20,6 +19,9 @@ export abstract class MetricComponent implements OnChanges {
     protected selectedColors: string = "status";
     protected selectedMetricName: string = "Default Replica Count";
     protected container: ElementRef;
+    protected health: string;
+    protected status: string;
+    protected metrics: LoadMetric[];
 
     // component data
     protected selectedLoadMetric: LoadMetric;
@@ -28,7 +30,7 @@ export abstract class MetricComponent implements OnChanges {
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
         
-        this.selectedLoadMetric = this.getMetrics().find(x => x.name == this.selectedMetricName) || null;
+        this.selectedLoadMetric = this.metrics.find(x => x.name == this.selectedMetricName) || null;
 
         if (this.selectedLoadMetric) {
 
@@ -40,11 +42,7 @@ export abstract class MetricComponent implements OnChanges {
         }
 
     }
-
-    protected getMetrics(): LoadMetric[] {
-        return null;
-    }
-
+    
     /**
      * Determines if the selected metric is in the list of given metrics.
      * @param metrics
@@ -76,14 +74,14 @@ export abstract class MetricComponent implements OnChanges {
     }
 
 
-    protected getDeployedEntityClass<T>(entity: DeployedEntityViewModel<T>, classes: string[]): string[] {
+    protected getDeployedEntityClass<T>(classes: string[]): string[] {
         let result: string = "";
         switch (this.selectedColors) {
             case "status":
-                result = entity.status;
+                result = this.status;
                 break;
             case "health":
-                result = entity.healthState;
+                result = this.health;
                 break;
         }
 

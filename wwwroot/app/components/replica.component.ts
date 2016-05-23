@@ -28,7 +28,17 @@ export class ReplicaComponent extends MetricComponent  {
     protected selectedMetricName: string;
     
     @Input()
-    private replicaViewModel: ReplicaViewModel;
+    protected replicaRole: string;
+
+    @Input()
+    protected health: string;
+
+    @Input()
+    protected status: string;
+
+    @Input()
+    protected metrics: LoadMetric[];
+
 
     constructor(
         private router: Router)
@@ -37,7 +47,7 @@ export class ReplicaComponent extends MetricComponent  {
     }
 
     protected getMetrics(): LoadMetric[] {
-        return this.replicaViewModel.metrics || [];
+        return this.metrics || [];
     }
 
 

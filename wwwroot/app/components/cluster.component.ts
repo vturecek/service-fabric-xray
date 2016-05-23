@@ -46,16 +46,23 @@ export class ClusterComponent implements OnInit, OnDestroy {
         return node.capacities.find(x => x.name == this.selectedMetricName) != undefined;
     }
 
-    private onChangeCapacity(newValue) {
+    private onChangeCapacity(newValue): void {
         this.selectedMetricName = newValue;
     }
 
-    private onChangeColors(newValue) {
+    private onChangeColors(newValue): void {
         this.selectedColors = newValue;
     }
 
+    private toggleSelected(): void {
+        this.expanded = !this.expanded;
 
-    public ngOnInit() {
+        for (var node of this.nodes) {
+            node.selected = this.expanded;
+        }
+    }
+    
+    public ngOnInit(): void {
         this.nodeSubscription = this.dataService.getNodes().subscribe(
             result => {
                 if (!result) {
@@ -69,6 +76,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.healthState.toLowerCase(),
                         x.faultDomain,
                         x.upgradeDomain,
+                        true,
                         x.capacities.map(y =>
                             new NodeCapacityViewModel(
                                 y.isCapacityViolation,
@@ -105,7 +113,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
             error => console.log("error from observable: " + error));
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         if (this.nodeSubscription) {
             this.nodeSubscription.unsubscribe();
         }

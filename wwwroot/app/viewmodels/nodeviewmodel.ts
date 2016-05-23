@@ -1,20 +1,21 @@
 ﻿import {NodeCapacityViewModel} from './nodecapacityviewmodel';
-import {DeployedEntityViewModel} from './deployedentityviewmodel';
+import {ViewModel} from './viewmodel';
 
-export class NodeViewModel extends DeployedEntityViewModel<NodeViewModel>{
+export class NodeViewModel extends ViewModel<NodeViewModel>{
 
     public constructor(public name: string,
         public status: string,
-        public healthState: string,
+        public health: string,
         public faultDomain: number,
         public upgradeDomain: number,
+        public selected: boolean,
         public capacities: NodeCapacityViewModel[]) {
-        super(status, healthState, name);
+        super(name);
     }
     
     public copyFrom(other: NodeViewModel) {
         this.name = other.name;
-        this.healthState = other.healthState;
+        this.health = other.health;
         this.status = other.status;
         this.capacities = other.capacities;
         this.faultDomain = other.faultDomain;

@@ -1,17 +1,22 @@
 ﻿<div #container
-     [ngClass]="getDeployedEntityClass(applicationViewModel.application, ['application'])"
+     [ngClass]="getDeployedEntityClass(['application'])"
      [style.height.px]="elementHeight">
 
-    <div *ngIf="applicationViewModel.selected" class="selectorButton"
+    <div *ngIf="selected" class="selectorButton"
          (click)="selectApplication()">[>]</div>
 
-    <div [ngClass]="{'label-selected': applicationViewModel.selected, 'label-collapsed': !applicationViewModel.selected }"
-         (click)="selectApplication()">{{applicationViewModel.application.name}}</div>
+    <div [ngClass]="{'label-selected': selected, 'label-collapsed': !selected }"
+         (click)="selectApplication()">{{applicationName}}</div>
 
-    <ul *ngIf="applicationViewModel.selected" class="service-list">
-        <li *ngFor="#item of applicationViewModel.services">
+    <ul *ngIf="selected" class="service-list">
+        <li *ngFor="#item of services">
             <service-component *ngIf="hasSelectedMetric(item.service.metrics)"
-                               [serviceViewModel]="item"
+                               [serviceName]="item.service.name"
+                               [metrics]="item.service.metrics"
+                               [health]="item.service.health"
+                               [status]="item.service.status"
+                               [replicas]="item.replicas"
+                               [selected]="item.selected"
                                [selectedColors]="selectedColors"
                                [selectedMetricName]="selectedMetricName"
                                [parentCapacity]="selectedLoadMetric.value"

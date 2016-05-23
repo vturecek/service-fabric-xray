@@ -1,16 +1,16 @@
 ﻿import {LoadMetric} from './../models/loadmetric';
-import {DeployedEntityViewModel} from './deployedentityviewmodel';
+import {ViewModel} from './viewmodel';
 
-export class ApplicationViewModel extends DeployedEntityViewModel<ApplicationViewModel>
+export class ApplicationViewModel extends ViewModel<ApplicationViewModel>
 { 
     public constructor(
         public name: string,
         public type: string,
         public version: string,
         public status: string,
-        public healthState: string,
+        public health: string,
         public metrics: LoadMetric[]) {
-        super(status, healthState, name);
+        super(name);
     }
 
     public copyFrom(other: ApplicationViewModel) {
@@ -18,7 +18,7 @@ export class ApplicationViewModel extends DeployedEntityViewModel<ApplicationVie
         this.type = other.type;
         this.version = other.version;
         this.status = other.status;
-        this.healthState = other.healthState;
+        this.health = other.health;
         this.metrics = other.metrics;
     }
 }

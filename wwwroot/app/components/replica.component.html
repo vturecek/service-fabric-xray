@@ -1,4 +1,4 @@
 ﻿<div #container
-     [ngClass]="getDeployedEntityClass(replicaViewModel, ['replica', replicaViewModel.role || 'Stateless'])"
+     [ngClass]="getDeployedEntityClass(['replica', replicaRole || 'Stateless'])"
      [style.height.px]="elementHeight">
 </div>

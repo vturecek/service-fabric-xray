@@ -2,7 +2,6 @@
 import {Observable, Subscription}     from 'rxjs/rx';
 import {MetricComponent} from './metriccomponent';
 import {ApplicationComponent} from './application.component';
-
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
@@ -12,7 +11,6 @@ import {ApplicationViewModel} from './../viewmodels/applicationviewmodel';
 import {ServiceViewModel} from './../viewmodels/serviceviewmodel';
 import {ReplicaViewModel} from './../viewmodels/replicaviewmodel';
 import {List} from './../viewmodels/list';
-
 import {DataService} from './../services/data.service';
 
 @Component({
@@ -21,7 +19,6 @@ import {DataService} from './../services/data.service';
     styleUrls: ['app/components/node.component.css'],
     directives: [ApplicationComponent]
 })
-
 export class NodeComponent extends MetricComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
@@ -30,31 +27,39 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
     protected container: ElementRef;
 
     @ViewChildren(ApplicationComponent)
-    private applicationComponents: QueryList<ApplicationComponent>
+    protected applicationComponents: QueryList<ApplicationComponent>
 
     @Input()
-    private nodeCapacities: NodeCapacityViewModel[];
+    protected nodeCapacities: NodeCapacityViewModel[];
 
     @Input()
-    private node: NodeViewModel;
+    protected scaleFactor: number;
 
     @Input()
-    private scaleFactor: number;
-    
+    protected selected: boolean;
+
     @Input()
     protected selectedColors: string;
 
     @Input()
     protected selectedMetricName: string;
 
-    private applicationSubscription: Subscription;
+    @Input()
+    protected nodeName: string;
 
-    private applications: DeployedApplicationViewModel[];
+    @Input()
+    protected health: string;
+
+    @Input()
+    protected status: string;
+
     protected selectedCapacity: NodeCapacityViewModel;
     protected parentContainerSize: number;
     protected parentCapacity: number;
     protected elementHeight: number;
-    protected expanded: boolean;
+
+    private applicationSubscription: Subscription;
+    private applications: DeployedApplicationViewModel[];
     private loadPercent: number;
 
     constructor(
@@ -63,12 +68,18 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
         super();
         
         this.applications = [];
-        this.expanded = true;
+        this.selected = true;
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
 
-        this.selectedCapacity = this.node.capacities.find(x => x.name == this.selectedMetricName) || null;
+        if (changes['selected']) {
+            for (var a of this.applications) {
+                a.selected = this.selected;
+            }
+        }
+
+        this.selectedCapacity = this.nodeCapacities.find(x => x.name == this.selectedMetricName) || null;
 
         if (this.selectedCapacity) {
             this.parentCapacity = this.selectedCapacity.capacity <= 0
@@ -85,21 +96,16 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
 
             this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
         }
-
-        console.log("parentCapacity: " + this.parentCapacity);
-        console.log("parentContainerSize: " + this.parentContainerSize);
-        console.log("selectedCapacity: " + this.selectedCapacity.capacity);
     }
     
-
     public ngOnInit() {
-        this.applicationSubscription = this.dataService.getApplicationModels(this.node.name).subscribe(
+        this.applicationSubscription = this.dataService.getApplicationModels(this.nodeName).subscribe(
             result => {
                 if (!result) {
                     return;
                 }
 
-                this.applications = result.map(x =>
+                List.updateList(this.applications, result.map(x =>
                     new DeployedApplicationViewModel(
                         true,
                         new ApplicationViewModel(
@@ -126,7 +132,7 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
                                         z.status,
                                         z.healthState,
                                         z.role,
-                                        z.metrics))))));
+                                        z.metrics)))))));
             },
             error => console.log("error from observable: " + error));
     }

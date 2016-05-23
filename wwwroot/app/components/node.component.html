@@ -1,6 +1,6 @@
-﻿<div [ngClass]="getDeployedEntityClass(node, ['nodeHeader'])">
+﻿<div [ngClass]="getDeployedEntityClass(['nodeHeader'])">
     <div class="nodeTitle">
-        <label class="nodeName">{{node.name}}</label>
+        <label class="nodeName">{{nodeName}}</label>
         <label class="nodeType">FrontEndType</label>
     </div>
     <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
@@ -17,13 +17,18 @@
     </div>
 </div>
 <div #container
-     [ngClass]="getDeployedEntityClass(node, ['node'])"
+     [ngClass]="getDeployedEntityClass(['node'])"
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
     <ul class="application-list">
         <li *ngFor="#item of applications">
             <application-component *ngIf="hasSelectedMetric(item.application.metrics)"
-                                   [nodeName]="node.name"
-                                   [applicationViewModel] ="item"
+                                   [nodeName]="nodeName"
+                                   [applicationName]="item.application.name"
+                                   [metrics]="item.application.metrics"
+                                   [health]="item.application.health"
+                                   [status]="item.application.status"
+                                   [services]="item.services"
+                                   [selected]="item.selected"
                                    [selectedColors]="selectedColors"
                                    [selectedMetricName]="selectedMetricName"
                                    [parentCapacity]="parentCapacity"

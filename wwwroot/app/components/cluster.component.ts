@@ -46,8 +46,8 @@ export class ClusterComponent implements OnInit, OnDestroy {
         return node.capacities.find(x => x.name == this.selectedMetricName) != undefined;
     }
 
-    private onChangeCapacity(newValue): void {
-        this.selectedMetricName = newValue;
+    private onChangeCapacity(newValue: string): void {
+        this.selectedMetricName = newValue.split(":")[1].trim(); // yeah this is weird but that's what angular gives us.
     }
 
     private onChangeColors(newValue): void {

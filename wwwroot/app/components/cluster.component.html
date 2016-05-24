@@ -2,7 +2,7 @@
 <label for="scaleFactor">Scale: </label> <input name="scaleFactor" [(ngModel)]="scaleFactor" />
 
 <select [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
-    <option *ngFor="#capacity of capacities">{{capacity.name}}</option>
+    <option *ngFor="#capacity of capacities" [ngValue]="capacity.name">{{capacity.name}}</option>
 </select>
 
 <select [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">

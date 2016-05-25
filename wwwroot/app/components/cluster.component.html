@@ -1,17 +1,35 @@
-﻿<a (click)="toggleSelected()">{{!expanded && 'Expand all' || 'Collapse all'}}</a>
-<label for="scaleFactor">Scale: </label> <input name="scaleFactor" [(ngModel)]="scaleFactor" />
-
-<select [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
-    <option *ngFor="#capacity of capacities" [ngValue]="capacity.name">{{capacity.name}}</option>
-</select>
-
-<select [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">
-    <option value="status">Status</option>
-    <option value="health">Health</option>
-</select>
-
-<div class="nodes">
+﻿<div class="filters">
+    <h4>Node types</h4>
     <ul>
+        <li><input type="checkbox" /><label>FrontEnd</label></li>
+        <li><input type="checkbox" /><label>BackEnd</label></li>
+    </ul>
+    <h4>Application types</h4>
+    <ul>
+        <li><input type="checkbox" /><label>application type 1</label></li>
+        <li><input type="checkbox" /><label>application type 2</label></li>
+    </ul>
+</div>
+<div class="nodes">
+    <div class="scale">
+        <label>{{scaleFactor}}</label>
+        <input [(ngModel)]="scaleFactor" class="scaleBar" type="range" orient="vertical" min="0" max="2.0" step="0.02" />
+    </div>
+    <div class="controls">
+        <a (click)="toggleSelected()">{{!expanded && '[+] Expand all' || '[-] Collapse all'}}</a>
+
+        <span>Metric:</span>
+        <select name="metricDropDown" [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
+            <option *ngFor="#capacity of capacities" [ngValue]="capacity.name">{{capacity.name}}</option>
+        </select>
+
+        <span>Show:</span>
+        <select name="colorDropDown" [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">
+            <option value="status">Status</option>
+            <option value="health">Health</option>
+        </select>
+    </div>
+    <ul class="nodeList">
         <li *ngFor="#node of nodes" class="nodeListItem">
             <node-component *ngIf="hasSelectedCapacity(node)"
                             [nodeName]="node.name"

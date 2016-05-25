@@ -5,5 +5,8 @@ input { background-color: #000000; }
 button { background-color: #eee; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
     button:hover { background-color: #cfd8dc; }
     button:disabled { background-color: #eee; color: #aaa; cursor: auto; }
+select { -webkit-appearance: none; -moz-appearance: none; appearance: none; border:none; background:#000000; font-weight:bold}
+    select::-ms-expand { /* for IE 11 */ display: none; }
+option {border:none; padding: 2px 4px; }
 /* everywhere else */
 * { font: 1em 'Segoe UI', 'Segoe', Arial, sans-serif; font-weight: normal; }

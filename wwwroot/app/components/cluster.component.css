@@ -1,28 +1,30 @@
-﻿.nodeListItem { float: left; display: inline-block; width: 175px; min-height: 120px; list-style: none; }
-.node { padding: 3px 7px; margin:3px 5px; background: #222222; height: auto; }
-.nodeHeader { margin: 0 5px; padding:8px; text-align: center;  background: #222222;}
-.nodeTitle { border-bottom: 1px solid #666666; padding-bottom:5px; border-bottom: 3px solid #000000; }
-.nodeName { font-size:12px; font-weight:bold; margin-right: 5px }
-.nodeType { font-size:9px; font-weight: normal }
-.nodeCapacityStats {  margin-top: 5px; }
-.nodeCapacityStats h3, .nodeHeader h5 {  margin: 0; padding:0; }
-.nodeCapacityStats h3 { font-size: 32px; margin-bottom:5px; font-weight:lighter; }
-.nodeCapacityStats h5 { font-size: 12px; }
-.nodeCapacityViolation { color: #e81123 }
+﻿.nodeList { margin: 0; }
+.nodeListItem { display: inline-block; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
+.controls { margin: 0 0 0 245px; padding:10px 0 }
+    .controls a, .controls a:visited { color: #DDD; cursor: pointer; background: #000; padding: 3px 4px;}
+        .controls a:hover { color: #FFF; cursor: pointer; text-decoration: none; font-weight: bold;  }
+    .controls span { margin: 0 5px 0 25px; }
+.filters { float: left; width: 200px; height:100vh; padding-left: 10px; overflow: hidden; background: #222222; }
+    .filters h4 { font-size: 12px; }
+    .filters ul { margin: 0; padding: 0; }
+    .filters li { list-style: none; margin: 0; padding: 0; }
+.scale { float: left; width: 30px; margin-left: 5px; text-align: center; }
+    .scale label { font-size: 12px; width: 30px; }
+    .scale .scaleBar { writing-mode: bt-lr; /* IE */ -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 300px; padding: 0 5px; margin-left: 10px; }
 
 /* common */
 .invalid { }
 .unknown { }
 
 /* statuses */
-.up { border-color:#00ABEC }
-.down { border-color: #E81123 }
-.enabling { border-color: #00C69F }
-.disabling { border-color:#D17D00 }
-.disabled { border-color:#777777 }
-.removed { border-color:#000000 }
+.up { border-color: #00ABEC; }
+.down { border-color: #E81123; }
+.enabling { border-color: #00C69F; }
+.disabling { border-color: #D17D00; }
+.disabled { border-color: #777777; }
+.removed { border-color: #000000; }
 
 /* health states */
 .ok { border-color: #7FBA00; }
-.warning { border-color: #FCD116}
-.error { border-color: #E81123 }
+.warning { border-color: #FCD116; }
+.error { border-color: #E81123; }

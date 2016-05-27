@@ -21,6 +21,12 @@ namespace Xray.Controllers
             this.clusterInfoService = historyService;
         }
 
+        [HttpGet("info")]
+        public Task<ClusterInfo> Info()
+        {
+            return this.clusterInfoService.GetClusterInfo();
+        }
+
         [HttpGet("capacity")]
         public Task<IEnumerable<ClusterCapacity>> Capacity()
         {

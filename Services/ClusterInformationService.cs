@@ -1,17 +1,21 @@
-﻿using Microsoft.ServiceFabric.Data;
-using System;
-using System.Collections.Generic;
-using System.Fabric;
-using System.Linq;
-using System.Threading.Tasks;
-using Xray.Models;
-using System.Threading;
-using Microsoft.ServiceFabric.Data.Collections;
-using System.Fabric.Query;
-using System.Runtime.Caching;
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
 
 namespace Xray.Services
 {
+    using Microsoft.ServiceFabric.Data;
+    using Microsoft.ServiceFabric.Data.Collections;
+    using System;
+    using System.Collections.Generic;
+    using System.Fabric;
+    using System.Fabric.Query;
+    using System.Linq;
+    using System.Runtime.Caching;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Xray.Models;
+
     public class ClusterInformationService : Microsoft.ServiceFabric.Services.Runtime.StatefulService, IClusterInformationService
     {
         private const string CountMetricName = "Count";
@@ -36,18 +40,18 @@ namespace Xray.Services
             int hourlyLimit = (int)Math.Round(3600D / HourlyInterval.TotalSeconds);
 
             try
-            { 
+            {
                 while (true)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    
+
                     IEnumerable<ClusterCapacity> capacities = await this.GetClusterCapacities();
 
                     using (ITransaction tx = this.StateManager.CreateTransaction())
                     {
                         DateTimeOffset utcnow = DateTimeOffset.UtcNow;
                         DateTimeOffset timestamp = new DateTimeOffset(utcnow.Year, utcnow.Month, utcnow.Day, utcnow.Hour, utcnow.Minute, utcnow.Second, utcnow.Offset);
-                        
+
                         foreach (var capacity in capacities)
                         {
                             IReliableDictionary<DateTimeOffset, long> dictionary = await
@@ -120,11 +124,16 @@ namespace Xray.Services
             }
         }
 
-        public async Task<IEnumerable<ClusterNode>> GetNodeCapacity()
+        public async Task<IEnumerable<ClusterNode>> GetNodeCapacity(string nodeTypeFilter)
         {
-            NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
+            IEnumerable<Node> nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
 
-            List<ClusterNode> result = new List<ClusterNode>(nodes.Count);
+            if (nodeTypeFilter != null)
+            {
+                nodes = nodes.Where(x => !nodeTypeFilter.Contains(x.NodeType));
+            }
+
+            List<ClusterNode> result = new List<ClusterNode>(nodes.Count());
 
             foreach (Node node in nodes)
             {
@@ -133,6 +142,7 @@ namespace Xray.Services
                 result.Add(
                     new ClusterNode(
                         node.NodeName,
+                        node.NodeType,
                         node.NodeStatus.ToString(),
                         node.HealthState.ToString(),
                         node.FaultDomain.ToString(),
@@ -152,7 +162,7 @@ namespace Xray.Services
 
             return result;
         }
-        
+
         private async Task<Application> GetApplication(Uri applicationName)
         {
             ApplicationList applications = this.cache["ApplicationList"] as ApplicationList;
@@ -170,7 +180,7 @@ namespace Xray.Services
             return applications.FirstOrDefault(x => x.ApplicationName == applicationName);
         }
 
-        private async Task<Service> GetService (Uri applicationName, Uri serviceName)
+        private async Task<Service> GetService(Uri applicationName, Uri serviceName)
         {
             try
             {
@@ -195,16 +205,22 @@ namespace Xray.Services
             }
         }
 
-        public async Task<IEnumerable<DeployedApplicationModel>> GetApplicationMetrics(string nodeName)
+        public async Task<IEnumerable<DeployedApplicationModel>> GetApplicationMetrics(string nodeName, string appTypeFilter)
         {
-            DeployedApplicationList deployedApplications = await this.fabricClient.QueryManager.GetDeployedApplicationListAsync(nodeName);
-            List<DeployedApplicationModel> applicationModels = new List<DeployedApplicationModel>(deployedApplications.Count);
+            IEnumerable<DeployedApplication> deployedApplications = await this.fabricClient.QueryManager.GetDeployedApplicationListAsync(nodeName);
+
+            if (appTypeFilter != null)
+            {
+                deployedApplications = deployedApplications.Where(x => !appTypeFilter.Contains(x.ApplicationTypeName));
+            }
+
+            List<DeployedApplicationModel> applicationModels = new List<DeployedApplicationModel>(deployedApplications.Count());
 
             foreach (DeployedApplication deployedApplication in deployedApplications)
             {
                 DeployedServiceReplicaList deployedReplicas =
                     await this.fabricClient.QueryManager.GetDeployedReplicaListAsync(nodeName, deployedApplication.ApplicationName);
-                
+
                 IEnumerable<IGrouping<Uri, DeployedServiceReplica>> groups = deployedReplicas.GroupBy(x => x.ServiceName);
                 List<DeployedServiceModel> serviceModels = new List<DeployedServiceModel>(groups.Count());
 
@@ -275,7 +291,7 @@ namespace Xray.Services
                     }
 
                     Service service = await this.GetService(deployedApplication.ApplicationName, group.Key);
-                    
+
                     serviceModels.Add(
                         new DeployedServiceModel(
                             new ServiceModel(
@@ -337,6 +353,18 @@ namespace Xray.Services
             }
 
             return new ClusterNodeCapacity(CountMetricName, false, 0, 0, count, 0, 0);
+        }
+
+        public async Task<ClusterInfo> GetClusterInfo()
+        {
+            NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
+            ApplicationTypeList appTypes = await this.fabricClient.QueryManager.GetApplicationTypeListAsync();
+
+            return new ClusterInfo(
+                nodes.Select(x => x.NodeType).Distinct(),
+                appTypes.Select(x => x.ApplicationTypeName),
+                nodes.Select(x => x.FaultDomain.ToString()).Distinct(),
+                nodes.Select(x => x.UpgradeDomain).Distinct());
         }
     }
 }

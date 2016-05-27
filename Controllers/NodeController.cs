@@ -23,7 +23,13 @@ namespace Xray.Controllers
         [HttpGet("capacity")]
         public Task<IEnumerable<ClusterNode>> Capacity()
         {
-            return this.clusterInfoService.GetNodeCapacity();
+            return this.clusterInfoService.GetNodeCapacity(null);
+        }
+
+        [HttpGet("capacity/{nodeTypeFilter}")]
+        public Task<IEnumerable<ClusterNode>> Capacity(string nodeTypeFilter)
+        {
+            return this.clusterInfoService.GetNodeCapacity(nodeTypeFilter);
         }
     }
 }

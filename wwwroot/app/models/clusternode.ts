@@ -2,6 +2,7 @@
 
 export class ClusterNode{
     public name: string;
+    public nodeType: string;
     public status: string;
     public healthState: string;
     public faultDomain: number;

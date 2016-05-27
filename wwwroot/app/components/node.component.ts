@@ -12,6 +12,7 @@ import {ServiceViewModel} from './../viewmodels/serviceviewmodel';
 import {ReplicaViewModel} from './../viewmodels/replicaviewmodel';
 import {List} from './../viewmodels/list';
 import {DataService} from './../services/data.service';
+import {Selectable} from './../viewmodels/selectable';
 
 @Component({
     selector: 'node-component',
@@ -45,7 +46,13 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
     protected selectedMetricName: string;
 
     @Input()
+    protected selectedApplicationTypes: Selectable[];
+    
+    @Input()
     protected nodeName: string;
+
+    @Input()
+    protected nodeType: string;
 
     @Input()
     protected health: string;
@@ -99,7 +106,7 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
     }
     
     public ngOnInit() {
-        this.applicationSubscription = this.dataService.getApplicationModels(this.nodeName).subscribe(
+        this.applicationSubscription = this.dataService.getApplicationModels(this.nodeName, () => this.selectedApplicationTypes.filter(x => !x.selected).map(x => x.name)).subscribe(
             result => {
                 if (!result) {
                     return;

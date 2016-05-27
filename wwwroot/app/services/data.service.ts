@@ -1,4 +1,5 @@
 ﻿
+
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
@@ -8,6 +9,7 @@ import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {ClusterInfo} from './../models/clusterinfo';
 
 
 @Injectable()
@@ -20,16 +22,32 @@ export class DataService {
 
     private apiUrl:string = "api/";
 
-    public getApplicationModels(nodeName: string): Observable<DeployedApplication[]> {
+    public getApplicationModels(nodeName: string, appTypeFilter: () => string[]): Observable<DeployedApplication[]> {
 
         return Observable
             .interval(this.refreshInterval * 1000)
             .startWith(-1)
-            .flatMap(() => this.http.get(this.apiUrl + 'application/' + nodeName).catch(this.handleError))
+            .flatMap(() => {
+                let filterArray: string[] = appTypeFilter();
+                let filterString: string = filterArray
+                    ? filterArray.join(",")
+                    : "";
+
+                return this.http.get(this.apiUrl + 'application/' + nodeName + '/' + filterString).catch(this.handleError);
+            })
             .map(this.extractData)
             .catch(this.handleError)
     }
 
+
+    public getClusterInfo(): Observable<ClusterInfo> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => this.http.get(this.apiUrl + 'cluster/info'))
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
     public getClusterCapacity(): Observable<ClusterCapacity[]> {
         return Observable
@@ -57,11 +75,18 @@ export class DataService {
             .catch(this.handleError);
     }
 
-    public getNodes(): Observable<ClusterNode[]> {
+    public getNodes(nodeTypeFilter: () => string[]): Observable<ClusterNode[]> {
         return Observable
             .interval(this.refreshInterval * 1000)
             .startWith(-1)
-            .flatMap(() => this.http.get(this.apiUrl + 'node/capacity').catch(this.handleError))
+            .flatMap(() => {
+                let nodeTypeArray: string[] = nodeTypeFilter();
+                let nodeTypeString: string = nodeTypeArray
+                    ? nodeTypeArray.join(",")
+                    : "";
+
+                return this.http.get(this.apiUrl + 'node/capacity/' + nodeTypeString).catch(this.handleError);
+            })
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -81,14 +106,15 @@ export class DataService {
         return Observable.empty();
     }
 }
-/*
 
+/*
 import {Injectable} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Rx';
-import {ReplicaList, ServiceList, ClusterNodeList, ClusterCapacityList, ApplicationList} from './mocks/mock-data';
+import {ReplicaList, ServiceList, ClusterNodeList, ClusterInfoData, ClusterCapacityList, ApplicationList} from './mocks/mock-data';
 import {ClusterCapacity} from './../models/clustercapacity';
 import {ClusterNode} from './../models/clusternode';
+import {ClusterInfo} from './../models/clusterinfo';
 import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
@@ -105,51 +131,63 @@ export class DataService {
 
         let times: Date[] = [];
 
-        let now:Date = new Date(Date.now());
+        let now: Date = new Date(Date.now());
 
         for (var i = 0; i < 50; ++i) {
             times.push(new Date(Date.now() - 60000 * i));
         }
 
         for (var capacity of ClusterCapacityList) {
-           
+
             let items: ClusterCapacityHistory[] = [];
-            
+
             for (var i = 0; i < 50; ++i) {
-                items.push(new ClusterCapacityHistory(times[i], Math.random()*1000));
+                items.push(new ClusterCapacityHistory(times[i], Math.random() * 1000));
             }
 
             this.history[capacity.name] = items;
         }
     }
 
-    public getApplicationModels(nodeName: string): Observable<DeployedApplication[]> {
+    public getApplicationModels(nodeName: string, appTypeFilter: () => string[]): Observable<DeployedApplication[]> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => {
+                let result: DeployedApplication[] = [];
 
-        let result: DeployedApplication[] = [];
+                let filter: string[] = appTypeFilter();
 
-        for (let i = 0; i < ApplicationList.length; ++i) {
-            let app: DeployedApplication = new DeployedApplication();
-            app.application = ApplicationList[i];
-            app.services = [];
+                console.log("getting application types: " + filter.join(','));
 
-            for (var item of ServiceList[app.application.name]) {
-                let serviceModel = new DeployedService();
-                serviceModel.service = item;
-                serviceModel.replicas = ReplicaList[serviceModel.service.name];
-                app.services.push(serviceModel);
-            }
+                let appList = filter
+                    ? ApplicationList.filter(x => filter.indexOf(x.type) >= 0)
+                    : ApplicationList;
 
-            result.push(app);
-        }
-        return Observable.of(result);
-        
+                for (let i = 0; i < appList.length; ++i) {
+                    let app: DeployedApplication = new DeployedApplication();
+                    app.application = appList[i];
+                    app.services = [];
+
+                    for (var item of ServiceList[app.application.name]) {
+                        let serviceModel = new DeployedService();
+                        serviceModel.service = item;
+                        serviceModel.replicas = ReplicaList[serviceModel.service.name];
+                        app.services.push(serviceModel);
+                    }
+
+                    result.push(app);
+                }
+
+                return Observable.of(result);
+            });
     }
 
     public getClusterCapacityHistory(capacityName: string, startDate?: Date): Observable<ClusterCapacityHistory[]> {
         let start = startDate ?
             startDate :
             new Date(Date.now() - 3600000);
-        
+
         return Observable
             .interval(this.refreshInterval * 1000)
             .startWith(-1)
@@ -167,8 +205,23 @@ export class DataService {
             .flatMap(() => Observable.of(ClusterCapacityList));
     }
 
-    public getNodes(): Observable<ClusterNode[]> {
-        return Observable.of(ClusterNodeList);
+    public getNodes(nodeTypeFilter: () => string[]): Observable<ClusterNode[]> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => {
+                let nodeTypes: string[] = nodeTypeFilter();
+                return nodeTypes
+                    ? Observable.of(ClusterNodeList.filter(x => nodeTypes.indexOf(x.nodeType) > -1))
+                    : Observable.of(ClusterNodeList);
+            });
+    }
+
+    public getClusterInfo(): Observable<ClusterInfo> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => Observable.of(ClusterInfoData));
     }
 }
 */

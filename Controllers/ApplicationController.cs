@@ -23,7 +23,13 @@ namespace Xray.Controllers
         [HttpGet("{nodeName}")]
         public Task<IEnumerable<DeployedApplicationModel>> Get(string nodeName)
         {
-            return this.clusterInfoService.GetApplicationMetrics(nodeName);
+            return this.clusterInfoService.GetApplicationMetrics(nodeName, null);
+        }
+
+        [HttpGet("{nodeName}/{appTypeFilter}")]
+        public Task<IEnumerable<DeployedApplicationModel>> Get(string nodeName, string appTypeFilter)
+        {
+            return this.clusterInfoService.GetApplicationMetrics(nodeName, appTypeFilter);
         }
     }
 }

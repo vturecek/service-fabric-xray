@@ -20,16 +20,16 @@
     <div class="filter controlGroup">
         <h4>Node types</h4>
         <ul>
-            <li><input type="checkbox" /><label>FrontEnd</label></li>
-            <li><input type="checkbox" /><label>BackEnd</label></li>
+            <li *ngFor="#nodeType of selectedNodeTypes">
+                <input id="{{nodeType.name}}" type="checkbox" [(ngModel)]="nodeType.selected" (change)="onSelectNodeType(nodeType.name, $event)" /><label title="{{nodeType.name}}" attr.for="{{nodeType.name}}">{{nodeType.name}}</label>
+            </li>
         </ul>
     </div>
     <div class="filter controlGroup">
         <h4>Application types</h4>
-        <ul>
-            <li><input type="checkbox" /><label>application type 1</label></li>
-            <li><input type="checkbox" /><label>application type 2</label></li>
-        </ul>
+        <li *ngFor="#applicationType of selectedApplicationTypes">
+            <input id="{{applicationType.name}}" type="checkbox" [(ngModel)]="applicationType.selected" /><label title="{{applicationType.name}}" attr.for="{{applicationType.name}}">{{applicationType.name}}</label>
+        </li>
     </div>
 </div>
 <div class="nodes">
@@ -42,6 +42,8 @@
         <li *ngFor="#node of nodes" class="nodeListItem">
             <node-component *ngIf="hasSelectedCapacity(node)"
                             [nodeName]="node.name"
+                            [nodeType]="node.nodeType"
+                            [selectedApplicationTypes]="selectedApplicationTypes"
                             [health]="node.health"
                             [status]="node.status"
                             [selected]="node.selected"

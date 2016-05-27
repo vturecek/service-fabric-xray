@@ -1,16 +1,16 @@
-﻿.nodeList { margin: 0; }
-.nodeListItem { display: inline-block; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
-.controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
-    .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
-    .controlGroup select { width: 120px;}
+﻿.nodeList { margin: 0; overflow-x: auto; white-space: nowrap; }
+.nodeListItem { display: inline-block; vertical-align:top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
+.controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
+    .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
+        .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
+    .controlGroup select { width: 120px; }
 .controls span { display: inline-block; margin: 5px 0; width: 50px; }
 .controlPanel { float: left; width: 200px; height: 100vh; overflow: hidden; background: #222222; }
-.controlGroup { padding: 10px; border-bottom: 1px solid #333; }
 .filter { }
     .filter h4 { font-size: 12px; }
     .filter ul { margin: 0; padding: 0; }
     .filter li { list-style: none; margin: 0; padding: 0; }
-    .filter label { margin-left: 5px; vertical-align: middle; }
+    .filter label { margin-left: 5px; vertical-align: middle; font-weight: normal; }
 .scale { float: left; width: 30px; margin-left: 5px; text-align: center; }
     .scale label { font-size: 12px; width: 30px; }
     .scale .scaleBar { writing-mode: bt-lr; /* IE */ -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 300px; padding: 0 5px; margin-left: 10px; }

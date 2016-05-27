@@ -10,6 +10,7 @@ namespace Xray.Models
     {
         public ClusterNode(
             string name,
+            string type,
             string status,
             string healthState,
             string fd,
@@ -17,6 +18,7 @@ namespace Xray.Models
             IEnumerable<ClusterNodeCapacity> capacities)
         {
             this.Name = name;
+            this.NodeType = type;
             this.Status = status;
             this.HealthState = healthState;
             this.FaultDomain = fd;
@@ -25,6 +27,8 @@ namespace Xray.Models
         }
 
         public string Name { get; }
+
+        public string NodeType { get; }
 
         public string Status { get; }
 

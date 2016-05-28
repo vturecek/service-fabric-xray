@@ -1,20 +1,21 @@
 ﻿<div [ngClass]="getDeployedEntityClass(['nodeHeader'])">
     <div class="nodeTitle">
-        <label class="nodeName">{{nodeName}}</label>
-        <label class="nodeType">{{nodeType}}</label>
+        <h4 class="nodeName">{{nodeName}}</h4>
+        <span class="nodeType">{{nodeType}}</span>
     </div>
-    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeCapacityStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
+    <div class="nodeStatus">
+        <h4>{{selectedColors == 'status' ? status : health}}</h4>
+        <span>{{address}}</span>
+    </div>
+    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
         <h3>{{loadPercent}}%</h3>
         <h5>{{selectedMetricName}}</h5>
-        <h6>{{selectedCapacity.load}} of {{selectedCapacity.capacity}}</h6>
+        <span>{{selectedCapacity.load}} of {{selectedCapacity.capacity}}</span>
     </div>
-    <div *ngIf="selectedCapacity.capacity < 0" class="nodeApplicationStats">
-        <ul>
-            <li>applications: 2</li>
-            <li>services: 10</li>
-            <li>stateful replicas: 50</li>
-            <li>stateless instances: 3</li>
-        </ul>
+    <div *ngIf="selectedCapacity.capacity < 0" class="nodeStats ">
+         <h3>10%</h3>
+         <h5>Deployed replicas</h5>
+         <span>18 of 102</span>
     </div>
 </div>
 <div #container

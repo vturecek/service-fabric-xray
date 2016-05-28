@@ -5,6 +5,8 @@ export class ClusterNode{
     public nodeType: string;
     public status: string;
     public healthState: string;
+    public upTime: string;
+    public address: string;
     public faultDomain: number;
     public upgradeDomain: number;
     public capacities: ClusterNodeCapacity[];

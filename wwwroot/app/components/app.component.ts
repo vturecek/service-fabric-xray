@@ -1,8 +1,10 @@
-﻿import {Component} from 'angular2/core';
+﻿import {Component, provide} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {ClusterComponent} from './cluster.component';
 import {ServiceDetailComponent} from './service-detail.component';
 import {DataService} from './../services/data.service';
+import {HttpDataService} from './../services/httpdata.service';
+import {MockDataService} from './../services/mocks/mockdata.service';
 import {DashboardComponent} from './dashboard.component';
 import { HTTP_PROVIDERS }    from 'angular2/http';
 
@@ -26,13 +28,12 @@ import { HTTP_PROVIDERS }    from 'angular2/http';
 ])
 
 @Component({
-    selector: 'my-app',
+    selector: 'xray',
     templateUrl: 'app/components/app.component.html',
     styleUrls: ['app/components/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [HTTP_PROVIDERS, DataService, ROUTER_PROVIDERS]
+    providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, provide(DataService, { useClass: MockDataService })]
 })
-    
 export class AppComponent {
-    title: String 
+    title: String
 }

@@ -8,6 +8,8 @@ export class NodeViewModel extends ViewModel<NodeViewModel>{
         public nodeType: string,
         public status: string,
         public health: string,
+        public upTime: string,
+        public address: string,
         public faultDomain: number,
         public upgradeDomain: number,
         public selected: boolean,
@@ -20,6 +22,8 @@ export class NodeViewModel extends ViewModel<NodeViewModel>{
         this.nodeType = other.nodeType;
         this.health = other.health;
         this.status = other.status;
+        this.upTime = other.upTime;
+        this.address = other.address;
         this.capacities = other.capacities;
         this.faultDomain = other.faultDomain;
         this.upgradeDomain = other.upgradeDomain;

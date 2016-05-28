@@ -97,6 +97,8 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.nodeType,
                         x.status.toLowerCase(),
                         x.healthState.toLowerCase(),
+                        x.upTime,
+                        x.address,
                         x.faultDomain,
                         x.upgradeDomain,
                         true,

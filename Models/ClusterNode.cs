@@ -4,6 +4,7 @@
 
 namespace Xray.Models
 {
+    using System;
     using System.Collections.Generic;
 
     public struct ClusterNode
@@ -13,6 +14,8 @@ namespace Xray.Models
             string type,
             string status,
             string healthState,
+            TimeSpan upTime,
+            string address,
             string fd,
             string ud,
             IEnumerable<ClusterNodeCapacity> capacities)
@@ -21,6 +24,8 @@ namespace Xray.Models
             this.NodeType = type;
             this.Status = status;
             this.HealthState = healthState;
+            this.UpTime = upTime;
+            this.Address = address;
             this.FaultDomain = fd;
             this.UpgradeDomain = ud;
             this.Capacities = capacities;
@@ -33,6 +38,10 @@ namespace Xray.Models
         public string Status { get; }
 
         public string HealthState { get; }
+
+        public TimeSpan UpTime { get; }
+
+        public string Address { get; }
 
         public string FaultDomain { get; }
 

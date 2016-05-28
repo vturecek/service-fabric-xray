@@ -1,29 +1,29 @@
 ﻿.application-list { list-style: none; margin: 0; padding: 0; }
-.node { margin:3px 0; padding: 3px 0px; background: #222222; height: auto; }
-.nodeHeader { margin: 0; padding:8px; text-align: center;  background: #222222; border-left: 4px solid #000000; }
-.nodeTitle { padding-bottom:5px; }
-.nodeName { font-size:12px; font-weight:bold; margin-right: 5px }
-.nodeType { font-size:9px; font-weight: normal }
-.nodeCapacityStats {  margin-top: 5px; }
-.nodeCapacityStats h3, .nodeHeader h5 {  margin: 0; padding:0; }
-.nodeCapacityStats h3 { font-size: 32px; margin-bottom:5px; font-weight:lighter; }
-.nodeCapacityStats h5 { font-size: 12px; }
-.nodeCapacityViolation { color: #e81123 }
-.nodeCapacityWarning { color: #FCD116 }
+.node { margin: 3px 0; padding: 3px 0px; background: #222222; height: auto; }
+.nodeHeader { height: 120px; margin: 0; padding: 8px; background: #222222; border-left: 4px solid #000000; }
+    .nodeHeader h3 { font-size: 24px; font-weight: lighter; margin-top:0; margin-bottom: 5px; }
+    .nodeHeader h4 { font-size: 14px; font-weight: bold; margin-top:0; margin-bottom: 3px; }
+    .nodeHeader h5 { font-size: 12px; margin-top:0; margin-bottom: 2px;}
+    .nodeHeader span { font-size: 10px; font-style: italic; } 
+.nodeTitle { float: left; padding-bottom: 5px; }
+.nodeStatus { float: right; text-align: right; }
+.nodeStats { clear: both; padding-top: 5px; text-align: center; }
+.nodeCapacityViolation { color: #e81123; }
+.nodeCapacityWarning { color: #FCD116; }
 
 /* common */
 .invalid { }
 .unknown { }
 
 /* statuses */
-.up { border-color:#00ABEC }
-.down { border-color: #E81123 }
-.enabling { border-color: #00C69F }
-.disabling { border-color:#D17D00 }
-.disabled { border-color:#777777 }
-.removed { border-color:#000000 }
+.up { border-color: #00ABEC; }
+.down { border-color: #E81123; }
+.enabling { border-color: #00C69F; }
+.disabling { border-color: #D17D00; }
+.disabled { border-color: #777777; }
+.removed { border-color: #000000; }
 
 /* health states */
 .ok { border-color: #7FBA00; }
-.warning { border-color: #FCD116}
-.error { border-color: #E81123 }
+.warning { border-color: #FCD116; }
+.error { border-color: #E81123; }

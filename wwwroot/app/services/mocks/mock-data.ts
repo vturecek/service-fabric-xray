@@ -26,35 +26,35 @@ export var ClusterNodeList: ClusterNode[] = [
             { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 9600, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'WTFBBQ', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok'
+        ], 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok', 'upTime' : '00:12:22', 'address': '10.0.0.1'
     },
     {
         'name': 'node2', 'nodeType': 'FrontEnd', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5400, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 4000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 10800, 'isCapacityViolation': true, 'bufferedCapacity': 0, 'load': 10900, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 2, 'upgradeDomain': 2, 'status': 'Down', 'healthState': 'Warning'
+        ], 'faultDomain': 2, 'upgradeDomain': 2, 'status': 'Down', 'healthState': 'Warning', 'upTime': '00:12:22', 'address': '10.0.0.2'
     }, 
     {
         'name': 'node3', 'nodeType': 'ProcessingNode', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 5900, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 456, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 11800, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 8760, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 3, 'upgradeDomain': 3, 'status': 'Enabling', 'healthState': 'Error'
+        ], 'faultDomain': 3, 'upgradeDomain': 3, 'status': 'Enabling', 'healthState': 'Error', 'upTime': '00:12:22', 'address': '10.0.0.3'
     },
     { 
         'name': 'node4', 'nodeType': 'DataNode', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 4000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 3400, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 8000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 134, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 4, 'upgradeDomain': 4, 'status': 'Disabled', 'healthState': 'Unknown'
+        ], 'faultDomain': 4, 'upgradeDomain': 4, 'status': 'Disabled', 'healthState': 'Unknown', 'upTime': '00:12:22', 'address': '10.0.0.4'
     },
     {
         'name': 'node5', 'nodeType': 'StatisticsNode', 'capacities': [
             { 'name': 'MemoryKB', 'capacity': 4500, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 4, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'DiskKB', 'capacity': 9000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 464, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
             { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 5, 'upgradeDomain': 5, 'status': 'Removed', 'healthState': 'Invalid'
+        ], 'faultDomain': 5, 'upgradeDomain': 5, 'status': 'Removed', 'healthState': 'Invalid', 'upTime': '00:12:22', 'address': '10.0.0.5'
     }
 ];
 

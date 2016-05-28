@@ -138,13 +138,16 @@ namespace Xray.Services
             foreach (Node node in nodes)
             {
                 NodeLoadInformation loadInfo = await this.fabricClient.QueryManager.GetNodeLoadInformationAsync(node.NodeName);
-
+                
+                
                 result.Add(
                     new ClusterNode(
                         node.NodeName,
                         node.NodeType,
                         node.NodeStatus.ToString(),
                         node.HealthState.ToString(),
+                        node.NodeUpTime,
+                        node.IpAddressOrFQDN,
                         node.FaultDomain.ToString(),
                         node.UpgradeDomain,
                         loadInfo.NodeLoadMetricInformationList.Select(

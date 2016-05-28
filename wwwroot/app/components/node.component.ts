@@ -60,6 +60,12 @@ export class NodeComponent extends MetricComponent implements OnInit, OnDestroy 
     @Input()
     protected status: string;
 
+    @Input()
+    protected upTime: string;
+
+    @Input()
+    protected address: string;
+
     protected selectedCapacity: NodeCapacityViewModel;
     protected parentContainerSize: number;
     protected parentCapacity: number;

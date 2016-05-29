@@ -133,11 +133,11 @@ export class NodeComponent implements OnInit, OnDestroy {
                     }
 
                     serviceView.service.elementHeight =
-                        Math.max(0, ((serviceView.service.selectedMetric.value / appView.application.selectedMetric.value) * (appView.application.elementHeight - 4)));
+                        Math.max(0, ((serviceView.service.selectedMetric.value / appView.application.selectedMetric.value) * (appView.application.elementHeight - 2)) - 2);
 
                     for (var replicaView of serviceView.replicas) {
                         replicaView.elementHeight =
-                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.service.selectedMetric.value) * (serviceView.service.elementHeight - 4)));
+                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.service.selectedMetric.value) * (serviceView.service.elementHeight - 2)));
                     }
                 }
             }

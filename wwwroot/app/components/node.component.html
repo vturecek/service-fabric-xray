@@ -25,11 +25,11 @@
             class="application {{selectedColors == 'status' ? applicationView.application.status : applicationView.application.health}}"
             [style.height.px]="applicationView.application.elementHeight">
 
-            <div *ngIf="applicationView.selected" class="selectorButton"
-                 (click)="selectApplication()">[>]</div>
+            <a *ngIf="applicationView.selected" class="selectorButton"
+                 (click)="applicationView.selected = !applicationView.selected">[>]</a>
 
-            <div [ngClass]="{'label-selected': applicationView.selected, 'label-collapsed': !applicationView.selected }"
-                 (click)="selectApplication()">{{applicationView.application.name}}</div>
+            <a [ngClass]="{'label-selected': applicationView.selected, 'label-collapsed': !applicationView.selected }"
+                 (click)="applicationView.selected = !applicationView.selected">{{applicationView.application.name}}</a>
 
             <ul *ngIf="applicationView.selected" class="service-list">
                 <li *ngFor="#serviceView of applicationView.services"
@@ -37,10 +37,10 @@
                     [style.height.px]="serviceView.service.elementHeight">
 
                     <div *ngIf="serviceView.selected" class="selectorButton"
-                         (click)="selectService()">[>]</div>
+                         (click)="serviceView.selected = !serviceView.selected">[>]</div>
 
                     <div [ngClass]="{'label-selected': serviceView.selected, 'label-collapsed': !serviceView.selected }"
-                         (click)="selectService()">{{serviceView.service.name}}</div>
+                         (click)="serviceView.selected = !serviceView.selected">{{serviceView.service.name}}</div>
 
                     <ul *ngIf="serviceView.selected" class="replica-list">
                         <li *ngFor="#replica of serviceView.replicas"

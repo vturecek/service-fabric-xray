@@ -1,5 +1,4 @@
-﻿.application-list { list-style: none; margin: 0; padding: 0; }
-.node { margin: 3px 0; padding: 3px 0px; background: #222222; height: auto; }
+﻿.node { margin: 3px 0; padding: 3px 0px; background: #222222; height: auto; }
 .nodeHeader { height: 120px; margin: 0; padding: 8px; background: #222222; border-left: 4px solid #000000; }
     .nodeHeader h3 { font-size: 24px; font-weight: lighter; margin-top:0; margin-bottom: 5px; }
     .nodeHeader h4 { font-size: 14px; font-weight: bold; margin-top:0; margin-bottom: 3px; }
@@ -11,11 +10,40 @@
 .nodeCapacityViolation { color: #e81123; }
 .nodeCapacityWarning { color: #FCD116; }
 
-/* common */
-.invalid { }
-.unknown { }
+.selectorButton { cursor: pointer; position:absolute; line-height: 1em; }
+.label-selected { cursor: pointer; float: left; position: absolute; top: 18px; left:16px; transform: rotate(90deg); transform-origin: left top 0; }
+.label-unselected { cursor: pointer; }
 
-/* statuses */
+.application-list { list-style: none; margin: 0; padding: 0; }
+.application { font-size:10px; position:relative; list-style: none; margin: 2px 0; padding: 1px 2px; border: 1px solid #000000; overflow:hidden }
+
+.service-list { list-style: none; margin: 0; padding: 0; }
+.service { font-size: 10px; position:relative; overflow:hidden; list-style: none; margin: 2px 0 0 15px; padding: 0; border: 1px solid #000000; }
+
+.replica-list { list-style: none; margin: 0; padding: 0; }
+.replica { list-style: none; margin: 0 0 0 15px; padding: 0; border: 1px solid #000000; }
+
+/* replica roles*/
+.primary { opacity:1; border-color:#DDDDDD; }
+.stateless { opacity: 1; border-color:#DDDDDD; }
+.activesecondary { opacity:0.7; border-color: #000000; }
+.idlesecondary { opacity:0.5; border-color: #000000; }
+.none { opacity:1; border-color: #000000; }
+.unknown { opacity:1; border-color: #000000; }
+
+/* replica statuses*/
+.replica-invalid { background-color:#000000 }
+.replica-inbuild { background-color:#D17D00 }
+.replica-standby { background-color:#77A5C6 }
+.replica-ready { background-color:#00ABEC }
+.replica-down { background-color: #E81123 }
+.replica-dropped { background-color: #333333 }
+
+/* common */
+.invalid { border-color: #000000; }
+.unknown { border-color: #666666; }
+
+/* node statuses */
 .up { border-color: #00ABEC; }
 .down { border-color: #E81123; }
 .enabling { border-color: #00C69F; }
@@ -27,3 +55,10 @@
 .ok { border-color: #7FBA00; }
 .warning { border-color: #FCD116; }
 .error { border-color: #E81123; }
+
+/* application and service statuses */
+.ready { border-color:#00ABEC; }
+.creating { border-color:#D17D00; }
+.active { border-color: #00ABEC; }
+.upgrading { border-color: #00C69F; }
+.deleting { border-color: #AAAAAA; }

@@ -3,12 +3,15 @@ import {ViewModel} from './viewmodel';
 
 export class ReplicaViewModel extends ViewModel<ReplicaViewModel> {
 
+    public elementHeight: number;
+
     public constructor(
         public id: number,
         public partitionId: string,
         public status: string,
         public health: string,
         public role: string,
+        public selectedMetric: LoadMetric,
         public metrics: LoadMetric[]) {
         super(partitionId + id);
     }

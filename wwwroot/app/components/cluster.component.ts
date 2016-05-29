@@ -1,6 +1,5 @@
 ﻿import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from 'angular2/core';
 import {Observable, Subscription}     from "rxjs/rx";
-import {MetricComponent} from './metriccomponent';
 import {NodeComponent} from './node.component';
 import {Selectable} from './../viewmodels/selectable';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';

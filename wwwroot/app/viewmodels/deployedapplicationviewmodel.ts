@@ -4,7 +4,7 @@ import {ViewModel} from './viewmodel';
 import {List} from './list';
 
 export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationViewModel> {
-
+    
     public constructor(
         public selected: boolean,
         public application: ApplicationViewModel,

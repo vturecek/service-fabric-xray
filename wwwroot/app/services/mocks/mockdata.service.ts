@@ -12,7 +12,7 @@ import {ClusterCapacityHistory} from './../../models/clustercapacityhistory';
 @Injectable()
 export class MockDataService extends DataService {
 
-    private refreshInterval: number = 5;
+    private refreshInterval: number = 20;
     private history: any;
 
     public constructor() {

@@ -1,4 +1,4 @@
-﻿<div [ngClass]="getDeployedEntityClass(['nodeHeader'])">
+﻿<div #Container class="nodeHeader {{selectedColors == 'status' ? status : health}}">
     <div class="nodeTitle">
         <h4 class="nodeName">{{nodeName}}</h4>
         <span class="nodeType">{{nodeType}}</span>
@@ -13,29 +13,43 @@
         <span>{{selectedCapacity.load}} of {{selectedCapacity.capacity}}</span>
     </div>
     <div *ngIf="selectedCapacity.capacity < 0" class="nodeStats ">
-         <h3>10%</h3>
-         <h5>Deployed replicas</h5>
-         <span>18 of 102</span>
+        <h3>10%</h3>
+        <h5>Deployed replicas</h5>
+        <span>18 of 102</span>
     </div>
 </div>
-<div #container
-     [ngClass]="getDeployedEntityClass(['node'])"
+<div class="{{selectedColors == 'status' ? status : ''}} node"
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
     <ul class="application-list">
-        <li *ngFor="#item of applications">
-            <application-component *ngIf="hasSelectedMetric(item.application.metrics)"
-                                   [nodeName]="nodeName"
-                                   [applicationName]="item.application.name"
-                                   [metrics]="item.application.metrics"
-                                   [health]="item.application.health"
-                                   [status]="item.application.status"
-                                   [services]="item.services"
-                                   [selected]="item.selected"
-                                   [selectedColors]="selectedColors"
-                                   [selectedMetricName]="selectedMetricName"
-                                   [parentCapacity]="parentCapacity"
-                                   [parentContainerSize]="parentContainerSize">
-            </application-component>
+        <li *ngFor="#applicationView of applications"
+            class="application {{selectedColors == 'status' ? applicationView.application.status : applicationView.application.health}}"
+            [style.height.px]="applicationView.application.elementHeight">
+
+            <div *ngIf="applicationView.selected" class="selectorButton"
+                 (click)="selectApplication()">[>]</div>
+
+            <div [ngClass]="{'label-selected': applicationView.selected, 'label-collapsed': !applicationView.selected }"
+                 (click)="selectApplication()">{{applicationView.application.name}}</div>
+
+            <ul *ngIf="applicationView.selected" class="service-list">
+                <li *ngFor="#serviceView of applicationView.services"
+                    class="service {{selectedColors == 'status' ? serviceView.service.status : serviceView.service.health}}"
+                    [style.height.px]="serviceView.service.elementHeight">
+
+                    <div *ngIf="serviceView.selected" class="selectorButton"
+                         (click)="selectService()">[>]</div>
+
+                    <div [ngClass]="{'label-selected': serviceView.selected, 'label-collapsed': !serviceView.selected }"
+                         (click)="selectService()">{{serviceView.service.name}}</div>
+
+                    <ul *ngIf="serviceView.selected" class="replica-list">
+                        <li *ngFor="#replica of serviceView.replicas"
+                            class="replica {{selectedColors == 'status' ? 'replica-'+replica.status: replica.health}} {{replica.role || 'stateless' }}"
+                            [style.height.px]="replica.elementHeight">
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

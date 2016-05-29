@@ -1,4 +1,4 @@
-﻿.nodeList { margin: 0; overflow-x: auto; white-space: nowrap; }
+﻿.nodeList { margin: 0; white-space: nowrap; }
 .nodeListItem { display: inline-block; vertical-align:top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
 .controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
     .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }

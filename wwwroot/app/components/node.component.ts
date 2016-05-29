@@ -1,5 +1,4 @@
-﻿/// <reference path="../../../typings/jquery/jquery.d.ts" />
-import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input, ElementRef, ViewChildren, ViewChild, QueryList} from 'angular2/core';
+﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
@@ -22,64 +21,71 @@ import {Selectable} from './../viewmodels/selectable';
 export class NodeComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
-
-    @ViewChild("container")
-    protected container: ElementRef;
+    
+    @Input()
+    private nodeCapacities: NodeCapacityViewModel[];
 
     @Input()
-    protected nodeCapacities: NodeCapacityViewModel[];
+    private scaleFactor: number;
 
     @Input()
-    protected scaleFactor: number;
+    private selected: boolean;
 
     @Input()
-    protected selected: boolean;
+    private selectedColors: string;
 
     @Input()
-    protected selectedColors: string;
+    private selectedMetricName: string;
 
     @Input()
-    protected selectedMetricName: string;
+    private selectedApplicationTypes: Selectable[];
 
     @Input()
-    protected selectedApplicationTypes: Selectable[];
+    private nodeName: string;
 
     @Input()
-    protected nodeName: string;
+    private nodeType: string;
 
     @Input()
-    protected nodeType: string;
+    private health: string;
 
     @Input()
-    protected health: string;
+    private status: string;
 
     @Input()
-    protected status: string;
+    private upTime: string;
 
     @Input()
-    protected upTime: string;
+    private address: string;
 
-    @Input()
-    protected address: string;
-
-    protected selectedCapacity: NodeCapacityViewModel;
-    protected nodeContainerSize: number;
-    protected nodeCapacity: number;
-    protected elementHeight: number;
-
+    private selectedCapacity: NodeCapacityViewModel;
+    private nodeContainerSize: number;
+    private nodeCapacity: number;
+    private elementHeight: number;
     private applicationSubscription: Subscription;
     private applications: DeployedApplicationViewModel[];
     private loadPercent: number;
+
+    // element spacing in pixel values. 
+    // Margin is outer spacing: margin-top + margin-bottom
+    // PaddingAndBorder is inner spacing: padding-top + padding-bottom + border-width * 2
+    // these are not computed at runtime so they need to match CSS set on the corresponding elements.
+    private nodeMargin: number = 6;
+    private nodePaddingAndBorder: number = 6;
+    private applicationMargin: number = 4;
+    private applicationPaddingAndBorder: number = 2;
+    private serviceMargin: number = 2;
+    private servicePaddingAndBorder: number = 2;
+    private replicaMargin: number = 0;
 
     constructor(
         private changeDetector: ChangeDetectorRef,
         private dataService: DataService) {
 
         this.applications = [];
-        this.selected = true;
     }
 
-    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
+    public ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
 
         if (changes['selected']) {
             for (var a of this.applications) {
@@ -104,47 +110,11 @@ export class NodeComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (this.selectedCapacity) {
-            this.nodeCapacity = this.selectedCapacity.capacity <= 0
-                ? this.DefaultCapacitySize
-                : this.selectedCapacity.capacity;
-
-            this.elementHeight = this.selectedCapacity.capacity <= 0
-                ? -1
-                : Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - this.getOuterVerticalSpacing(this.container));
-
-            this.nodeContainerSize = this.selectedCapacity.capacity <= 0
-                ? this.DefaultCapacitySize * this.scaleFactor
-                : Math.max(0, this.elementHeight - this.getInnerVerticalSpacing(this.container));
-
-            this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
-            
-            for (var appView of this.applications) {
-                if (!appView.application.selectedMetric) {
-                    continue;
-                }
-
-                appView.application.elementHeight =
-                    Math.max(0, ((appView.application.selectedMetric.value / this.nodeCapacity) * this.nodeContainerSize));
-
-                for (var serviceView of appView.services) {
-                    if (!serviceView.service.selectedMetric) {
-                        continue;
-                    }
-
-                    serviceView.service.elementHeight =
-                        Math.max(0, ((serviceView.service.selectedMetric.value / appView.application.selectedMetric.value) * (appView.application.elementHeight - 2)) - 2);
-
-                    for (var replicaView of serviceView.replicas) {
-                        replicaView.elementHeight =
-                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.service.selectedMetric.value) * (serviceView.service.elementHeight - 2)));
-                    }
-                }
-            }
-        }
+        this.redraw();
     }
 
-    public ngOnInit() {
+
+    public ngOnInit(): void{
         this.applicationSubscription = this.dataService.getApplicationModels(this.nodeName, () => this.selectedApplicationTypes.filter(x => !x.selected).map(x => x.name)).subscribe(
             result => {
                 if (!result) {
@@ -182,55 +152,57 @@ export class NodeComponent implements OnInit, OnDestroy {
                                         z.role.toLowerCase(),
                                         z.metrics.find(x => x.name == this.selectedMetricName),
                                         z.metrics)))))));
+                this.redraw();
 
             },
             error => console.log("error from observable: " + error));
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         if (this.applicationSubscription) {
             this.applicationSubscription.unsubscribe();
         }
     }
 
-    protected getDeployedEntityClass<T>(classes: string[]): string[] {
-        let result: string = "";
-        switch (this.selectedColors) {
-            case "status":
-                result = this.status;
-                break;
-            case "health":
-                result = this.health;
-                break;
+    private redraw(): void {
+
+        if (this.selectedCapacity) {
+            this.nodeCapacity = this.selectedCapacity.capacity <= 0
+                ? this.DefaultCapacitySize
+                : this.selectedCapacity.capacity;
+
+            this.elementHeight = this.selectedCapacity.capacity <= 0
+                ? -1
+                : Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - this.nodeMargin);
+
+            this.nodeContainerSize = this.selectedCapacity.capacity <= 0
+                ? this.DefaultCapacitySize * this.scaleFactor
+                : Math.max(0, this.elementHeight - this.nodePaddingAndBorder);
+
+            this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
+
+            for (var appView of this.applications) {
+                if (!appView.application.selectedMetric) {
+                    continue;
+                }
+
+                appView.application.elementHeight =
+                    Math.max(0, ((appView.application.selectedMetric.value / this.nodeCapacity) * this.nodeContainerSize) - this.applicationMargin);
+
+                for (var serviceView of appView.services) {
+                    if (!serviceView.service.selectedMetric) {
+                        continue;
+                    }
+
+                    serviceView.service.elementHeight =
+                        Math.max(0, ((serviceView.service.selectedMetric.value / appView.application.selectedMetric.value) * (appView.application.elementHeight - this.applicationPaddingAndBorder)) - this.serviceMargin);
+
+                    for (var replicaView of serviceView.replicas) {
+                        replicaView.elementHeight =
+                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.service.selectedMetric.value) * (serviceView.service.elementHeight - this.servicePaddingAndBorder)) - this.replicaMargin);
+                    }
+                }
+            }
         }
-
-        result = result ?
-            result.toLowerCase() :
-            "unknown";
-
-        return [result].concat(classes);
-    }
-
-
-    /**
-     * Gets the height of the top and bottom margin of the given element.
-     * @param el
-     */
-    private getOuterVerticalSpacing(el: ElementRef) {
-        if (el) {
-            return jQuery(el.nativeElement).outerHeight(true) - jQuery(el.nativeElement).outerHeight();
-        }
-        return 0;
-    }
-
-    /**
-     * Gets the height of the top and bottom padding and border width of the given element.
-     * @param el
-     */
-    private getInnerVerticalSpacing(el: ElementRef) {
-        if (el) {
-            return jQuery(el.nativeElement).outerHeight(false) - jQuery(el.nativeElement).height();
-        }
-        return 0;
     }
 }

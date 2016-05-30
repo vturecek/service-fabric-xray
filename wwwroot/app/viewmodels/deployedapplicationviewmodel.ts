@@ -1,20 +1,25 @@
 ﻿import {DeployedServiceViewModel} from './deployedserviceviewmodel';
-import {ApplicationViewModel} from './applicationviewmodel';
+import {Application} from './../models/application';
+import {LoadMetric} from './../models/loadmetric';
 import {ViewModel} from './viewmodel';
 import {List} from './list';
 
 export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationViewModel> {
-    
+
+    public elementHeight: number;
+
     public constructor(
         public selected: boolean,
-        public application: ApplicationViewModel,
+        public selectedMetric: LoadMetric,
+        public selectedClass: string,
+        public application: Application,
         public services: DeployedServiceViewModel[]) {
         super(application.name);
     }
 
     public copyFrom(other: DeployedApplicationViewModel) {
-        
-        this.application.copyFrom(other.application);
+
+        this.application = other.application;
 
         if (!this.services) {
             this.services = [];
@@ -22,4 +27,5 @@ export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationV
 
         List.updateList(this.services, other.services);
     }
+    
 }

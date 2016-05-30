@@ -5,9 +5,7 @@ import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
 import {DeployedApplicationViewModel} from './../viewmodels/deployedapplicationviewmodel';
 import {DeployedServiceViewModel} from './../viewmodels/deployedserviceviewmodel';
-import {ApplicationViewModel} from './../viewmodels/applicationviewmodel';
-import {ServiceViewModel} from './../viewmodels/serviceviewmodel';
-import {ReplicaViewModel} from './../viewmodels/replicaviewmodel';
+import {DeployedReplicaViewModel} from './../viewmodels/deployedreplicaviewmodel';
 import {List} from './../viewmodels/list';
 import {DataService} from './../services/data.service';
 import {Selectable} from './../viewmodels/selectable';
@@ -98,18 +96,32 @@ export class NodeComponent implements OnInit, OnDestroy {
             this.selectedCapacity = this.nodeCapacities.find(x => x.name == this.selectedMetricName) || null;
 
             for (var appView of this.applications) {
-                appView.application.selectedMetric = appView.application.metrics.find(x => x.name == this.selectedMetricName);
+                appView.selectedMetric = appView.application.metrics.find(x => x.name == this.selectedMetricName);
 
                 for (var serviceView of appView.services) {
-                    serviceView.service.selectedMetric = serviceView.service.metrics.find(x => x.name == this.selectedMetricName);
+                    serviceView.selectedMetric = serviceView.service.metrics.find(x => x.name == this.selectedMetricName);
 
                     for (var replicaView of serviceView.replicas) {
-                        replicaView.selectedMetric = replicaView.metrics.find(x => x.name == this.selectedMetricName);
+                        replicaView.selectedMetric = replicaView.replica.metrics.find(x => x.name == this.selectedMetricName);
                     }
                 }
             }
         }
 
+        if (changes['selectedColors']) {
+            for (var appView of this.applications) {
+                appView.selectedClass = (this.selectedColors == 'status' ? appView.application.status : appView.application.healthState).toLowerCase();
+
+                for (var serviceView of appView.services) {
+                    serviceView.selectedClass = (this.selectedColors == 'status' ? serviceView.service.status : serviceView.service.healthState).toLowerCase();
+
+                    for (var replicaView of serviceView.replicas) {
+                        replicaView.selectedClass = (this.selectedColors == 'status' ? replicaView.replica.status : replicaView.replica.healthState).toLowerCase();
+                    }
+                }
+            }
+        }
+        
         this.redraw();
     }
 
@@ -124,34 +136,21 @@ export class NodeComponent implements OnInit, OnDestroy {
                 List.updateList(this.applications, result.map(x =>
                     new DeployedApplicationViewModel(
                         true,
-                        new ApplicationViewModel(
-                            x.application.name,
-                            x.application.type,
-                            x.application.version,
-                            x.application.status.toLowerCase(),
-                            x.application.healthState.toLowerCase(),
-                            x.application.metrics.find(x => x.name == this.selectedMetricName),
-                            x.application.metrics),
+                        x.application.metrics.find(x => x.name == this.selectedMetricName),
+                        (this.selectedColors == 'status' ? x.application.status : x.application.healthState).toLowerCase(),
+                        x.application,
                         x.services.map(y =>
                             new DeployedServiceViewModel(
                                 true,
-                                new ServiceViewModel(
-                                    y.service.name,
-                                    y.service.type,
-                                    y.service.version,
-                                    y.service.status.toLowerCase(),
-                                    y.service.healthState.toLowerCase(),
-                                    y.service.metrics.find(x => x.name == this.selectedMetricName),
-                                    y.service.metrics),
+                                y.service.metrics.find(x => x.name == this.selectedMetricName),
+                                (this.selectedColors == 'status' ? y.service.status : y.service.healthState).toLowerCase(),
+                                y.service,
                                 y.replicas.map(z =>
-                                    new ReplicaViewModel(
-                                        z.id,
-                                        z.partitionId,
-                                        z.status.toLowerCase(),
-                                        z.healthState.toLowerCase(),
-                                        z.role.toLowerCase(),
+                                    new DeployedReplicaViewModel(
                                         z.metrics.find(x => x.name == this.selectedMetricName),
-                                        z.metrics)))))));
+                                        (this.selectedColors == 'status' ? z.status : z.healthState).toLowerCase(),
+                                        z.role ? z.role.toLowerCase() : null,
+                                        z)))))));
                 this.redraw();
 
             },
@@ -182,24 +181,24 @@ export class NodeComponent implements OnInit, OnDestroy {
             this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
 
             for (var appView of this.applications) {
-                if (!appView.application.selectedMetric) {
+                if (!appView.selectedMetric) {
                     continue;
                 }
 
-                appView.application.elementHeight =
-                    Math.max(0, ((appView.application.selectedMetric.value / this.nodeCapacity) * this.nodeContainerSize) - this.applicationMargin);
+                appView.elementHeight =
+                    Math.max(0, ((appView.selectedMetric.value / this.nodeCapacity) * this.nodeContainerSize) - this.applicationMargin);
 
                 for (var serviceView of appView.services) {
-                    if (!serviceView.service.selectedMetric) {
+                    if (!serviceView.selectedMetric) {
                         continue;
                     }
 
-                    serviceView.service.elementHeight =
-                        Math.max(0, ((serviceView.service.selectedMetric.value / appView.application.selectedMetric.value) * (appView.application.elementHeight - this.applicationPaddingAndBorder)) - this.serviceMargin);
+                    serviceView.elementHeight =
+                        Math.max(0, ((serviceView.selectedMetric.value / appView.selectedMetric.value) * (appView.elementHeight - this.applicationPaddingAndBorder)) - this.serviceMargin);
 
                     for (var replicaView of serviceView.replicas) {
                         replicaView.elementHeight =
-                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.service.selectedMetric.value) * (serviceView.service.elementHeight - this.servicePaddingAndBorder)) - this.replicaMargin);
+                            Math.max(0, ((replicaView.selectedMetric.value / serviceView.selectedMetric.value) * (serviceView.elementHeight - this.servicePaddingAndBorder)) - this.replicaMargin);
                     }
                 }
             }

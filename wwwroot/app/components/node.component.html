@@ -22,8 +22,8 @@
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
     <ul class="application-list">
         <li *ngFor="#applicationView of applications"
-            class="application {{selectedColors == 'status' ? applicationView.application.status : applicationView.application.health}}"
-            [style.height.px]="applicationView.application.elementHeight">
+            class="application {{applicationView.selectedClass}}"
+            [style.height.px]="applicationView.elementHeight">
 
             <a *ngIf="applicationView.selected" class="selectorButton"
                  (click)="applicationView.selected = !applicationView.selected">[>]</a>
@@ -33,19 +33,19 @@
 
             <ul *ngIf="applicationView.selected" class="service-list">
                 <li *ngFor="#serviceView of applicationView.services"
-                    class="service {{selectedColors == 'status' ? serviceView.service.status : serviceView.service.health}}"
-                    [style.height.px]="serviceView.service.elementHeight">
+                    class="service {{serviceView.selectedClass}}"
+                    [style.height.px]="serviceView.elementHeight">
 
-                    <div *ngIf="serviceView.selected" class="selectorButton"
-                         (click)="serviceView.selected = !serviceView.selected">[>]</div>
+                    <a *ngIf="serviceView.selected" class="selectorButton"
+                         (click)="serviceView.selected = !serviceView.selected">[>]</a>
 
-                    <div [ngClass]="{'label-selected': serviceView.selected, 'label-collapsed': !serviceView.selected }"
-                         (click)="serviceView.selected = !serviceView.selected">{{serviceView.service.name}}</div>
+                    <a [ngClass]="{'label-selected': serviceView.selected, 'label-collapsed': !serviceView.selected }"
+                         (click)="serviceView.selected = !serviceView.selected">{{serviceView.service.name}}</a>
 
                     <ul *ngIf="serviceView.selected" class="replica-list">
-                        <li *ngFor="#replica of serviceView.replicas"
-                            class="replica {{selectedColors == 'status' ? 'replica-'+replica.status: replica.health}} {{replica.role || 'stateless' }}"
-                            [style.height.px]="replica.elementHeight">
+                        <li *ngFor="#replicaView of serviceView.replicas"
+                            class="replica replica-{{replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
+                            [style.height.px]="replicaView.elementHeight">
                         </li>
                     </ul>
                 </li>

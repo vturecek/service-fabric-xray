@@ -1,5 +1,4 @@
-﻿import {LoadMetric} from './../models/loadmetric';
-import {Replica} from './../models/replica';
+﻿import {Replica} from './../models/replica';
 import {ViewModel} from './viewmodel';
 
 export class DeployedReplicaViewModel extends ViewModel<DeployedReplicaViewModel> {
@@ -7,7 +6,7 @@ export class DeployedReplicaViewModel extends ViewModel<DeployedReplicaViewModel
     public elementHeight: number;
 
     public constructor(
-        public selectedMetric: LoadMetric,
+        public selectedMetric: number,
         public selectedClass: string,
         public roleClass: string,
         public replica: Replica) {
@@ -16,5 +15,7 @@ export class DeployedReplicaViewModel extends ViewModel<DeployedReplicaViewModel
 
     public copyFrom(other: DeployedReplicaViewModel): void {
         this.replica = other.replica;
+        this.selectedMetric = other.selectedMetric;
+        this.selectedClass = other.selectedClass;
     }
 }

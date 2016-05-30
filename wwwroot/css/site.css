@@ -10,3 +10,5 @@ select { -webkit-appearance: none; -moz-appearance: none; appearance: none; bord
 option {border:none; padding: 2px 4px; }
 /* everywhere else */
 * { font: 1em 'Segoe UI', 'Segoe', Arial, sans-serif; font-weight: normal; }
+a, a:visited { color: #00ABEC}
+a:hover { color:#FFFFFF; text-decoration:none}

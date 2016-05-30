@@ -11,12 +11,20 @@
 .nodeCapacityViolation { color: #e81123; }
 .nodeCapacityWarning { color: #FCD116; }
 
-.selectorButton { cursor: pointer; position: absolute; line-height: 1em; }
-.label-selected { cursor: pointer; float: left; position: absolute; top: 18px; left: 16px; transform: rotate(90deg); transform-origin: left top 0; }
-.label-unselected { cursor: pointer; }
+.selectorButton { position: relative; cursor: pointer; color: #CCCCCC; line-height: 1em; }
+.selectorArrow { position: absolute; top: 10px; }
+.selectorLabel { position: absolute; float: left; top: 28px; left: 15px; color: #CCCCCC; transform: rotate(90deg); transform-origin: left top 0; }
 
 .application-list { margin: 0; padding: 0; }
 .application { margin: 2px 0; padding: 0 2px; border: 1px solid #000000; font-size: 10px; position: relative; overflow: hidden; }
+.applicationDetails { text-align: center; }
+    .applicationDetails h5 { margin: 10px 0 3px 0; font-size: 18px; }
+    .applicationDetails h6 { margin: 0; font-size: 12px; }
+    .applicationDetails span { font-style: italic; }
+    .applicationDetails a { display: block; margin: 2px 0; cursor: pointer; color: #EEE; font-weight: bold; }
+    .applicationDetails ul { margin: 5px 0 0 5px; padding: 0; text-align: left; }
+    .applicationDetails li { list-style: none; margin: 0; padding: 0; font-weight: bold; }
+        .applicationDetails li label { width: 40px; font-weight: normal; text-align: right; margin-right: 10px; }
 
 .service-list { margin: 0; padding: 0; }
 .service { margin: 1px 0 0 15px; padding: 0; border: 1px solid #000000; font-size: 10px; position: relative; overflow: hidden; }

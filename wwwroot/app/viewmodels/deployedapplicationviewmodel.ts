@@ -1,6 +1,5 @@
 ﻿import {DeployedServiceViewModel} from './deployedserviceviewmodel';
 import {Application} from './../models/application';
-import {LoadMetric} from './../models/loadmetric';
 import {ViewModel} from './viewmodel';
 import {List} from './list';
 
@@ -9,8 +8,8 @@ export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationV
     public elementHeight: number;
 
     public constructor(
-        public selected: boolean,
-        public selectedMetric: LoadMetric,
+        public expanded: boolean,
+        public selectedMetric: number,
         public selectedClass: string,
         public application: Application,
         public services: DeployedServiceViewModel[]) {
@@ -20,6 +19,8 @@ export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationV
     public copyFrom(other: DeployedApplicationViewModel) {
 
         this.application = other.application;
+        this.selectedMetric = other.selectedMetric;
+        this.selectedClass = other.selectedClass;
 
         if (!this.services) {
             this.services = [];

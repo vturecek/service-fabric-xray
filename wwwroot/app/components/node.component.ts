@@ -25,6 +25,9 @@ export class NodeComponent implements OnInit, OnDestroy {
     private nodeCapacities: NodeCapacityViewModel[];
 
     @Input()
+    private clusterCapacities: ClusterCapacityViewModel[];
+
+    @Input()
     private scaleFactor: number;
 
     @Input()
@@ -58,6 +61,7 @@ export class NodeComponent implements OnInit, OnDestroy {
     private address: string;
 
     private selectedCapacity: NodeCapacityViewModel;
+    private selectedClusterCapacity: ClusterCapacityViewModel;
     private nodeContainerSize: number;
     private nodeCapacity: number;
     private elementHeight: number;
@@ -94,7 +98,8 @@ export class NodeComponent implements OnInit, OnDestroy {
 
         if (changes['selectedMetricName']) {
 
-            this.selectedCapacity = this.nodeCapacities.find(x => x.name == this.selectedMetricName) || null;
+            this.selectedCapacity = this.nodeCapacities.find(x => x.name == this.selectedMetricName);
+            this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
 
             for (var appView of this.applications) {
                 appView.selectedMetric = this.getSelectedMetricValue(appView.application.metrics);
@@ -191,17 +196,17 @@ export class NodeComponent implements OnInit, OnDestroy {
     private redraw(): void {
 
         if (this.selectedCapacity) {
-            this.nodeCapacity = this.selectedCapacity.capacity <= 0
-                ? this.DefaultCapacitySize
-                : this.selectedCapacity.capacity;
 
-            this.elementHeight = this.selectedCapacity.capacity <= 0
-                ? -1
-                : Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - this.nodeMargin);
-
-            this.nodeContainerSize = this.selectedCapacity.capacity <= 0
-                ? this.DefaultCapacitySize * this.scaleFactor
-                : Math.max(0, this.elementHeight - this.nodePaddingAndBorder);
+            if (this.selectedCapacity.capacity <= 0) {
+                this.nodeCapacity = this.DefaultCapacitySize;
+                this.elementHeight = -1; // lets the browser auto scale height
+                this.nodeContainerSize = this.DefaultCapacitySize * this.scaleFactor;
+            }
+            else {
+                this.nodeCapacity = this.selectedCapacity.capacity;
+                this.elementHeight = Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - this.nodeMargin);
+                this.nodeContainerSize = Math.max(0, this.elementHeight - this.nodePaddingAndBorder);
+            }
 
             this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
 

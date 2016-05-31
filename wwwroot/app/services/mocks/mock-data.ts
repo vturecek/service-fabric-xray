@@ -66,7 +66,7 @@ export var ClusterNodeList: ClusterNode[] = [
 
 export var ApplicationList: Application[] = [
     {
-        'name': 'fabric:/App1', 'type': 'App1Type', 'version': '1.0', 'status': 'Upgrading', 'healthState': 'OK', 'metrics': [
+        'name': 'fabric:/App1', 'type': 'App1Type', 'version': '1.0', 'status': 'Ready', 'healthState': 'OK', 'metrics': [
             { 'name': 'Count', 'value': 120 },
             { 'name': 'MemoryKB', 'value': 600 },
             { 'name': 'DiskKB', 'value': 10000 },

@@ -32,7 +32,7 @@ import { HTTP_PROVIDERS }    from 'angular2/http';
     templateUrl: 'app/components/app.component.html',
     styleUrls: ['app/components/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, provide(DataService, { useClass: HttpDataService })]
+    providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, provide(DataService, { useClass: MockDataService })]
 })
 export class AppComponent {
     title: String

@@ -34,7 +34,10 @@
                 <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
                 <h5>{{applicationView.selectedMetric}}</h5>
                 <h6>{{selectedMetricName}}</h6>
-                <span>34% of node load</span>
+                <ul>
+                    <li><span>{{applicationView.selectedMetric / selectedClusterCapacity.load | percent:'.1'}}</span>of cluster load</li>
+                    <li><span>{{applicationView.selectedMetric / selectedCapacity.load | percent:'.1'}}</span>of node load</li>
+                </ul>
             </div>
 
             <ul *ngIf="applicationView.expanded" class="service-list">
@@ -51,7 +54,11 @@
                         <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
                         <h5>{{serviceView.selectedMetric}}</h5>
                         <h6>{{selectedMetricName}}</h6>
-                        <span>34% of node load</span>
+                        <ul>
+                            <li><span>{{serviceView.selectedMetric / selectedClusterCapacity.load | percent:'.1'}}</span>of cluster load</li>
+                            <li><span>{{serviceView.selectedMetric / selectedCapacity.load | percent:'.1'}}</span>of node load</li>
+                            <li><span>{{serviceView.selectedMetric / applicationView.selectedMetric | percent:'.1'}}</span>of application load</li>
+                        </ul>
                     </div>
 
                     <ul *ngIf="serviceView.expanded" class="replica-list">

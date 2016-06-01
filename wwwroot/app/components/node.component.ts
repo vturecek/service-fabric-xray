@@ -1,4 +1,4 @@
-﻿import {Component, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
+﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
@@ -78,6 +78,7 @@ export class NodeComponent implements OnInit, OnDestroy {
     private replicaMargin: number = 0;
 
     constructor(
+        private changeDetector: ChangeDetectorRef,
         private dataService: DataService) {
         this.nodeCapacities = [];
         this.applications = [];
@@ -100,7 +101,6 @@ export class NodeComponent implements OnInit, OnDestroy {
         }
 
         if (changes['selectedClusterCapacity']) {
-
             for (var appView of this.applications) {
                 appView.selectedMetric = this.getSelectedMetricValue(appView.application.metrics);
 
@@ -130,10 +130,8 @@ export class NodeComponent implements OnInit, OnDestroy {
 
         this.computeElementHeights();
     }
-
-
+    
     public ngOnInit(): void {
-
         this.nodeCapacitySubscription = this.dataService.getNodeCapacity(this.nodeName).subscribe(
             result => {
                 if (!result) {
@@ -151,6 +149,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                         x.remainingCapacity)));
 
                 this.computeElementHeights();
+                this.changeDetector.markForCheck();
             },
             error => console.log("error from observable: " + error)
 
@@ -180,7 +179,9 @@ export class NodeComponent implements OnInit, OnDestroy {
                                         this.getSelectedColors(z),
                                         z.role ? z.role.toLowerCase() : 'unknown',
                                         z)))))));
+
                 this.computeElementHeights();
+                this.changeDetector.markForCheck();
 
             },
             error => console.log("error from observable: " + error));
@@ -195,8 +196,7 @@ export class NodeComponent implements OnInit, OnDestroy {
             this.nodeCapacitySubscription.unsubscribe();
         }
     }
-
-
+    
     private getSelectedMetricValue(metrics: LoadMetric[]): number {
 
         if (this.selectedClusterCapacity) {

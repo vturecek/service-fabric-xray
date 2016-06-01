@@ -52,48 +52,6 @@ export class ClusterComponent implements OnInit, OnDestroy {
         this.clusterCapacities = [];
     }
     
-    private onChangeCapacity(newValue: string): void {
-        this.selectedMetricName = newValue.split(":")[1].trim(); // yeah this is weird but that's what angular gives us.
-        this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
-    }
-
-    private onChangeColors(newValue): void {
-        this.selectedColors = newValue;
-    }
-
-    private onSelectNodeType(nodeType: string, event) {
-
-        // Deselecting a node type will remove it from the data stream,
-        // but that takes a few seconds to update.
-        // This removes it from the list immediately to make the UI more responsive.
-        let isChecked: boolean = event.currentTarget.checked;
-
-        if (!isChecked) {
-
-            let ix: number = -1;
-            while((ix = this.nodes.findIndex(x => x.nodeType == nodeType)) >= 0)
-            {
-                this.nodes.splice(ix, 1);
-            }
-        }
-    }
-
-    private expandApplications(): void {
-        this.applicationsExpanded = !this.applicationsExpanded;
-
-        for (var node of this.nodes) {
-            node.applicationsExpanded = this.applicationsExpanded;
-        }
-    }
-
-    private expandServices(): void {
-        this.servicesExpanded = !this.servicesExpanded;
-
-        for (var node of this.nodes) {
-            node.servicesExpanded = this.servicesExpanded;
-        }
-    }
-
     public ngOnInit(): void {
         this.nodeSubscription = this.dataService.getNodes(() => this.selectedNodeTypes.length > 0 ? this.selectedNodeTypes.filter(x => !x.selected).map(x => x.name) : null).subscribe(
             result => {
@@ -126,7 +84,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
                 List.updateList(this.selectedApplicationTypes, result.applicationTypes.map(x => new Selectable(x, true)));
             },
             error => console.log("error from observable: " + error));
-    
+
 
         this.clusterSubscription = this.dataService.getClusterCapacity().subscribe(
             result => {
@@ -145,8 +103,8 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.name,
                         x.bufferPercentage,
                         true
-                )));
-
+                    )));
+                
                 this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
             },
             error => console.log("error from observable: " + error));
@@ -163,6 +121,48 @@ export class ClusterComponent implements OnInit, OnDestroy {
 
         if (this.clusterSubscription) {
             this.clusterSubscription.unsubscribe();
+        }
+    }
+
+    private onChangeCapacity(newValue: string): void {
+        this.selectedMetricName = newValue.split(":")[1].trim(); // yeah this is weird but that's what angular gives us.
+        this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
+    }
+
+    private onChangeColors(newValue): void {
+        this.selectedColors = newValue;
+    }
+
+    private onSelectNodeType(nodeType: string, event): void {
+
+        // Deselecting a node type will remove it from the data stream,
+        // but that takes a few seconds to update.
+        // This removes it from the list immediately to make the UI more responsive.
+        let isChecked: boolean = event.currentTarget.checked;
+
+        if (!isChecked) {
+
+            let ix: number = -1;
+            while((ix = this.nodes.findIndex(x => x.nodeType == nodeType)) >= 0)
+            {
+                this.nodes.splice(ix, 1);
+            }
+        }
+    }
+
+    private expandApplications(): void {
+        this.applicationsExpanded = !this.applicationsExpanded;
+
+        for (var node of this.nodes) {
+            node.applicationsExpanded = this.applicationsExpanded;
+        }
+    }
+
+    private expandServices(): void {
+        this.servicesExpanded = !this.servicesExpanded;
+
+        for (var node of this.nodes) {
+            node.servicesExpanded = this.servicesExpanded;
         }
     }
 }

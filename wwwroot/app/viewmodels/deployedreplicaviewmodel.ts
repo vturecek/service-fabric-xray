@@ -15,6 +15,7 @@ export class DeployedReplicaViewModel extends ViewModel<DeployedReplicaViewModel
 
     public copyFrom(other: DeployedReplicaViewModel): void {
         this.replica = other.replica;
+        this.roleClass = other.roleClass;
         this.selectedMetric = other.selectedMetric;
         this.selectedClass = other.selectedClass;
     }

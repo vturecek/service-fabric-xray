@@ -2,13 +2,14 @@
 import {Application} from './../../models/application';
 import {ClusterCapacity} from './../../models/clustercapacity';
 import {ClusterNode} from './../../models/clusternode';
+import {ClusterNodeCapacity} from './../../models/clusternodecapacity';
 import {ClusterInfo} from './../../models/clusterinfo';
 import {Replica} from './../../models/replica';
 
 export var ClusterCapacityList: ClusterCapacity[] = [
     { 'name': 'MemoryKB', 'capacity': 20000, 'bufferedCapacity': 20000, 'load': 10000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 10000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
     { 'name': 'DiskKB', 'capacity': 50000, 'bufferedCapacity': 50000, 'load': 20000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 30000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'Count', 'capacity': -1, 'bufferedCapacity': -1, 'load': 3, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
+    { 'name': 'Count', 'capacity': -1, 'bufferedCapacity': -1, 'load': 60, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
     { 'name': 'WTFBBQ', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 24000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 800, 'isClusterCapacityViolation': true, 'bufferPercentage': 20 },
     { 'name': 'Precise fit', 'capacity': 5000, 'bufferedCapacity': 5000, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 }
 ];
@@ -20,49 +21,48 @@ export var ClusterInfoData: ClusterInfo = {
     'upgradeDomains': [1, 2, 3, 4, 5]
 };
 
+
 export var ClusterNodeList: ClusterNode[] = [
-    {
-        'name': 'node1', 'nodeType': 'FrontEnd', 'capacities': [
-            { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 10000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'WTFBBQ', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok', 'upTime' : '00:12:22', 'address': '10.0.0.1'
-    },
-    {
-        'name': 'node2', 'nodeType': 'FrontEnd', 'capacities': [
-            { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 4000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': true, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 2, 'upgradeDomain': 2, 'status': 'Down', 'healthState': 'Warning', 'upTime': '00:12:22', 'address': '10.0.0.2'
-    }, 
-    {
-        'name': 'node3', 'nodeType': 'ProcessingNode', 'capacities': [
-            { 'name': 'MemoryKB', 'capacity': 3000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 3, 'upgradeDomain': 3, 'status': 'Enabling', 'healthState': 'Error', 'upTime': '00:12:22', 'address': '10.0.0.3'
-    },
-    { 
-        'name': 'node4', 'nodeType': 'DataNode', 'capacities': [
-            { 'name': 'MemoryKB', 'capacity': 4000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 4, 'upgradeDomain': 4, 'status': 'Disabled', 'healthState': 'Unknown', 'upTime': '00:12:22', 'address': '10.0.0.4'
-    },
-    {
-        'name': 'node5', 'nodeType': 'StatisticsNode', 'capacities': [
-            { 'name': 'MemoryKB', 'capacity': 8000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
-            { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
-        ], 'faultDomain': 5, 'upgradeDomain': 5, 'status': 'Removed', 'healthState': 'Invalid', 'upTime': '00:12:22', 'address': '10.0.0.5'
-    }
+    { 'name': 'node1', 'nodeType': 'FrontEnd', 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok', 'upTime': '00:12:22', 'address': '10.0.0.1' },
+    { 'name': 'node2', 'nodeType': 'FrontEnd', 'faultDomain': 2, 'upgradeDomain': 2, 'status': 'Down', 'healthState': 'Warning', 'upTime': '00:12:22', 'address': '10.0.0.2' },
+    { 'name': 'node3', 'nodeType': 'ProcessingNode', 'faultDomain': 3, 'upgradeDomain': 3, 'status': 'Enabling', 'healthState': 'Error', 'upTime': '00:12:22', 'address': '10.0.0.3' },
+    { 'name': 'node4', 'nodeType': 'DataNode', 'faultDomain': 4, 'upgradeDomain': 4, 'status': 'Disabled', 'healthState': 'Unknown', 'upTime': '00:12:22', 'address': '10.0.0.4' },
+    { 'name': 'node5', 'nodeType': 'StatisticsNode', 'faultDomain': 5, 'upgradeDomain': 5, 'status': 'Removed', 'healthState': 'Invalid', 'upTime': '00:12:22', 'address': '10.0.0.5' }
 ];
+
+export var ClusterNodeCapacityList = {
+    'node1': [
+        { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 10000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 12, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'WTFBBQ', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 0, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+    ],
+    'node2': [
+        { 'name': 'MemoryKB', 'capacity': 5000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 4000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': true, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 12, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+    ],
+    'node3': [
+        { 'name': 'MemoryKB', 'capacity': 3000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 12, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+    ],
+    'node4': [
+        { 'name': 'MemoryKB', 'capacity': 4000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 2000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 12, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+    ],
+    'node5': [
+        { 'name': 'MemoryKB', 'capacity': 8000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'DiskKB', 'capacity': 10000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Count', 'capacity': -1, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 12, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 },
+        { 'name': 'Precise fit', 'capacity': 1000, 'isCapacityViolation': false, 'bufferedCapacity': 0, 'load': 1000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0 }
+    ]
+};
 
 export var ApplicationList: Application[] = [
     {

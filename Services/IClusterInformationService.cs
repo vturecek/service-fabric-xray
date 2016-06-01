@@ -14,7 +14,9 @@ namespace Xray.Services
     {
         Task<IEnumerable<DeployedApplicationModel>> GetApplicationMetrics(string nodeName, string appTypeFilter);
 
-        Task<IEnumerable<ClusterNode>> GetNodeCapacity(string nodeTypeFilter);
+        Task<IEnumerable<ClusterNode>> GetNodes(string nodeTypeFilter);
+
+        Task<IEnumerable<ClusterNodeCapacity>> GetNodeCapacity(string nodeName);
 
         Task<ClusterInfo> GetClusterInfo();
 

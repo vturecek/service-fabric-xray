@@ -1,5 +1,6 @@
 ﻿import {NodeCapacityViewModel} from './nodecapacityviewmodel';
 import {ViewModel} from './viewmodel';
+import {List} from './list';
 
 export class NodeViewModel extends ViewModel<NodeViewModel>{
 
@@ -12,8 +13,8 @@ export class NodeViewModel extends ViewModel<NodeViewModel>{
         public address: string,
         public faultDomain: number,
         public upgradeDomain: number,
-        public selected: boolean,
-        public capacities: NodeCapacityViewModel[]) {
+        public applicationsExpanded: boolean,
+        public servicesExpanded: boolean) {
         super(name);
     }
     
@@ -24,7 +25,6 @@ export class NodeViewModel extends ViewModel<NodeViewModel>{
         this.status = other.status;
         this.upTime = other.upTime;
         this.address = other.address;
-        this.capacities = other.capacities;
         this.faultDomain = other.faultDomain;
         this.upgradeDomain = other.upgradeDomain;
     }

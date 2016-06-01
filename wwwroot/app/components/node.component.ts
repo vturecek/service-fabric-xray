@@ -1,4 +1,4 @@
-﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
+﻿import {Component, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
@@ -22,22 +22,19 @@ export class NodeComponent implements OnInit, OnDestroy {
     private DefaultCapacitySize: number = 500;
     
     @Input()
-    private nodeCapacities: NodeCapacityViewModel[];
-
-    @Input()
-    private clusterCapacities: ClusterCapacityViewModel[];
+    private selectedClusterCapacity: ClusterCapacityViewModel;
 
     @Input()
     private scaleFactor: number;
 
     @Input()
-    private selected: boolean;
+    private applicationsExpanded: boolean;
+
+    @Input()
+    private servicesExpanded: boolean;
 
     @Input()
     private selectedColors: string;
-
-    @Input()
-    private selectedMetricName: string;
 
     @Input()
     private selectedApplicationTypes: Selectable[];
@@ -59,14 +56,13 @@ export class NodeComponent implements OnInit, OnDestroy {
 
     @Input()
     private address: string;
-
-    private selectedCapacity: NodeCapacityViewModel;
-    private selectedClusterCapacity: ClusterCapacityViewModel;
-    private nodeContainerSize: number;
-    private nodeCapacity: number;
+    
     private elementHeight: number;
     private applicationSubscription: Subscription;
     private applications: DeployedApplicationViewModel[];
+    private nodeCapacitySubscription: Subscription;
+    private selectedNodeCapacity: NodeCapacityViewModel;
+    private nodeCapacities: NodeCapacityViewModel[];
     private loadPercent: number;
 
     // element spacing in pixel values. 
@@ -82,31 +78,35 @@ export class NodeComponent implements OnInit, OnDestroy {
     private replicaMargin: number = 0;
 
     constructor(
-        private changeDetector: ChangeDetectorRef,
         private dataService: DataService) {
-
+        this.nodeCapacities = [];
         this.applications = [];
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
 
-        if (changes['selected']) {
-            for (var a of this.applications) {
-                a.expanded = this.selected;
+        if (changes['applicationsExpanded']) {
+            for (var appView of this.applications) {
+                appView.expanded = this.applicationsExpanded;
             }
         }
 
-        if (changes['selectedMetricName']) {
+        if (changes['servicesExpanded']) {
+            for (var appView of this.applications) {
+                for (var serviceView of appView.services) {
+                    serviceView.expanded = this.servicesExpanded;
+                }
+            }
+        }
 
-            this.selectedCapacity = this.nodeCapacities.find(x => x.name == this.selectedMetricName);
-            this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
+        if (changes['selectedClusterCapacity']) {
 
             for (var appView of this.applications) {
                 appView.selectedMetric = this.getSelectedMetricValue(appView.application.metrics);
-                
+
                 for (var serviceView of appView.services) {
                     serviceView.selectedMetric = this.getSelectedMetricValue(serviceView.service.metrics);
-                    
+
                     for (var replicaView of serviceView.replicas) {
                         replicaView.selectedMetric = this.getSelectedMetricValue(replicaView.replica.metrics);
                     }
@@ -127,18 +127,41 @@ export class NodeComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        
-        this.redraw();
+
+        this.computeElementHeights();
     }
 
 
-    public ngOnInit(): void{
+    public ngOnInit(): void {
+
+        this.nodeCapacitySubscription = this.dataService.getNodeCapacity(this.nodeName).subscribe(
+            result => {
+                if (!result) {
+                    return;
+                }
+
+                List.updateList(this.nodeCapacities, result.map(x =>
+                    new NodeCapacityViewModel(
+                        x.isCapacityViolation,
+                        x.name,
+                        x.bufferedCapacity,
+                        x.capacity,
+                        x.load,
+                        x.remainingBufferedCapacity,
+                        x.remainingCapacity)));
+
+                this.computeElementHeights();
+            },
+            error => console.log("error from observable: " + error)
+
+        );
+
         this.applicationSubscription = this.dataService.getApplicationModels(this.nodeName, () => this.selectedApplicationTypes.filter(x => !x.selected).map(x => x.name)).subscribe(
             result => {
                 if (!result) {
                     return;
                 }
-                
+
                 List.updateList(this.applications, result.map(x =>
                     new DeployedApplicationViewModel(
                         true,
@@ -157,21 +180,35 @@ export class NodeComponent implements OnInit, OnDestroy {
                                         this.getSelectedColors(z),
                                         z.role ? z.role.toLowerCase() : 'unknown',
                                         z)))))));
-                this.redraw();
+                this.computeElementHeights();
 
             },
             error => console.log("error from observable: " + error));
     }
 
-    private getSelectedMetricValue(metrics: LoadMetric[]) : number {
-        let metric: LoadMetric = metrics.find(x => x.name == this.selectedMetricName);
-  
-        return metric
-            ? metric.value
-            : 0;       
+    public ngOnDestroy(): void {
+        if (this.applicationSubscription) {
+            this.applicationSubscription.unsubscribe();
+        }
+
+        if (this.nodeCapacitySubscription) {
+            this.nodeCapacitySubscription.unsubscribe();
+        }
     }
 
-    private getSelectedColors(model: any) : string {
+
+    private getSelectedMetricValue(metrics: LoadMetric[]): number {
+
+        if (this.selectedClusterCapacity) {
+            let metric: LoadMetric = metrics.find(x => x.name == this.selectedClusterCapacity.name);
+
+            return metric
+                ? metric.value
+                : 0;
+        }
+    }
+
+    private getSelectedColors(model: any): string {
         let colors: string;
         switch (this.selectedColors) {
             case "status":
@@ -187,28 +224,31 @@ export class NodeComponent implements OnInit, OnDestroy {
             : 'unknown';
     }
 
-    public ngOnDestroy(): void {
-        if (this.applicationSubscription) {
-            this.applicationSubscription.unsubscribe();
+    private computeElementHeights(): void {
+
+        if (!this.selectedClusterCapacity) {
+            return;
         }
-    }
 
-    private redraw(): void {
+        this.selectedNodeCapacity = this.nodeCapacities.find(x => x.name == this.selectedClusterCapacity.name);
 
-        if (this.selectedCapacity) {
+        var nodeCapacity;
+        var nodeContainerSize;
 
-            if (this.selectedCapacity.capacity <= 0) {
-                this.nodeCapacity = this.DefaultCapacitySize;
-                this.elementHeight = -1; // lets the browser auto scale height
-                this.nodeContainerSize = this.DefaultCapacitySize * this.scaleFactor;
+        if (this.selectedNodeCapacity) {
+            if (this.selectedNodeCapacity.capacity <= 0) {
+                this.loadPercent = Math.round(this.selectedNodeCapacity.load / this.selectedClusterCapacity.load * 100);
+                this.elementHeight = -1; // lets the browser auto scale height  
+                nodeCapacity = this.DefaultCapacitySize;
+                nodeContainerSize = this.DefaultCapacitySize * this.scaleFactor;
             }
             else {
-                this.nodeCapacity = this.selectedCapacity.capacity;
-                this.elementHeight = Math.max(0, (this.selectedCapacity.capacity * this.scaleFactor) - this.nodeMargin);
-                this.nodeContainerSize = Math.max(0, this.elementHeight - this.nodePaddingAndBorder);
+                this.loadPercent = Math.round(this.selectedNodeCapacity.load / this.selectedNodeCapacity.capacity * 100);
+                this.elementHeight = Math.max(0, (this.selectedNodeCapacity.capacity * this.scaleFactor) - this.nodeMargin);
+                nodeCapacity = this.selectedNodeCapacity.capacity;
+                nodeContainerSize = Math.max(0, this.elementHeight - this.nodePaddingAndBorder);
             }
 
-            this.loadPercent = Math.round(this.selectedCapacity.load / this.selectedCapacity.capacity * 100);
 
             for (var appView of this.applications) {
                 if (!appView.selectedMetric) {
@@ -216,7 +256,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                 }
 
                 appView.elementHeight =
-                    Math.max(0, ((appView.selectedMetric / this.nodeCapacity) * this.nodeContainerSize) - this.applicationMargin);
+                    Math.max(0, ((appView.selectedMetric / nodeCapacity) * nodeContainerSize) - this.applicationMargin);
 
                 for (var serviceView of appView.services) {
                     if (!serviceView.selectedMetric) {

@@ -17,8 +17,7 @@ namespace Xray.Models
             TimeSpan upTime,
             string address,
             string fd,
-            string ud,
-            IEnumerable<ClusterNodeCapacity> capacities)
+            string ud)
         {
             this.Name = name;
             this.NodeType = type;
@@ -28,7 +27,6 @@ namespace Xray.Models
             this.Address = address;
             this.FaultDomain = fd;
             this.UpgradeDomain = ud;
-            this.Capacities = capacities;
         }
 
         public string Name { get; }
@@ -46,7 +44,5 @@ namespace Xray.Models
         public string FaultDomain { get; }
 
         public string UpgradeDomain { get; }
-
-        public IEnumerable<ClusterNodeCapacity> Capacities { get; }
     }
 }

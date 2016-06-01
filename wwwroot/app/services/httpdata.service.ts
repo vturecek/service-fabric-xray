@@ -5,6 +5,7 @@ import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 import {ClusterCapacity} from './../models/clustercapacity';
 import {ClusterNode} from './../models/clusternode';
+import {ClusterNodeCapacity} from './../models/clusternodecapacity';
 import {Replica} from './../models/replica';
 import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
@@ -85,11 +86,23 @@ export class HttpDataService extends DataService {
                     ? nodeTypeArray.join(",")
                     : "";
 
-                return this.http.get(this.apiUrl + 'node/capacity/' + nodeTypeString).catch(this.handleError);
+                return this.http.get(this.apiUrl + 'node/info/' + nodeTypeString).catch(this.handleError);
             })
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    public getNodeCapacity(nodeName: string): Observable<ClusterNodeCapacity[]> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => {
+                return this.http.get(this.apiUrl + 'node/capacity/' + nodeName).catch(this.handleError);
+            })
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 400) {

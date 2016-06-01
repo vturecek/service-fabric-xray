@@ -9,5 +9,4 @@ export class ClusterNode{
     public address: string;
     public faultDomain: number;
     public upgradeDomain: number;
-    public capacities: ClusterNodeCapacity[];
 }

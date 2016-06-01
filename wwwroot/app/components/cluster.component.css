@@ -1,11 +1,12 @@
 ﻿.nodeList { margin: 0; white-space: nowrap; }
-.nodeListItem { display: inline-block; vertical-align:top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
+.nodeListItem { display: inline-block; vertical-align: top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
 .controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
     .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
         .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
     .controlGroup select { width: 120px; }
 .controls span { display: inline-block; margin: 5px 0; width: 50px; }
 .controlPanel { float: left; width: 200px; height: 100vh; overflow: hidden; background: #222222; }
+.expandButton { display: block; padding: 4px 0; }
 .filter { }
     .filter h4 { font-size: 12px; }
     .filter ul { margin: 0; padding: 0; }

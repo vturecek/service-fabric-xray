@@ -20,16 +20,22 @@ namespace Xray.Controllers
             this.clusterInfoService = historyService;
         }
 
-        [HttpGet("capacity")]
-        public Task<IEnumerable<ClusterNode>> Capacity()
+        [HttpGet("info")]
+        public Task<IEnumerable<ClusterNode>> Info()
         {
-            return this.clusterInfoService.GetNodeCapacity(null);
+            return this.clusterInfoService.GetNodes(null);
         }
 
-        [HttpGet("capacity/{nodeTypeFilter}")]
-        public Task<IEnumerable<ClusterNode>> Capacity(string nodeTypeFilter)
+        [HttpGet("info/{nodeTypeFilter}")]
+        public Task<IEnumerable<ClusterNode>> Info(string nodeTypeFilter)
         {
-            return this.clusterInfoService.GetNodeCapacity(nodeTypeFilter);
+            return this.clusterInfoService.GetNodes(nodeTypeFilter);
+        }
+
+        [HttpGet("capacity/{nodeName}")]
+        public Task<IEnumerable<ClusterNodeCapacity>> Capacity(string nodeName)
+        {
+            return this.clusterInfoService.GetNodeCapacity(nodeName);
         }
     }
 }

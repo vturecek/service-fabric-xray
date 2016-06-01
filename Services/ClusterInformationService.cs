@@ -124,7 +124,25 @@ namespace Xray.Services
             }
         }
 
-        public async Task<IEnumerable<ClusterNode>> GetNodeCapacity(string nodeTypeFilter)
+        public async Task<IEnumerable<ClusterNodeCapacity>> GetNodeCapacity(string nodeName)
+        {
+            ClusterNodeCapacity replicaCount = await this.GetNodeReplicaCount(nodeName);
+
+            NodeLoadInformation loadInfo = await this.fabricClient.QueryManager.GetNodeLoadInformationAsync(nodeName);
+
+            return loadInfo.NodeLoadMetricInformationList.Select(item =>
+                new ClusterNodeCapacity(
+                   item.Name,
+                   item.IsCapacityViolation,
+                   item.NodeBufferedCapacity,
+                   item.NodeCapacity,
+                   item.NodeLoad,
+                   item.NodeRemainingBufferedCapacity,
+                   item.NodeRemainingCapacity))
+                .Concat(new[] { replicaCount });
+        }
+
+        public async Task<IEnumerable<ClusterNode>> GetNodes(string nodeTypeFilter)
         {
             IEnumerable<Node> nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
 
@@ -133,37 +151,16 @@ namespace Xray.Services
                 nodes = nodes.Where(x => !nodeTypeFilter.Contains(x.NodeType));
             }
 
-            List<ClusterNode> result = new List<ClusterNode>(nodes.Count());
-
-            foreach (Node node in nodes)
-            {
-                NodeLoadInformation loadInfo = await this.fabricClient.QueryManager.GetNodeLoadInformationAsync(node.NodeName);
-                
-                
-                result.Add(
-                    new ClusterNode(
-                        node.NodeName,
-                        node.NodeType,
-                        node.NodeStatus.ToString(),
-                        node.HealthState.ToString(),
-                        node.NodeUpTime,
-                        node.IpAddressOrFQDN,
-                        node.FaultDomain.ToString(),
-                        node.UpgradeDomain,
-                        loadInfo.NodeLoadMetricInformationList.Select(
-                            x =>
-                                new ClusterNodeCapacity(
-                                    x.Name,
-                                    x.IsCapacityViolation,
-                                    x.NodeBufferedCapacity,
-                                    x.NodeCapacity,
-                                    x.NodeLoad,
-                                    x.NodeRemainingBufferedCapacity,
-                                    x.NodeRemainingCapacity))
-                            .Concat(new[] { await this.GetNodeReplicaCount(node.NodeName) })));
-            }
-
-            return result;
+            return nodes.Select(node =>
+                new ClusterNode(
+                    node.NodeName,
+                    node.NodeType,
+                    node.NodeStatus.ToString(),
+                    node.HealthState.ToString(),
+                    node.NodeUpTime,
+                    node.IpAddressOrFQDN,
+                    node.FaultDomain.ToString(),
+                    node.UpgradeDomain));
         }
 
         private async Task<Application> GetApplication(Uri applicationName)
@@ -369,5 +366,6 @@ namespace Xray.Services
                 nodes.Select(x => x.FaultDomain.ToString()).Distinct(),
                 nodes.Select(x => x.UpgradeDomain).Distinct());
         }
+
     }
 }

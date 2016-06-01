@@ -1,16 +1,17 @@
 ﻿<div class="controlPanel">
     <div class="filter controlGroup">
-        <a (click)="toggleSelected()">{{!expanded && '[+] Expand applications' || '[-] Collapse applications'}}</a>
+        <a class="expandButton" (click)="expandApplications()">{{!applicationsExpanded && '[+] Expand applications' || '[-] Collapse applications'}}</a>
+        <a class="expandButton" (click)="expandServices()">{{!servicesExpanded && '[+] Expand services' || '[-] Collapse services'}}</a>
     </div>
     <div class="controls controlGroup">
         <div>
             <span>Metric:</span>
             <select name="metricDropDown" [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
-                <option *ngFor="#capacity of capacities" [ngValue]="capacity.name">{{capacity.name}}</option>
+                <option *ngFor="#capacity of clusterCapacities" [ngValue]="capacity.name">{{capacity.name}}</option>
             </select>
         </div>
         <div>
-            <span>Show:</span>
+            <span>Display:</span>
             <select name="colorDropDown" [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">
                 <option value="status">Status</option>
                 <option value="health">Health</option>
@@ -40,20 +41,18 @@
     
     <ul class="nodeList">
         <li *ngFor="#node of nodes" class="nodeListItem">
-            <node-component *ngIf="hasSelectedCapacity(node)"
-                            [nodeName]="node.name"
+            <node-component [nodeName]="node.name"
                             [nodeType]="node.nodeType"
                             [selectedApplicationTypes]="selectedApplicationTypes"
                             [health]="node.health"
                             [status]="node.status"
                             [upTime]="node.upTime"
                             [address]="node.address"
-                            [selected]="node.selected"
-                            [nodeCapacities]="node.capacities"
+                            [applicationsExpanded]="node.applicationsExpanded"
+                            [servicesExpanded]="node.servicesExpanded"
                             [scaleFactor]="scaleFactor"
-                            [clusterCapacities]="capacities"
-                            [selectedColors]="selectedColors"
-                            [selectedMetricName]="selectedMetricName">
+                            [selectedClusterCapacity]="selectedClusterCapacity"
+                            [selectedColors]="selectedColors">
             </node-component>
         </li>
     </ul>

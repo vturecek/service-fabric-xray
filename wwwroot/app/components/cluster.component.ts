@@ -23,14 +23,19 @@ export class ClusterComponent implements OnInit, OnDestroy {
     @ViewChild("container")
     protected container: ElementRef;
 
-    private selectedMetricName: string = "Count";
     private selectedColors: string = 'status';
-    private expanded: boolean;
-    private scaleFactor: number;
-    private nodes: NodeViewModel[];
+    private selectedMetricName: string = "Count";
+    private selectedClusterCapacity: ClusterCapacityViewModel;
     private selectedNodeTypes: Selectable[];
     private selectedApplicationTypes: Selectable[];
-    private capacities: ClusterCapacityViewModel[];
+
+    private nodes: NodeViewModel[];
+    private clusterCapacities: ClusterCapacityViewModel[];
+
+    private applicationsExpanded: boolean;
+    private servicesExpanded: boolean;
+    private scaleFactor: number;
+
     private nodeSubscription: Subscription;
     private clusterInfoSubscription: Subscription;
     private clusterSubscription: Subscription;
@@ -39,19 +44,17 @@ export class ClusterComponent implements OnInit, OnDestroy {
         private dataService: DataService )
     {
         this.scaleFactor = 1;
-        this.expanded = true;
+        this.applicationsExpanded = true;
+        this.servicesExpanded = true;
         this.nodes = [];
         this.selectedNodeTypes = [];
         this.selectedApplicationTypes = [];
-        this.capacities = [];
+        this.clusterCapacities = [];
     }
-
-    private hasSelectedCapacity(node: NodeViewModel): boolean {
-        return node.capacities.find(x => x.name == this.selectedMetricName) != undefined;
-    }
-
+    
     private onChangeCapacity(newValue: string): void {
         this.selectedMetricName = newValue.split(":")[1].trim(); // yeah this is weird but that's what angular gives us.
+        this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
     }
 
     private onChangeColors(newValue): void {
@@ -75,11 +78,19 @@ export class ClusterComponent implements OnInit, OnDestroy {
         }
     }
 
-    private toggleSelected(): void {
-        this.expanded = !this.expanded;
+    private expandApplications(): void {
+        this.applicationsExpanded = !this.applicationsExpanded;
 
         for (var node of this.nodes) {
-            node.selected = this.expanded;
+            node.applicationsExpanded = this.applicationsExpanded;
+        }
+    }
+
+    private expandServices(): void {
+        this.servicesExpanded = !this.servicesExpanded;
+
+        for (var node of this.nodes) {
+            node.servicesExpanded = this.servicesExpanded;
         }
     }
 
@@ -101,16 +112,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.faultDomain,
                         x.upgradeDomain,
                         true,
-                        x.capacities.map(y =>
-                            new NodeCapacityViewModel(
-                                y.isCapacityViolation,
-                                y.name,
-                                y.bufferedCapacity,
-                                y.capacity,
-                                y.load,
-                                y.remainingBufferedCapacity,
-                                y.remainingCapacity)))));
-
+                        true)));
             },
             error => console.log("error from observable: " + error));
 
@@ -132,7 +134,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                List.updateList(this.capacities, result.map(x =>
+                List.updateList(this.clusterCapacities, result.map(x =>
                     new ClusterCapacityViewModel(
                         x.bufferedCapacity,
                         x.capacity,
@@ -143,7 +145,9 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.name,
                         x.bufferPercentage,
                         true
-                    )));
+                )));
+
+                this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
             },
             error => console.log("error from observable: " + error));
     }

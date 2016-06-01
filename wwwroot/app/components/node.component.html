@@ -1,4 +1,4 @@
-﻿<div class="nodeHeader {{selectedColors == 'status' ? status : health}}">
+﻿<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" class="nodeHeader {{selectedColors == 'status' ? status : health}}">
     <div class="nodeTitle">
         <h4 class="nodeName">{{nodeName}}</h4>
         <span class="nodeType">{{nodeType}}</span>
@@ -7,18 +7,13 @@
         <h4>{{selectedColors == 'status' ? status : health}}</h4>
         <span>{{address}}</span>
     </div>
-    <div *ngIf="selectedCapacity.capacity >= 0" [ngClass]="{ 'nodeStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedCapacity.isCapacityViolation }">
+    <div [ngClass]="{ 'nodeStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedNodeCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedNodeCapacity.isCapacityViolation }">
         <h3>{{loadPercent}}%</h3>
-        <h5>{{selectedMetricName}}</h5>
-        <span>{{selectedCapacity.load}} of {{selectedCapacity.capacity}}</span>
-    </div>
-    <div *ngIf="selectedCapacity.capacity < 0" class="nodeStats ">
-        <h3>10%</h3>
-        <h5>Deployed replicas</h5>
-        <span>18 of 102</span>
+        <h5>{{selectedNodeCapacity.name}}</h5>
+        <span>{{selectedNodeCapacity.load}} of {{selectedNodeCapacity.capacity > 0 ? selectedNodeCapacity.capacity : selectedClusterCapacity.load}}</span>
     </div>
 </div>
-<div class="{{selectedColors == 'status' ? status : ''}} node"
+<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" class="{{selectedColors == 'status' ? status : ''}} node"
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
     <ul class="application-list">
         <li *ngFor="#applicationView of applications"
@@ -33,10 +28,10 @@
             <div *ngIf="!applicationView.expanded" class="applicationDetails">
                 <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
                 <h5>{{applicationView.selectedMetric}}</h5>
-                <h6>{{selectedMetricName}}</h6>
-                <ul>
-                    <li><span>{{applicationView.selectedMetric / selectedClusterCapacity.load | percent:'.1'}}</span>of cluster load</li>
-                    <li><span>{{applicationView.selectedMetric / selectedCapacity.load | percent:'.1'}}</span>of node load</li>
+                <h6>{{selectedNodeCapacity.name}}</h6>
+                <ul *ngIf="selectedNodeCapacity.capacity > 0">
+                    <li><span>{{applicationView.selectedMetric / selectedClusterCapacity.load | percent:'.1-1'}}</span>of cluster load</li>
+                    <li><span>{{applicationView.selectedMetric / selectedNodeCapacity.load | percent:'.1-1'}}</span>of node load</li>
                 </ul>
             </div>
 
@@ -53,11 +48,11 @@
                     <div *ngIf="!serviceView.expanded" class="applicationDetails">
                         <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
                         <h5>{{serviceView.selectedMetric}}</h5>
-                        <h6>{{selectedMetricName}}</h6>
-                        <ul>
-                            <li><span>{{serviceView.selectedMetric / selectedClusterCapacity.load | percent:'.1'}}</span>of cluster load</li>
-                            <li><span>{{serviceView.selectedMetric / selectedCapacity.load | percent:'.1'}}</span>of node load</li>
-                            <li><span>{{serviceView.selectedMetric / applicationView.selectedMetric | percent:'.1'}}</span>of application load</li>
+                        <h6>{{selectedNodeCapacity.name}}</h6>
+                        <ul *ngIf="selectedNodeCapacity.capacity > 0">
+                            <li><span>{{serviceView.selectedMetric / selectedClusterCapacity.load | percent:'.1-1'}}</span>of cluster load</li>
+                            <li><span>{{serviceView.selectedMetric / selectedNodeCapacity.load | percent:'.1-1'}}</span>of node load</li>
+                            <li><span>{{serviceView.selectedMetric / applicationView.selectedMetric | percent:'.1-1'}}</span>of application load</li>
                         </ul>
                     </div>
 

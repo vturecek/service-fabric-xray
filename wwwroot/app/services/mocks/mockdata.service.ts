@@ -1,9 +1,10 @@
 ﻿import {DataService} from './../data.service';
 import {Injectable} from 'angular2/core';
 import {Observable}     from 'rxjs/Rx';
-import {ReplicaList, ServiceList, ClusterNodeList, ClusterInfoData, ClusterCapacityList, ApplicationList} from './mock-data';
+import {ReplicaList, ServiceList, ClusterNodeList, ClusterNodeCapacityList, ClusterInfoData, ClusterCapacityList, ApplicationList} from './mock-data';
 import {ClusterCapacity} from './../../models/clustercapacity';
 import {ClusterNode} from './../../models/clusternode';
+import {ClusterNodeCapacity} from './../../models/clusternodecapacity';
 import {ClusterInfo} from './../../models/clusterinfo';
 import {DeployedApplication} from './../../models/deployedapplication';
 import {DeployedService} from './../../models/deployedservice';
@@ -104,6 +105,13 @@ export class MockDataService extends DataService {
                     ? Observable.of(ClusterNodeList.filter(x => nodeTypes.indexOf(x.nodeType) < 0))
                     : Observable.of(ClusterNodeList);
             });
+    }
+
+    public getNodeCapacity(nodeName: string): Observable<ClusterNodeCapacity[]> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => Observable.of(ClusterNodeCapacityList[nodeName]));
     }
 
     public getClusterInfo(): Observable<ClusterInfo> {

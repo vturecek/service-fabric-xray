@@ -21,7 +21,7 @@
     .applicationDetails h5 { margin: 10px 0 3px 0; font-size: 18px; }
     .applicationDetails h6 { margin: 0; font-size: 12px; }
     .applicationDetails a { display: block; margin: 2px 0; cursor: pointer; color: #EEE; font-weight: bold; }
-    .applicationDetails ul { margin: 5px 0 0 5px; padding: 0; }
+    .applicationDetails ul { margin: 10px 0 0 5px; padding: 0; }
     .applicationDetails li { list-style: none; margin: 0; padding: 0; }
         .applicationDetails li span { font-weight: bold; margin: 0 5px 0 0 }
 

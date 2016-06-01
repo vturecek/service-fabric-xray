@@ -42,8 +42,8 @@
 /* replica statuses and health states */
 .replica-invalid { background-color: #000000; }
 .replica-inbuild { background-color: #D17D00; }
-.replica-standby { background-color: #77A5C6; }
-.replica-ready { background-color: #00ABEC; }
+.replica-standby { background-color: #A0B9C1; }
+.replica-ready { background-color: #5490a5; }
 .replica-down { background-color: #E81123; }
 .replica-dropped { background-color: #333333; }
 .replica-ok { background-color: #7FBA00; }
@@ -63,13 +63,13 @@
 .removed { border-color: #000000; }
 
 /* health states */
-.ok { border-color: #7FBA00; }
-.warning { border-color: #FCD116; }
-.error { border-color: #E81123; }
+.ok { border-color: #7FBA00; background-color:#23261c } 
+.warning { border-color: #FCD116; background-color:#26241c }
+.error { border-color: #E81123; background-color:#261C1D }
 
 /* application and service statuses */
-.ready { border-color: #00ABEC; }
-.creating { border-color: #D17D00; }
-.active { border-color: #00ABEC; }
-.upgrading { border-color: #00C69F; }
-.deleting { border-color: #AAAAAA; }
+.ready { border-color: #00ABEC; background-color: #1E2426 }
+.creating { border-color: #D17D00; background-color: #3F3A33 }
+.active { border-color: #00ABEC; background-color: #1E2426 }
+.upgrading { border-color: #00C69F; background-color: #333F3D }
+.deleting { border-color: #AAAAAA; background-color: #333333 }

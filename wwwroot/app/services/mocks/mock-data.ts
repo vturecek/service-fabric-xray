@@ -73,7 +73,7 @@ export var ApplicationList: Application[] = [
             { 'name': 'Precise fit', 'value': 500 }]
     },
     {
-        'name': 'fabric:/App2', 'type': 'App2Type', 'version': '2.0.0.0', 'status': 'Deleting', 'healthState': 'Warning', 'metrics': [
+        'name': 'fabric:/App2', 'type': 'App2Type', 'version': '2.0.0.0', 'status': 'Upgrading', 'healthState': 'Warning', 'metrics': [
             { 'name': 'Count', 'value': 120 },
             { 'name': 'MemoryKB', 'value': 400 },
             { 'name': 'DiskKB', 'value': 10000 },
@@ -86,14 +86,14 @@ export var ServiceList =
         'fabric:/App1':
         [
             {
-                'name': 'fabric:/App1/Service11', 'type': 'serviceType', 'version': '1.0', 'status': 'Upgrading', 'healthState': 'OK', 'metrics': [
+                'name': 'fabric:/App1/Service11', 'type': 'serviceType', 'version': '1.0', 'status': 'Ready', 'healthState': 'OK', 'metrics': [
                     { 'name': 'Count', 'value': 60 },
                     { 'name': 'MemoryKB', 'value': 400 },
                     { 'name': 'DiskKB', 'value': 5000 },
                     { 'name': 'Precise fit', 'value': 250 }]
             },
             {
-                'name': 'fabric:/App1/Service12', 'type': 'serviceType', 'version': '1.0', 'status': 'Active', 'healthState': 'Warning', 'metrics': [
+                'name': 'fabric:/App1/Service12', 'type': 'serviceType', 'version': '1.0', 'status': 'Deleting', 'healthState': 'Warning', 'metrics': [
                     { 'name': 'Count', 'value': 60 },
                     { 'name': 'MemoryKB', 'value': 200 },
                     { 'name': 'DiskKB', 'value': 5000 },
@@ -103,14 +103,14 @@ export var ServiceList =
         'fabric:/App2':
         [
             {
-                'name': 'fabric:/App2/Service13', 'type': 'serviceType', 'version': '1.0', 'status': 'Unknown', 'healthState': 'Error', 'metrics': [
+                'name': 'fabric:/App2/Service13', 'type': 'serviceType', 'version': '1.0', 'status': 'Upgrading', 'healthState': 'Error', 'metrics': [
                     { 'name': 'Count', 'value': 60 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 6000 },
                     { 'name': 'Precise fit', 'value': 250 }]
             },
             {
-                'name': 'fabric:/App2/Service14', 'type': 'serviceType', 'version': '1.0', 'status': 'Deleting', 'healthState': 'Unknown', 'metrics': [
+                'name': 'fabric:/App2/Service14', 'type': 'serviceType', 'version': '1.0', 'status': 'Creating', 'healthState': 'Unknown', 'metrics': [
                     { 'name': 'Count', 'value': 60 },
                     { 'name': 'MemoryKB', 'value': 300 },
                     { 'name': 'DiskKB', 'value': 4000 },

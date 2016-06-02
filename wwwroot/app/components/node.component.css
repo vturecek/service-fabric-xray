@@ -1,13 +1,13 @@
-﻿.node { margin: 3px 0; padding: 3px 0px; background: #222222; height: auto; }
+﻿.node { margin: 3px 0px; padding: 3px 7px; background: #222222; height: auto; }
     .node li { list-style: none; }
-.nodeHeader { height: 120px; margin: 0; padding: 8px; background: #222222; border-left: 4px solid #000000; }
+.nodeHeader { height: 170px; margin: 0; padding: 8px; background: #222222; }
     .nodeHeader h3 { font-size: 24px; font-weight: lighter; margin-top: 0; margin-bottom: 5px; }
     .nodeHeader h4 { font-size: 14px; font-weight: bold; margin-top: 0; margin-bottom: 3px; }
     .nodeHeader h5 { font-size: 12px; margin-top: 0; margin-bottom: 2px; }
     .nodeHeader span { font-size: 10px; font-style: italic; }
-.nodeTitle { float: left; padding-bottom: 5px; }
+.nodeTitle { float: left; }
 .nodeStatus { float: right; text-align: right; }
-.nodeStats { clear: both; padding-top: 5px; text-align: center; }
+.nodeStats { clear: both; text-align: center; }
 .nodeCapacityViolation { color: #e81123; }
 .nodeCapacityWarning { color: #FCD116; }
 
@@ -55,17 +55,25 @@
 .unknown { border-color: #666666; }
 
 /* node statuses */
-.up { border-color: #00ABEC; }
-.down { border-color: #E81123; }
-.enabling { border-color: #00C69F; }
-.disabling { border-color: #D17D00; }
-.disabled { border-color: #777777; }
-.removed { border-color: #000000; }
+.up .highlight { color: #00ABEC; }
+.down .highlight { color: #E81123; }
+.enabling .highlight { color: #00C69F; }
+.disabling .highlight { color: #D17D00; }
+.disabled .highlight { color: #777777; }
+.removed .highlight { color: #000000; }
 
 /* health states */
-.ok { border-color: #7FBA00; background-color:#23261c } 
-.warning { border-color: #FCD116; background-color:#26241c }
-.error { border-color: #E81123; background-color:#261C1D }
+.ok { border-color: #7FBA00; } 
+.warning { border-color: #FCD116; }
+.error { border-color: #E81123; }
+
+.ok .highlight-background { background-color:#23261c } 
+.warning .highlight-background  { background-color:#26241c }
+.error .highlight-background { background-color:#261C1D }
+
+.ok .highlight { color: #7FBA00; } 
+.warning .highlight { color: #FCD116; }
+.error .highlight { color: #E81123; }
 
 /* application and service statuses */
 .ready { border-color: #00ABEC; background-color: #1E2426 }

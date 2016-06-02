@@ -1,5 +1,6 @@
 ﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
+import {NodeCapacityDonut} from './nodecapacitydonut.component';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
@@ -15,7 +16,8 @@ import {Selectable} from './../viewmodels/selectable';
     selector: 'node-component',
     templateUrl: 'app/components/node.component.html',
     styleUrls: ['app/components/node.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    directives: [NodeCapacityDonut]
 })
 export class NodeComponent implements OnInit, OnDestroy {
 

@@ -1,0 +1,7 @@
+﻿.donut { width: 100px; height: 100px; position: relative; margin:0 auto }
+.donut-chart { display: block; }
+.donut-inner { position: absolute; text-align: center; top: 30px; width: 100px; }
+    .donut-inner h3 { margin: 0 0 3px 0 }
+    .donut-inner span { font-size: 10px; }
+    .donut-inner .percent { font-size: 14px; vertical-align:top }
+.donut-outer { font-size:12px; text-align:center; margin:5px 0 0 0; padding: 0; color:#CCCCCC;}

@@ -337,7 +337,7 @@ namespace Xray.Services
                 count += (await this.GetNodeReplicaCount(node.NodeName)).Load;
             }
 
-            return new ClusterCapacity(CountMetricName, 0, 0, count, 0, 0, false, 0);
+            return new ClusterCapacity(CountMetricName, 0, 0, count, -1, -1, false, 0);
         }
 
         private async Task<ClusterNodeCapacity> GetNodeReplicaCount(string nodeName)
@@ -352,7 +352,7 @@ namespace Xray.Services
                 count += replicas.Count;
             }
 
-            return new ClusterNodeCapacity(CountMetricName, false, 0, 0, count, 0, 0);
+            return new ClusterNodeCapacity(CountMetricName, false, 0, 0, count, -1, -1);
         }
 
         public async Task<ClusterInfo> GetClusterInfo()

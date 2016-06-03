@@ -67,14 +67,14 @@ export var ClusterNodeCapacityList = {
 export var ApplicationList: Application[] = [
     {
         'name': 'fabric:/App1', 'type': 'App1Type', 'version': '1.0', 'status': 'Ready', 'healthState': 'OK', 'metrics': [
-            { 'name': 'Count', 'value': 120 },
+            { 'name': 'Count', 'value': 6 },
             { 'name': 'MemoryKB', 'value': 600 },
             { 'name': 'DiskKB', 'value': 10000 },
             { 'name': 'Precise fit', 'value': 500 }]
     },
     {
         'name': 'fabric:/App2', 'type': 'App2Type', 'version': '2.0.0.0', 'status': 'Upgrading', 'healthState': 'Warning', 'metrics': [
-            { 'name': 'Count', 'value': 120 },
+            { 'name': 'Count', 'value': 6 },
             { 'name': 'MemoryKB', 'value': 400 },
             { 'name': 'DiskKB', 'value': 10000 },
             { 'name': 'Precise fit', 'value': 500 }]
@@ -87,14 +87,14 @@ export var ServiceList =
         [
             {
                 'name': 'fabric:/App1/Service11', 'type': 'serviceType', 'version': '1.0', 'status': 'Ready', 'healthState': 'OK', 'metrics': [
-                    { 'name': 'Count', 'value': 60 },
+                    { 'name': 'Count', 'value': 3 },
                     { 'name': 'MemoryKB', 'value': 400 },
                     { 'name': 'DiskKB', 'value': 5000 },
                     { 'name': 'Precise fit', 'value': 250 }]
             },
             {
                 'name': 'fabric:/App1/Service12', 'type': 'serviceType', 'version': '1.0', 'status': 'Deleting', 'healthState': 'Warning', 'metrics': [
-                    { 'name': 'Count', 'value': 60 },
+                    { 'name': 'Count', 'value': 3 },
                     { 'name': 'MemoryKB', 'value': 200 },
                     { 'name': 'DiskKB', 'value': 5000 },
                     { 'name': 'Precise fit', 'value': 250 }]
@@ -104,14 +104,14 @@ export var ServiceList =
         [
             {
                 'name': 'fabric:/App2/Service13', 'type': 'serviceType', 'version': '1.0', 'status': 'Upgrading', 'healthState': 'Error', 'metrics': [
-                    { 'name': 'Count', 'value': 60 },
+                    { 'name': 'Count', 'value': 3 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 6000 },
                     { 'name': 'Precise fit', 'value': 250 }]
             },
             {
                 'name': 'fabric:/App2/Service14', 'type': 'serviceType', 'version': '1.0', 'status': 'Creating', 'healthState': 'Unknown', 'metrics': [
-                    { 'name': 'Count', 'value': 60 },
+                    { 'name': 'Count', 'value': 3 },
                     { 'name': 'MemoryKB', 'value': 300 },
                     { 'name': 'DiskKB', 'value': 4000 },
                     { 'name': 'Precise fit', 'value': 250 }]
@@ -125,21 +125,21 @@ export var ReplicaList =
         [
             {
                 'id': 1, 'partitionId': '1', 'healthState': 'OK', 'status': 'Ready', 'role': 'Primary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 200 },
                     { 'name': 'DiskKB', 'value': 3000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 2, 'partitionId': '2', 'healthState': 'Warning', 'status': 'Ready', 'role': 'ActiveSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 2000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 3, 'partitionId': '3', 'healthState': 'Error', 'status': 'Ready', 'role': 'IdleSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 2000 },
                     { 'name': 'Precise fit', 'value': 50 }]
@@ -149,21 +149,21 @@ export var ReplicaList =
         [
             {
                 'id': 4, 'partitionId': '1', 'healthState': 'OK', 'status': 'Ready', 'role': 'Primary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 3000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 5, 'partitionId': '2', 'healthState': 'Invalid', 'status': 'Standby', 'role': 'ActiveSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 50 },
                     { 'name': 'DiskKB', 'value': 2000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 6, 'partitionId': '3', 'healthState': 'Unknown', 'status': 'Standby', 'role': 'IdleSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 50 },
                     { 'name': 'DiskKB', 'value': 2000 },
                     { 'name': 'Precise fit', 'value': 50 }]
@@ -173,21 +173,21 @@ export var ReplicaList =
         [
             {
                 'id': 7, 'partitionId': '1', 'healthState': 'OK', 'status': 'Invalid', 'role': 'Invalid', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 50 },
                     { 'name': 'DiskKB', 'value': 3000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 8, 'partitionId': '2', 'healthState': 'Warning', 'status': 'InBuild', 'role': 'Unknown', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 0 },
                     { 'name': 'DiskKB', 'value': 0 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 9, 'partitionId': '3', 'healthState': 'Error', 'status': 'Dropped', 'role': 'None', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 50 },
                     { 'name': 'DiskKB', 'value': 3000 },
                     { 'name': 'Precise fit', 'value': 50 }]
@@ -197,21 +197,21 @@ export var ReplicaList =
         [
             {
                 'id': 10, 'partitionId': '1', 'healthState': 'OK', 'status': 'Down', 'role': 'Primary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 100 },
                     { 'name': 'DiskKB', 'value': 1000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 12, 'partitionId': '2', 'healthState': 'Invalid', 'status': 'Down', 'role': 'ActiveSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 0 },
                     { 'name': 'DiskKB', 'value': 1000 },
                     { 'name': 'Precise fit', 'value': 100 }]
             },
             {
                 'id': 11, 'partitionId': '3', 'healthState': 'Unknown', 'status': 'Down', 'role': 'IdleSecondary', 'metrics': [
-                    { 'name': 'Count', 'value': 20 },
+                    { 'name': 'Count', 'value': 1 },
                     { 'name': 'MemoryKB', 'value': 200 },
                     { 'name': 'DiskKB', 'value': 2000 },
                     { 'name': 'Precise fit', 'value': 50 }]

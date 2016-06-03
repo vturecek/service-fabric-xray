@@ -233,15 +233,16 @@ export class NodeComponent implements OnInit, OnDestroy {
         }
 
         this.selectedNodeCapacity = this.nodeCapacities.find(x => x.name == this.selectedClusterCapacity.name);
-
-        var nodeCapacity;
-        var nodeContainerSize;
-
+        
         if (this.selectedNodeCapacity) {
+
+            var nodeCapacity: number;
+            var nodeContainerSize: number;
+            
             if (this.selectedNodeCapacity.capacity <= 0) {
                 this.loadPercent = Math.round(this.selectedNodeCapacity.load / this.selectedClusterCapacity.load * 100);
                 this.elementHeight = -1; // lets the browser auto scale height  
-                nodeCapacity = this.DefaultCapacitySize;
+                nodeCapacity = this.DefaultCapacitySize / 20;
                 nodeContainerSize = this.DefaultCapacitySize * this.scaleFactor;
             }
             else {
@@ -258,7 +259,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                 }
 
                 appView.elementHeight =
-                    Math.max(0, ((appView.selectedMetric / nodeCapacity) * nodeContainerSize) - this.applicationMargin);
+                    Math.max(0, ((appView.selectedMetric / nodeCapacity) * nodeContainerSize) - this.applicationMargin)
 
                 for (var serviceView of appView.services) {
                     if (!serviceView.selectedMetric) {

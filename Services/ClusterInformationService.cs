@@ -22,7 +22,7 @@ namespace Xray.Services
 
         private static readonly TimeSpan HourlyInterval = TimeSpan.FromSeconds(10);
 
-        private static readonly IEnumerable<LoadMetric> defaultMetrics = new[] { new LoadMetric(CountMetricName, 20) };
+        private static readonly IEnumerable<LoadMetric> defaultMetrics = new[] { new LoadMetric(CountMetricName, 1) };
 
         private readonly MemoryCache cache = new MemoryCache("ClusterInformation");
         private readonly TimeSpan cacheDuration = TimeSpan.FromSeconds(10);

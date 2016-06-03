@@ -35,8 +35,8 @@
 </div>
 <div class="nodes">
     <div class="scale">
-        <label>{{scaleFactor}}</label>
-        <input [(ngModel)]="scaleFactor" class="scaleBar" type="range" orient="vertical" min="0" max="2.0" step="0.02" />
+        <label>{{scaleFactor * scaleFactor * 100}}%</label>
+        <input [(ngModel)]="scaleFactor" class="scaleBar" type="range" orient="vertical" min="0" max="2.0" step="0.001" />
     </div>
     
     <ul class="nodeList">
@@ -50,7 +50,7 @@
                             [address]="node.address"
                             [applicationsExpanded]="node.applicationsExpanded"
                             [servicesExpanded]="node.servicesExpanded"
-                            [scaleFactor]="scaleFactor"
+                            [scaleFactor]="scaleFactor * scaleFactor"
                             [selectedClusterCapacity]="selectedClusterCapacity"
                             [selectedColors]="selectedColors">
             </node-component>

@@ -24,6 +24,9 @@ export class NodeCapacityDonut implements AfterViewInit, OnChanges {
     @Input()
     private isCapacityViolation: boolean;
 
+    @Input()
+    private selectedColors: string;
+
     @ViewChild("chartCanvas")
     private chartCanvasElement: ElementRef;
 
@@ -89,6 +92,6 @@ export class NodeCapacityDonut implements AfterViewInit, OnChanges {
             return "#FCD116";
         }
 
-        return "#00ABEC";
+        return this.selectedColors == 'status' ? "#00ABEC" : '#7FBA00';
     }
 }

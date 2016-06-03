@@ -14,7 +14,7 @@
     .filter label { margin-left: 5px; vertical-align: middle; font-weight: normal; }
 .scale { float: left; width: 30px; margin-left: 5px; text-align: center; }
     .scale label { font-size: 12px; width: 30px; }
-    .scale .scaleBar { writing-mode: bt-lr; /* IE */ -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 300px; padding: 0 5px; margin-left: 10px; }
+    .scale .scaleBar { writing-mode: bt-lr; /* IE */ -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 10px; }
 
 /* common */
 .invalid { }

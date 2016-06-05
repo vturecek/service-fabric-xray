@@ -1,4 +1,4 @@
-﻿import {Component, AfterViewInit, OnDestroy, Inject} from 'angular2/core';
+﻿import {Component, AfterViewInit, OnInit, OnDestroy, Inject} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {Observable, Subscription, BehaviorSubject, ReplaySubject} from "rxjs/Rx";
 import {ClusterCapacityGraph, DataStream} from './clustercapacitygraph.component';
@@ -6,9 +6,12 @@ import {ClusterCapacityDonut} from './clustercapacitydonut.component';
 import {DataService} from './../services/data.service';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
+import {ClusterInfo} from './../models/clusterinfo'
+import {ClusterInfoViewModel} from './../viewmodels/clusterinfoviewmodel';
 import {List} from './../viewmodels/list';
 
 declare var Chart: any;
+declare var dateFormat: any;
 
 @Component({
     selector: 'dashboard-component',
@@ -16,7 +19,9 @@ declare var Chart: any;
     styleUrls: ['app/components/dashboard.component.css'],
     directives: [ClusterCapacityGraph, ClusterCapacityDonut]
 })
-export class DashboardComponent implements AfterViewInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    private clusterInfo: ClusterInfoViewModel;
 
     private clusterCapacities: ClusterCapacityViewModel[] = [];
 
@@ -24,7 +29,9 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
     private dataStreams: DataStreamSubscription[] = [];
 
-    private clusterSubscription: Subscription;
+    private clusterCapacitySubscription: Subscription;
+
+    private clusterInfoSubscription: Subscription;
 
     public constructor(
         private dataService: DataService,
@@ -38,9 +45,38 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
         Chart.defaults.global.tooltips.cornerRadius = 0;
     }
 
+    public ngOnInit(): void {
+
+        this.clusterInfoSubscription = this.dataService.getClusterInfo().subscribe(
+            result => {
+                if (!result) {
+                    return;
+                }
+
+                this.clusterInfo = new ClusterInfoViewModel(
+                    result.healthStatus,
+                    result.version,
+                    result.nodeTypes,
+                    result.applicationTypes,
+                    result.faultDomains,
+                    result.upgradeDomains,
+                    dateFormat(result.lastBalanceStartTime, 'mm/dd/yy HH:mm:ss'),
+                    dateFormat(result.lastBalanceEndTime, 'mm/dd/yy HH:mm:ss'),
+                    result.nodes,
+                    result.applications,
+                    result.services,
+                    result.partitions,
+                    result.replicas);
+                
+                console.log("got cluster info.");
+            },
+            error => console.log("error from observable: " + error));
+
+    }
+
     public ngAfterViewInit() {
 
-        this.clusterSubscription = this.dataService.getClusterCapacity().subscribe(
+        this.clusterCapacitySubscription = this.dataService.getClusterCapacity().subscribe(
             result => {
                 if (!result) {
                     return;
@@ -77,8 +113,12 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        if (this.clusterSubscription) {
-            this.clusterSubscription.unsubscribe();
+        if (this.clusterInfoSubscription) {
+            this.clusterInfoSubscription.unsubscribe();
+        }
+
+        if (this.clusterCapacitySubscription) {
+            this.clusterCapacitySubscription.unsubscribe();
         }
 
         for (let i = 0; i < this.dataStreams.length; ++i) {
@@ -128,6 +168,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
     private isCapacityWarning(item: ClusterCapacityViewModel): boolean {
         return item.load / item.capacity > 0.9;
     }
+    
 }
 
 class DataStreamSubscription {

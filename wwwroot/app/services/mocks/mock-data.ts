@@ -4,6 +4,7 @@ import {ClusterCapacity} from './../../models/clustercapacity';
 import {ClusterNode} from './../../models/clusternode';
 import {ClusterNodeCapacity} from './../../models/clusternodecapacity';
 import {ClusterInfo} from './../../models/clusterinfo';
+import {ClusterFilters} from './../../models/clusterfilters';
 import {Replica} from './../../models/replica';
 
 export var ClusterCapacityList: ClusterCapacity[] = [
@@ -14,13 +15,28 @@ export var ClusterCapacityList: ClusterCapacity[] = [
     { 'name': 'Precise fit', 'capacity': 5000, 'bufferedCapacity': 5000, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 }
 ];
 
-export var ClusterInfoData: ClusterInfo = {
+export var ClusterFiltersData: ClusterFilters = {
     'nodeTypes': ['FrontEnd', 'ProcessingNode', 'DataNode', 'StatisticsNode'],
     'applicationTypes': ['App1Type', 'App2Type'],
     'faultDomains': [1, 2, 3, 4, 5],
     'upgradeDomains': [1, 2, 3, 4, 5]
 };
 
+export var ClusterInfoData: ClusterInfo = {
+    'healthStatus': "Ok",
+    'version': '5.0.135.94',
+    'nodeTypes': ['FrontEnd', 'ProcessingNode', 'DataNode', 'StatisticsNode'],
+    'applicationTypes': ['App1Type', 'App2Type'],
+    'faultDomains': [1, 2, 3, 4, 5],
+    'upgradeDomains': [1, 2, 3, 4, 5],
+    'lastBalanceStartTime': new Date(Date.now()),
+    'lastBalanceEndTime': new Date(Date.now()),
+    'nodes': 5,
+    'applications': 2,
+    'services': 4,
+    'partitions': 6,
+    'replicas': 12
+};
 
 export var ClusterNodeList: ClusterNode[] = [
     { 'name': 'node1', 'nodeType': 'FrontEnd', 'faultDomain': 1, 'upgradeDomain': 1, 'status': 'Up', 'healthState': 'Ok', 'upTime': '00:12:22', 'address': '10.0.0.1' },

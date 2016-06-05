@@ -65,15 +65,15 @@ gulp.task("copy-deps:rxjs", function () {
     return gulp.src(paths.npmSrc + '/rxjs/bundles/*.*', { base: paths.npmSrc + '/rxjs/bundles/' })
          .pipe(gulp.dest(paths.npmLibs + '/rxjs/'));
 });
-
-gulp.task("copy-deps:jquery", function () {
-    return gulp.src(paths.npmSrc + '/jquery/dist/*.*', { base: paths.npmSrc + '/jquery/dist/' })
-         .pipe(gulp.dest(paths.npmLibs + '/jquery/'));
-});
 gulp.task("copy-deps:chartjs", function () {
     return gulp.src(paths.npmSrc + '/chart.js/dist/*.*', { base: paths.npmSrc + '/chart.js/dist/' })
          .pipe(gulp.dest(paths.npmLibs + '/chart.js/'));
 });
+gulp.task("copy-deps:dateformat", function () {
+    return gulp.src(paths.npmSrc + '/dateformat/lib/*.*', { base: paths.npmSrc + '/dateformat/lib/' })
+         .pipe(gulp.dest(paths.npmLibs + '/dateformat/'));
+});
 
 
-gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:jquery', 'copy-deps:chartjs']);
+
+gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:chartjs', 'copy-deps:dateformat']);

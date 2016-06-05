@@ -6,4 +6,4 @@
     .donut-inner .percent { font-size: 14px; vertical-align:super }
 .donut-outer { margin:10px 0 0 0; padding: 0; color:#AAA;}
 .donut-outer li { list-style: none; font-weight:bold; }
-.donut-outer li label { width: 70px; font-weight:normal; text-align:right; margin-right:10px }
+.donut-outer li span { display:inline-block; width: 70px; font-weight:normal; text-align:right; margin-right:10px }

@@ -1,18 +1,34 @@
-﻿<div class="capacityList">
-    <h4>Cluster capacities</h4>
-    <ul>
-        <li *ngFor="#item of clusterCapacities"
-            [ngClass]="{ 'capacityWarning': isCapacityWarning(item) && !item.isClusterCapacityViolation, 'capacityViolation': item.isClusterCapacityViolation }">
-            <input id="{{item.name}}" type="checkbox" [(ngModel)]="item.selected" (change)="onSelectCapacity(item.name, $event)" /><label attr.for="{{item.name}}">{{item.name}}</label>
-        </li>
-    </ul>
+﻿<div class="controlPanel">
+    <div class="status controlGroup" *ngIf="clusterInfo">
+        <h4>Cluster status</h4>
+        <ul>
+            <li><label>Cluster health:</label><span *ngIf="clusterInfo.healthStatus" class="{{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span></li>
+            <li><label>Runtime version:</label>{{clusterInfo.version}}</li>
+        </ul>
+    </div>
+    <div class="balance controlGroup" *ngIf="clusterInfo">
+        <h4>Balancing status</h4>
+        <ul>
+            <li><label>Last started:</label>{{clusterInfo.lastBalanceStartTime}}</li>
+            <li><label>Last ended:</label>{{clusterInfo.lastBalanceEndTime}}</li>
+        </ul>
+    </div>
+    <div class="capacities controlGroup">
+        <h4>Cluster capacities</h4>
+        <ul>
+            <li *ngFor="#item of clusterCapacities"
+                [ngClass]="{ 'capacityWarning': isCapacityWarning(item) && !item.isClusterCapacityViolation, 'capacityViolation': item.isClusterCapacityViolation }">
+                <input id="{{item.name}}" type="checkbox" [(ngModel)]="item.selected" (change)="onSelectCapacity(item.name, $event)" /><label attr.for="{{item.name}}">{{item.name}}</label>
+            </li>
+        </ul>
+    </div>
 </div>
 <div class="charts">
     <cluster-capacity-graph class="capacityGraph" [capacityHistory]="clusterCapacityStream">
     </cluster-capacity-graph>
     <ul class="capacityDonuts">
         <li *ngFor="#item of clusterCapacities">
-            <cluster-capacity-donut *ngIf="item.selected && item.capacity > 0" 
+            <cluster-capacity-donut *ngIf="item.selected && item.capacity > 0"
                                     [capacity]="item.capacity"
                                     [load]="item.load"
                                     [name]="item.name"
@@ -20,5 +36,18 @@
                                     [isClusterCapacityViolation]="item.isClusterCapacityViolation">
             </cluster-capacity-donut>
         </li>
+    </ul>
+</div>
+<div class="clusterInfo" *ngIf="clusterInfo">
+    <ul>
+        <li><span>Fault domains:</span>{{clusterInfo.faultDomains}}</li>
+        <li><span>Upgrade domains:</span>{{clusterInfo.upgradeDomains}}</li>
+    </ul>
+    <ul>
+        <li><span>nodes:</span>{{clusterInfo.nodes}}</li>
+        <li><span>applications:</span>{{clusterInfo.applications}}</li>
+        <li><span>services:</span>{{clusterInfo.services}}</li>
+        <li><span>partitions:</span>{{clusterInfo.partitions}}</li>
+        <li><span>replicas and instances:</span>{{clusterInfo.replicas}}</li>
     </ul>
 </div>

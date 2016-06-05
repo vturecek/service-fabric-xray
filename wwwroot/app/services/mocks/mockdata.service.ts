@@ -1,7 +1,7 @@
 ﻿import {DataService} from './../data.service';
 import {Injectable} from 'angular2/core';
 import {Observable}     from 'rxjs/Rx';
-import {ReplicaList, ServiceList, ClusterNodeList, ClusterNodeCapacityList, ClusterInfoData, ClusterCapacityList, ApplicationList} from './mock-data';
+import {ReplicaList, ServiceList, ClusterNodeList, ClusterNodeCapacityList, ClusterInfoData, ClusterFiltersData, ClusterCapacityList, ApplicationList} from './mock-data';
 import {ClusterCapacity} from './../../models/clustercapacity';
 import {ClusterNode} from './../../models/clusternode';
 import {ClusterNodeCapacity} from './../../models/clusternodecapacity';
@@ -9,6 +9,7 @@ import {ClusterInfo} from './../../models/clusterinfo';
 import {DeployedApplication} from './../../models/deployedapplication';
 import {DeployedService} from './../../models/deployedservice';
 import {ClusterCapacityHistory} from './../../models/clustercapacityhistory';
+import {ClusterFilters} from './../../models/clusterfilters';
 
 @Injectable()
 export class MockDataService extends DataService {
@@ -112,6 +113,13 @@ export class MockDataService extends DataService {
             .interval(this.refreshInterval * 1000)
             .startWith(-1)
             .flatMap(() => Observable.of(ClusterNodeCapacityList[nodeName]));
+    }
+
+    public getClusterFilters(): Observable<ClusterFilters> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => Observable.of(ClusterFiltersData));
     }
 
     public getClusterInfo(): Observable<ClusterInfo> {

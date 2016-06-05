@@ -11,6 +11,7 @@ import {DeployedApplication} from './../models/deployedapplication';
 import {DeployedService} from './../models/deployedservice';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 import {ClusterInfo} from './../models/clusterinfo';
+import {ClusterFilters} from './../models/clusterfilters';
 
 @Injectable()
 export class HttpDataService extends DataService {
@@ -46,6 +47,15 @@ export class HttpDataService extends DataService {
             .interval(this.refreshInterval * 1000)
             .startWith(-1)
             .flatMap(() => this.http.get(this.apiUrl + 'cluster/info'))
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getClusterFilters(): Observable<ClusterFilters> {
+        return Observable
+            .interval(this.refreshInterval * 1000)
+            .startWith(-1)
+            .flatMap(() => this.http.get(this.apiUrl + 'cluster/filters'))
             .map(this.extractData)
             .catch(this.handleError);
     }

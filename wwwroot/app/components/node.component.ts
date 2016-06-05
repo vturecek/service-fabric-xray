@@ -204,10 +204,12 @@ export class NodeComponent implements OnInit, OnDestroy {
         if (this.selectedClusterCapacity) {
             let metric: LoadMetric = metrics.find(x => x.name == this.selectedClusterCapacity.name);
 
-            return metric
-                ? metric.value
-                : 0;
+            if (metric) {
+                return metric.value;
+            }
         }
+
+        return 0;
     }
 
     private getSelectedColors(model: any): string {

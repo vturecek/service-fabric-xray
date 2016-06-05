@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitAny": false,
+    "noImplicitReturns": true,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,

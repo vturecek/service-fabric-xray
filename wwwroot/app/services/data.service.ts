@@ -6,6 +6,7 @@ import {ClusterNodeCapacity} from './../models/clusternodecapacity';
 import {DeployedApplication} from './../models/deployedapplication';
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 import {ClusterInfo} from './../models/clusterinfo';
+import {ClusterFilters} from './../models/clusterfilters';
 
 @Injectable()
 export abstract class DataService {
@@ -13,6 +14,8 @@ export abstract class DataService {
     public abstract getApplicationModels(nodeName: string, appTypeFilter: () => string[]): Observable<DeployedApplication[]>;
 
     public abstract getClusterInfo(): Observable<ClusterInfo>;
+
+    public abstract getClusterFilters(): Observable<ClusterFilters>;
 
     public abstract getClusterCapacity(): Observable<ClusterCapacity[]>;
 

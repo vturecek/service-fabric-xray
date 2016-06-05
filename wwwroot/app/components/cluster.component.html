@@ -5,13 +5,13 @@
     </div>
     <div class="controls controlGroup">
         <div>
-            <span>Metric:</span>
+            <label>Metric:</label>
             <select name="metricDropDown" [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
                 <option *ngFor="#capacity of clusterCapacities" [ngValue]="capacity.name">{{capacity.name}}</option>
             </select>
         </div>
         <div>
-            <span>Display:</span>
+            <label>Display:</label>
             <select name="colorDropDown" [ngModel]="selectedColors" (change)="onChangeColors($event.target.value)">
                 <option value="status">Status</option>
                 <option value="health">Health</option>

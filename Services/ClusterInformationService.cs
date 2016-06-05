@@ -9,6 +9,7 @@ namespace Xray.Services
     using System;
     using System.Collections.Generic;
     using System.Fabric;
+    using System.Fabric.Health;
     using System.Fabric.Query;
     using System.Linq;
     using System.Runtime.Caching;
@@ -355,16 +356,65 @@ namespace Xray.Services
             return new ClusterNodeCapacity(CountMetricName, false, 0, 0, count, -1, -1);
         }
 
-        public async Task<ClusterInfo> GetClusterInfo()
+        public async Task<ClusterFilters> GetClusterFilters()
         {
             NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
             ApplicationTypeList appTypes = await this.fabricClient.QueryManager.GetApplicationTypeListAsync();
 
-            return new ClusterInfo(
+            return new ClusterFilters(
                 nodes.Select(x => x.NodeType).Distinct(),
                 appTypes.Select(x => x.ApplicationTypeName),
                 nodes.Select(x => x.FaultDomain.ToString()).Distinct(),
                 nodes.Select(x => x.UpgradeDomain).Distinct());
+        }
+
+        public async Task<ClusterInfo> GetClusterInfo()
+        {
+            NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
+            ApplicationTypeList appTypes = await this.fabricClient.QueryManager.GetApplicationTypeListAsync();
+            ClusterLoadInformation clusterLoadInfo = await fabricClient.QueryManager.GetClusterLoadInformationAsync();
+            ClusterHealth clusterHealth = await fabricClient.HealthManager.GetClusterHealthAsync();
+            ProvisionedFabricCodeVersionList codeVersionList = await fabricClient.QueryManager.GetProvisionedFabricCodeVersionListAsync();
+            ProvisionedFabricCodeVersion version = codeVersionList.FirstOrDefault();
+                
+            
+
+            long applicationCount = 0;
+            long serviceCount = 0;
+            long partitionCount = 0;
+            long replicaCount = 0;
+
+            foreach (Node node in nodes)
+            {
+                DeployedApplicationList deployedApplicationList = await this.fabricClient.QueryManager.GetDeployedApplicationListAsync(node.NodeName);
+
+                foreach (DeployedApplication deployedApplication in deployedApplicationList)
+                {
+                    applicationCount++;
+
+                    DeployedServiceReplicaList deployedReplicas =
+                        await this.fabricClient.QueryManager.GetDeployedReplicaListAsync(node.NodeName, deployedApplication.ApplicationName);
+
+                    serviceCount += deployedReplicas.GroupBy(x => x.ServiceName).Count();
+
+                    replicaCount += deployedReplicas.Count;
+                }
+            }
+
+            return new ClusterInfo(
+                clusterHealth.AggregatedHealthState.ToString(),
+                version != null ? version.CodeVersion : "not based",
+                nodes.Select(x => x.NodeType).Distinct().Count(),
+                appTypes.Count(),
+                nodes.Select(x => x.FaultDomain.ToString()).Distinct().Count(),
+                nodes.Select(x => x.UpgradeDomain).Distinct().Count(),
+                nodes.Count(),
+                applicationCount,
+                serviceCount,
+                partitionCount, // TODO: partition count
+                replicaCount,
+                clusterLoadInfo.LastBalancingStartTimeUtc,
+                clusterLoadInfo.LastBalancingEndTimeUtc);
         }
 
     }

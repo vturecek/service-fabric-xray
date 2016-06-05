@@ -1,11 +1,30 @@
-﻿.charts { margin: 0 5px 0 175px; }
+﻿.charts { margin: 0 5px 0 205px; }
+
 .capacityGraph { }
-.capacityDonuts { height: 300px; margin: 5px 0 0 0; padding: 0; }
-    .capacityDonuts li { float: left; list-style: none; margin: 0; }
-.capacityList { padding-left: 10px; float: left; width: 170px; height: 555px; overflow-y: auto; background:#222222 }
-    .capacityList h4 { font-size: 14px; }
-    .capacityList ul { margin: 0; padding: 0; }
-    .capacityList li { list-style: none; padding: 0; margin: 0; }
-        .capacityList li label { margin-left: 5px; }
-.capacityWarning { color:#FCD116 }
-.capacityViolation { color:#E81123 }
+
+.capacityDonuts { height: 250px; margin: 5px 0 0 0; padding: 0; }
+    .capacityDonuts li { display: inline-block; list-style: none; margin: 0; }
+
+.controlPanel { float: left; width: 200px; height: 555px; overflow: hidden; background: #222222; }
+.controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
+    .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
+        .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
+    .controlGroup h4 { font-size: 12px; }
+    .controlGroup ul { margin: 0; padding: 0; }
+    .controlGroup li { list-style: none; padding: 0; margin: 0; font-weight: bold; }
+    .controlGroup label { display: inline-block; margin: 2px 0; width: 87px; font-weight: normal; padding: 0; }
+
+.status span { font-weight: bold; }
+.capacities { border: none; }
+    .capacities label { margin-left: 5px; font-weight: bold; }
+.capacityWarning { color: #FCD116; }
+.capacityViolation { color: #E81123; }
+
+.clusterInfo { display: block; height: 250px; background-color: #222222; margin: 5px 0 0 5px; padding: 0; }
+    .clusterInfo ul { margin: 5px; }
+    .clusterInfo li { list-style: none; padding: 0; margin: 0; }
+
+/* health states */
+.ok { color: #7FBA00; }
+.warning { color: #FCD116; }
+.error { color: #E81123; }

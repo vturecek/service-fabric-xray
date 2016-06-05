@@ -74,7 +74,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
             },
             error => console.log("error from observable: " + error));
 
-        this.clusterInfoSubscription = this.dataService.getClusterInfo().subscribe(
+        this.clusterInfoSubscription = this.dataService.getClusterFilters().subscribe(
             result => {
                 if (!result) {
                     return;

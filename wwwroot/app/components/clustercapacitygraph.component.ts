@@ -4,6 +4,7 @@ import { ClusterCapacityHistory } from './../models/clustercapacityhistory';
 import {Color} from './../color';
 
 declare var Chart: any;
+declare var dateFormat: any;
 
 export class DataStream {
     public constructor(
@@ -130,13 +131,17 @@ export class ClusterCapacityGraph implements AfterViewInit {
 
         for (var item of data) {
             
-            if (!this.chart.config.data.labels.find(x => x == item.timestamp.toLocaleString())) {
-                this.chart.config.data.labels.push(item.timestamp.toLocaleString());
+            if (!this.chart.config.data.labels.find(x => x == this.formatDateLabel(item.timestamp))) {
+                this.chart.config.data.labels.push(this.formatDateLabel(item.timestamp));
             }
 
             dataset.data.push(item.data);
         }
 
         this.chart.update();
+    }
+
+    private formatDateLabel(date: Date): string {
+        return dateFormat(date, 'mm/dd/yy HH:mm:ss');
     }
 }

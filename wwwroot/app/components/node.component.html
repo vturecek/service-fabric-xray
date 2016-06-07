@@ -20,45 +20,49 @@
 <div *ngIf="selectedNodeCapacity && selectedClusterCapacity" class="{{selectedColors == 'status' ? status : ''}} node"
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
     <ul class="application-list">
-        <li *ngFor="#applicationView of applications"
-            class="application {{applicationView.selectedClass}} highlight-background"
-            [style.height.px]="applicationView.elementHeight">
+        <li *ngFor="#applicationView of applications">
+            <div *ngIf="applicationView.selectedMetric > 0"
+                 class="application {{applicationView.selectedClass}} highlight-background"
+                 [style.height.px]="applicationView.elementHeight">
 
-            <a *ngIf="applicationView.expanded" class="selectorButton" (click)="applicationView.expanded = !applicationView.expanded">
-                <span class="selectorArrow">[>]</span>
-                <span class="selectorLabel">{{applicationView.application.name}}</span>
-            </a>
+                <a *ngIf="applicationView.expanded" class="selectorButton" (click)="applicationView.expanded = !applicationView.expanded">
+                    <span class="selectorArrow">[>]</span>
+                    <span class="selectorLabel">{{applicationView.application.name}}</span>
+                </a>
 
-            <div *ngIf="!applicationView.expanded" class="applicationDetails">
-                <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
-                <h5>{{applicationView.selectedMetric}}</h5>
-                <h6>{{selectedNodeCapacity.name}}</h6>
+                <div *ngIf="!applicationView.expanded" class="applicationDetails">
+                    <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
+                    <h5>{{applicationView.selectedMetric}}</h5>
+                    <h6>{{selectedNodeCapacity.name}}</h6>
+                </div>
+
+                <ul *ngIf="applicationView.expanded" class="service-list">
+                    <li *ngFor="#serviceView of applicationView.services">
+                        <div *ngIf="serviceView.selectedMetric > 0"
+                             class="service {{serviceView.selectedClass}} highlight-background"
+                             [style.height.px]="serviceView.elementHeight">
+
+                            <a *ngIf="serviceView.expanded" class="selectorButton" (click)="serviceView.expanded = !serviceView.expanded">
+                                <span class="selectorArrow">[>]</span>
+                                <span class="selectorLabel">{{serviceView.service.name}}</span>
+                            </a>
+
+                            <div *ngIf="!serviceView.expanded" class="applicationDetails">
+                                <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
+                                <h5>{{serviceView.selectedMetric}}</h5>
+                                <h6>{{selectedNodeCapacity.name}}</h6>
+                            </div>
+
+                            <ul *ngIf="serviceView.expanded" class="replica-list">
+                                <li *ngFor="#replicaView of serviceView.replicas"
+                                    class="replica replica-{{replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
+                                    [style.height.px]="replicaView.elementHeight">
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
             </div>
-
-            <ul *ngIf="applicationView.expanded" class="service-list">
-                <li *ngFor="#serviceView of applicationView.services"
-                    class="service {{serviceView.selectedClass}} highlight-background"
-                    [style.height.px]="serviceView.elementHeight">
-
-                    <a *ngIf="serviceView.expanded" class="selectorButton" (click)="serviceView.expanded = !serviceView.expanded">
-                        <span class="selectorArrow">[>]</span>
-                        <span class="selectorLabel">{{serviceView.service.name}}</span>
-                    </a>
-
-                    <div *ngIf="!serviceView.expanded" class="applicationDetails">
-                        <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
-                        <h5>{{serviceView.selectedMetric}}</h5>
-                        <h6>{{selectedNodeCapacity.name}}</h6>
-                    </div>
-
-                    <ul *ngIf="serviceView.expanded" class="replica-list">
-                        <li *ngFor="#replicaView of serviceView.replicas"
-                            class="replica replica-{{replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
-                            [style.height.px]="replicaView.elementHeight">
-                        </li>
-                    </ul>
-                </li>
-            </ul>
         </li>
     </ul>
 </div>

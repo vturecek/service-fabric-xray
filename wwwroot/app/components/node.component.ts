@@ -208,7 +208,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                 return metric.value;
             }
         }
-
+        
         return 0;
     }
 
@@ -256,7 +256,7 @@ export class NodeComponent implements OnInit, OnDestroy {
 
 
             for (var appView of this.applications) {
-                if (!appView.selectedMetric) {
+                if (appView.selectedMetric <= 0) {
                     continue;
                 }
 
@@ -264,7 +264,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                     Math.max(0, ((appView.selectedMetric / nodeCapacity) * nodeContainerSize) - this.applicationMargin)
 
                 for (var serviceView of appView.services) {
-                    if (!serviceView.selectedMetric) {
+                    if (serviceView.selectedMetric <= 0) {
                         continue;
                     }
 
@@ -272,7 +272,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                         Math.max(0, ((serviceView.selectedMetric / appView.selectedMetric) * (appView.elementHeight - this.applicationPaddingAndBorder)) - this.serviceMargin);
 
                     for (var replicaView of serviceView.replicas) {
-                        if (!replicaView.selectedMetric) {
+                        if (replicaView.selectedMetric <= 0) {
                             continue;
                         }
 

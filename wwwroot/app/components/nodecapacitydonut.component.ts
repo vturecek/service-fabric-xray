@@ -88,7 +88,7 @@ export class NodeCapacityDonut implements AfterViewInit, OnChanges {
             return "#E81123";
         }
 
-        if (this.load / this.capacity > 0.9) {
+        if (this.capacity > 0 && this.load / this.capacity > 0.9) {
             return "#FCD116";
         }
 

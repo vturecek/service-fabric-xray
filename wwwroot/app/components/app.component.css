@@ -1,8 +1,9 @@
 ﻿
 header { height: 50px; background: #111111; }
-    header h1 { display:inline-block; font-size: 14px; color: #FFFFFF; margin:15px 0 0 0; vertical-align:baseline }
+    header h1 { display: inline-block; font-size: 14px; color: #FFFFFF; margin: 15px 0 0 0; vertical-align: baseline; }
+    header .clusterAddress { float: right; font-size: 14px; margin: 15px; }
     header img { margin: 0; vertical-align: top; padding: 0 0 0 10px; }
-nav { display: inline-block; margin: 15px 0 0 10px; vertical-align: text-bottom; vertical-align:baseline }
+nav { display: inline-block; margin: 15px 0 0 10px; vertical-align: text-bottom; vertical-align: baseline; }
     nav a { font-size: 14px; padding: 0 10px; text-decoration: none; display: inline-block; color: #DDDDDD; }
         nav a:visited, a:link { color: #DDDDDD; }
         nav a:hover { color: #FFFFFF; }

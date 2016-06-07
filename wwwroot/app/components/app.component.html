@@ -5,6 +5,9 @@
         <a [routerLink]="['Dashboard']">Dashboard</a>
         <a [routerLink]="['Cluster']">Cluster</a>
     </nav>
+    <span class="clusterAddress">
+        {{clusterAddress}}
+    </span>
 </header>
 <div class="main">
     <router-outlet></router-outlet>

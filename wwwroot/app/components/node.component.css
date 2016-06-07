@@ -67,17 +67,13 @@
 .warning { border-color: #FCD116; }
 .error { border-color: #E81123; }
 
-.ok .highlight-background { background-color:#23261c } 
-.warning .highlight-background  { background-color:#26241c }
-.error .highlight-background { background-color:#261C1D }
-
 .ok .highlight { color: #7FBA00; } 
 .warning .highlight { color: #FCD116; }
 .error .highlight { color: #E81123; }
 
 /* application and service statuses */
-.ready { border-color: #00ABEC; background-color: #1E2426 }
-.creating { border-color: #D17D00; background-color: #3F3A33 }
-.active { border-color: #00ABEC; background-color: #1E2426 }
-.upgrading { border-color: #00C69F; background-color: #333F3D }
-.deleting { border-color: #AAAAAA; background-color: #333333 }
+.ready { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11) }
+.creating { border-color: #D17D00; background-color: rgba(206, 163, 103, 0.11) }
+.active { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11) }
+.upgrading { border-color: #00C69F; background-color: rgba(98, 196, 176, 0.11) }
+.deleting { border-color: #AAAAAA; background-color:  rgba(170, 170, 170, 0.11) }

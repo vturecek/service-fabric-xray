@@ -1,4 +1,4 @@
-﻿import {Component, provide} from 'angular2/core';
+﻿import {Component, OnInit, provide} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {ClusterComponent} from './cluster.component';
 import {ServiceDetailComponent} from './service-detail.component';
@@ -34,6 +34,12 @@ import { HTTP_PROVIDERS }    from 'angular2/http';
     directives: [ROUTER_DIRECTIVES],
     providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS, provide(DataService, { useClass: HttpDataService })]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
     title: String
+
+    clusterAddress: string;
+
+    public ngOnInit(): void {
+        this.clusterAddress = window.location.hostname;
+    }
 }

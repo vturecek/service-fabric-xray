@@ -22,7 +22,7 @@
     <ul class="application-list">
         <li *ngFor="#applicationView of applications">
             <div *ngIf="applicationView.selectedMetric > 0"
-                 class="application {{applicationView.selectedClass}} highlight-background"
+                 class="application {{applicationView.selectedClass}}"
                  [style.height.px]="applicationView.elementHeight">
 
                 <a *ngIf="applicationView.expanded" class="selectorButton" (click)="applicationView.expanded = !applicationView.expanded">
@@ -39,7 +39,7 @@
                 <ul *ngIf="applicationView.expanded" class="service-list">
                     <li *ngFor="#serviceView of applicationView.services">
                         <div *ngIf="serviceView.selectedMetric > 0"
-                             class="service {{serviceView.selectedClass}} highlight-background"
+                             class="service {{serviceView.selectedClass}}"
                              [style.height.px]="serviceView.elementHeight">
 
                             <a *ngIf="serviceView.expanded" class="selectorButton" (click)="serviceView.expanded = !serviceView.expanded">

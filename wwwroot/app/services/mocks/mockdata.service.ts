@@ -20,20 +20,15 @@ export class MockDataService extends DataService {
     public constructor() {
         super();
         this.history = {};
-
-        let times: Date[] = [];
-        let now: Date = new Date(Date.now());
-
-        for (var i = 0; i < 50; ++i) {
-            times.push(new Date(Date.now() - 60000 * i));
-        }
-
+        
+        let now: number = Date.now();
+        
         for (var capacity of ClusterCapacityList) {
 
             let items: ClusterCapacityHistory[] = [];
 
             for (var i = 0; i < 50; ++i) {
-                items.push(new ClusterCapacityHistory(times[i], Math.random() * 1000));
+                items.push(new ClusterCapacityHistory(new Date(now - (60000 * (50 - i))), Math.random() * 1000));
             }
 
             this.history[capacity.name] = items;

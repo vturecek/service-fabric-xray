@@ -60,12 +60,9 @@ export class ClusterCapacityGraph implements AfterViewInit {
                 if (!dataStream) {
                     return;
                 }
-
-                console.log("received stream for " + dataStream.name);
-
+                
                 dataStream.stream.subscribe(
                     next => {
-                        console.log("received data for " + dataStream.name + ". Count: " + next.length);
                         this.addData(dataStream.name, next);
                     },
                     error => {
@@ -130,7 +127,8 @@ export class ClusterCapacityGraph implements AfterViewInit {
         }
 
         for (var item of data) {
-            
+
+            console.log((item.timestamp));
             if (!this.chart.config.data.labels.find(x => x == this.formatDateLabel(item.timestamp))) {
                 this.chart.config.data.labels.push(this.formatDateLabel(item.timestamp));
             }
@@ -142,6 +140,6 @@ export class ClusterCapacityGraph implements AfterViewInit {
     }
 
     private formatDateLabel(date: Date): string {
-        return dateFormat(date, 'mm/dd/yy HH:mm:ss');
+        return dateFormat(date, 'mm/dd/yy HH:MM:ss');
     }
 }

@@ -7,5 +7,11 @@
     public isClusterCapacityViolation: boolean;
     public name: string;
     public bufferPercentage: number;
-    
+    public balancedBefore: boolean;
+    public balancedAfter: boolean;
+    public deviationBefore: number;
+    public deviationAfter: number;
+    public balancingThreshold: number;
+    public maxLoadedNode: string;
+    public minLoadedNode: string;
 }

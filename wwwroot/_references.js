@@ -31,7 +31,6 @@
 /// <reference path="app/services/mocks/mock-data.js" />
 /// <reference path="app/services/mocks/mockdata.service.js" />
 /// <reference path="app/viewmodels/clustercapacityviewmodel.js" />
-/// <reference path="app/viewmodels/clusterinfo.js" />
 /// <reference path="app/viewmodels/clusterinfoviewmodel.component.js" />
 /// <reference path="app/viewmodels/clusterinfoviewmodel.js" />
 /// <reference path="app/viewmodels/deployedapplicationviewmodel.js" />

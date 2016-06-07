@@ -8,6 +8,7 @@ import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel
 import {ClusterCapacityHistory} from './../models/clustercapacityhistory';
 import {ClusterInfo} from './../models/clusterinfo'
 import {ClusterInfoViewModel} from './../viewmodels/clusterinfoviewmodel';
+import {Selectable} from './../viewmodels/selectable';
 import {List} from './../viewmodels/list';
 
 declare var Chart: any;
@@ -19,13 +20,15 @@ declare var dateFormat: any;
     styleUrls: ['app/components/dashboard.component.css'],
     directives: [ClusterCapacityGraph, ClusterCapacityDonut]
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
 
     private clusterInfo: ClusterInfoViewModel;
 
     private clusterCapacities: ClusterCapacityViewModel[] = [];
 
-    private clusterCapacityStream: BehaviorSubject<DataStream>;
+    private selectedClusterCapacities: Selectable[] = [];
+
+    private clusterCapacityStream: ReplaySubject<DataStream>;
 
     private dataStreams: DataStreamSubscription[] = [];
 
@@ -36,7 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     public constructor(
         private dataService: DataService,
         private router: Router) {
-        this.clusterCapacityStream = new BehaviorSubject(null);
+        this.clusterCapacityStream = new ReplaySubject();
 
         Chart.defaults.global.maintainAspectRatio = false;
         Chart.defaults.global.defaultFontFamily = "'Segoe UI', 'Segoe', Arial, sans-serif";
@@ -71,11 +74,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log("got cluster info.");
             },
             error => console.log("error from observable: " + error));
-
-    }
-
-    public ngAfterViewInit() {
-
+        
         this.clusterCapacitySubscription = this.dataService.getClusterCapacity().subscribe(
             result => {
                 if (!result) {
@@ -92,6 +91,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                         x.isClusterCapacityViolation,
                         x.name,
                         x.bufferPercentage,
+                        x.balancedBefore,
+                        x.balancedAfter,
+                        x.deviationBefore,
+                        x.deviationAfter,
+                        x.balancingThreshold,
+                        x.maxLoadedNode,
+                        x.minLoadedNode,
                         true
                     )));
 
@@ -166,7 +172,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private isCapacityWarning(item: ClusterCapacityViewModel): boolean {
-        return item.load / item.capacity > 0.9;
+        return item.capacity > 0 && item.load / item.capacity > 0.9;
     }
     
 }

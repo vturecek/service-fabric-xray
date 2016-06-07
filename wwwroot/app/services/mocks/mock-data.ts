@@ -8,11 +8,11 @@ import {ClusterFilters} from './../../models/clusterfilters';
 import {Replica} from './../../models/replica';
 
 export var ClusterCapacityList: ClusterCapacity[] = [
-    { 'name': 'MemoryKB', 'capacity': 20000, 'bufferedCapacity': 20000, 'load': 10000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 10000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'DiskKB', 'capacity': 50000, 'bufferedCapacity': 50000, 'load': 20000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 30000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'Count', 'capacity': -1, 'bufferedCapacity': -1, 'load': 60, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 20 },
-    { 'name': 'WTFBBQ', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 24000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 800, 'isClusterCapacityViolation': true, 'bufferPercentage': 20 },
-    { 'name': 'Precise fit', 'capacity': 5000, 'bufferedCapacity': 5000, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 0 }
+    { 'name': 'MemoryKB', 'capacity': 20000, 'bufferedCapacity': 20000, 'load': 10000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 10000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20, 'balancedBefore': false, 'balancedAfter': true, 'deviationBefore': 0.02, 'deviationAfter': 1, 'balancingThreshold': 1, 'maxLoadedNode': 'Node1', 'minLoadedNode': 'Node5' },
+    { 'name': 'DiskKB', 'capacity': 50000, 'bufferedCapacity': 50000, 'load': 20000, 'remainingBufferedCapacity': 19600, 'remainingCapacity': 30000, 'isClusterCapacityViolation': false, 'bufferPercentage': 20, 'balancedBefore': false, 'balancedAfter': true, 'deviationBefore': 0.02, 'deviationAfter': 1, 'balancingThreshold': 1, 'maxLoadedNode': 'Node4', 'minLoadedNode': 'Node3' },
+    { 'name': 'Count', 'capacity': -1, 'bufferedCapacity': -1, 'load': 60, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 20, 'balancedBefore': false, 'balancedAfter': true, 'deviationBefore': 0.02, 'deviationAfter': 1, 'balancingThreshold': 1, 'maxLoadedNode': 'Node2', 'minLoadedNode': 'Node1' },
+    { 'name': 'WTFBBQ', 'capacity': 24800, 'bufferedCapacity': 24800, 'load': 24000, 'remainingBufferedCapacity': 4800, 'remainingCapacity': 800, 'isClusterCapacityViolation': true, 'bufferPercentage': 20, 'balancedBefore': false, 'balancedAfter': true, 'deviationBefore': 0.02, 'deviationAfter': 1, 'balancingThreshold': 1, 'maxLoadedNode': 'Node1', 'minLoadedNode': 'Node3' },
+    { 'name': 'Precise fit', 'capacity': 5000, 'bufferedCapacity': 5000, 'load': 5000, 'remainingBufferedCapacity': 0, 'remainingCapacity': 0, 'isClusterCapacityViolation': false, 'bufferPercentage': 0, 'balancedBefore': false, 'balancedAfter': true, 'deviationBefore': 0.02, 'deviationAfter': 1, 'balancingThreshold': 1, 'maxLoadedNode': 'Node1', 'minLoadedNode': 'Node4' }
 ];
 
 export var ClusterFiltersData: ClusterFilters = {

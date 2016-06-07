@@ -14,7 +14,14 @@ namespace Xray.Models
             long remainingBufferedCapacity,
             long remainingCapacity,
             bool isViolation,
-            double bufferPercentage
+            double bufferPercentage,
+            bool balancedBefore,
+            bool balancedAfter,
+            double deviationBefore,
+            double deviationAfter,
+            double balancingThreshold,
+            string maxLoadedNode,
+            string minLoadedNode
             )
         {
             this.Name = name;
@@ -25,6 +32,13 @@ namespace Xray.Models
             this.RemainingCapacity = remainingCapacity;
             this.IsClusterCapacityViolation = isViolation;
             this.BufferPercentage = bufferPercentage;
+            this.BalancedBefore = balancedBefore;
+            this.BalancedAfter = balancedAfter;
+            this.DeviationBefore = deviationBefore;
+            this.DeviationAfter = deviationAfter;
+            this.BalancingThreshold = balancingThreshold;
+            this.MaxLoadedNode = maxLoadedNode;
+            this.MinLoadedNode = minLoadedNode;
         }
 
         public long BufferedCapacity { get; }
@@ -42,5 +56,19 @@ namespace Xray.Models
         public string Name { get; }
 
         public double BufferPercentage { get; }
+
+        public bool BalancedBefore { get; }
+
+        public bool BalancedAfter { get; }
+
+        public double DeviationBefore { get; }
+
+        public double DeviationAfter { get; }
+
+        public double BalancingThreshold { get; }
+
+        public string MaxLoadedNode { get; }
+
+        public string MinLoadedNode { get; }
     }
 }

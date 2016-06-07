@@ -27,6 +27,12 @@ namespace Xray.Controllers
             return this.clusterInfoService.GetClusterInfo();
         }
 
+        [HttpGet("filters")]
+        public Task<ClusterFilters> Filters()
+        {
+            return this.clusterInfoService.GetClusterFilters();
+        }
+
         [HttpGet("capacity")]
         public Task<IEnumerable<ClusterCapacity>> Capacity()
         {

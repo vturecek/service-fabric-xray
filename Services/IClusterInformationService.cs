@@ -18,6 +18,8 @@ namespace Xray.Services
 
         Task<IEnumerable<ClusterNodeCapacity>> GetNodeCapacity(string nodeName);
 
+        Task<ClusterFilters> GetClusterFilters();
+
         Task<ClusterInfo> GetClusterInfo();
 
         Task<IEnumerable<ClusterCapacity>> GetClusterCapacities();

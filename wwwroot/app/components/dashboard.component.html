@@ -4,6 +4,10 @@
         <ul>
             <li><label>Cluster health:</label><span *ngIf="clusterInfo.healthStatus" class="{{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span></li>
             <li><label>Runtime version:</label>{{clusterInfo.version}}</li>
+            <li><label>nodes:</label>{{clusterInfo.nodes}}</li>
+            <li><label>applications:</label>{{clusterInfo.applications}}</li>
+            <li><label>services:</label>{{clusterInfo.services}}</li>
+            <li><label>replicas and instances:</label>{{clusterInfo.replicas}}</li>
         </ul>
     </div>
     <div class="balance controlGroup" *ngIf="clusterInfo">
@@ -29,25 +33,8 @@
     <ul class="capacityDonuts">
         <li *ngFor="#item of clusterCapacities">
             <cluster-capacity-donut *ngIf="item.selected && item.capacity > 0"
-                                    [capacity]="item.capacity"
-                                    [load]="item.load"
-                                    [name]="item.name"
-                                    [remainingCapacity]="item.remainingCapacity"
-                                    [isClusterCapacityViolation]="item.isClusterCapacityViolation">
+                                    [data]="item">
             </cluster-capacity-donut>
         </li>
-    </ul>
-</div>
-<div class="clusterInfo" *ngIf="clusterInfo">
-    <ul>
-        <li><span>Fault domains:</span>{{clusterInfo.faultDomains}}</li>
-        <li><span>Upgrade domains:</span>{{clusterInfo.upgradeDomains}}</li>
-    </ul>
-    <ul>
-        <li><span>nodes:</span>{{clusterInfo.nodes}}</li>
-        <li><span>applications:</span>{{clusterInfo.applications}}</li>
-        <li><span>services:</span>{{clusterInfo.services}}</li>
-        <li><span>partitions:</span>{{clusterInfo.partitions}}</li>
-        <li><span>replicas and instances:</span>{{clusterInfo.replicas}}</li>
     </ul>
 </div>

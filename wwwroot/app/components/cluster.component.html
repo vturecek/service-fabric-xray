@@ -35,7 +35,7 @@
 </div>
 <div class="nodes">
     <div class="scale">
-        <label>{{scaleFactor * scaleFactor * 100}}%</label>
+        <label>{{scaleFactor * scaleFactor | percent:'.1-2'}}</label>
         <input [(ngModel)]="scaleFactor" class="scaleBar" type="range" orient="vertical" min="0" max="2.0" step="0.001" />
     </div>
     

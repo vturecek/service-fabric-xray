@@ -9,21 +9,10 @@ declare var Chart: any;
     styleUrls: ['app/components/clustercapacitydonut.component.css']
 })
 export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
-    @Input()
-    private name: string;
 
     @Input()
-    private capacity: number;
-
-    @Input()
-    private load: number;
-
-    @Input()
-    private remainingCapacity: number;
-
-    @Input()
-    private isClusterCapacityViolation: boolean;
-
+    private data: ClusterCapacity;
+    
     @ViewChild("chartCanvas")
     private chartCanvasElement: ElementRef;
 
@@ -56,7 +45,7 @@ export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
             }
         });
 
-        if (this.capacity > 0) {
+        if (this.data.capacity > 0) {
             this.update();
         }
 
@@ -73,19 +62,19 @@ export class ClusterCapacityDonut implements AfterViewInit, OnChanges {
         
         let dataset = this.chart.config.data.datasets[0];
         
-        dataset.data[0] = this.load
-        dataset.data[1] = this.remainingCapacity;
+        dataset.data[0] = this.data.load
+        dataset.data[1] = this.data.remainingCapacity;
         dataset.backgroundColor = [this.getLoadColor(), "#666666"];
         
         this.chart.update();
     }
 
     private getLoadColor(): string {
-        if (this.isClusterCapacityViolation) {
+        if (this.data.isClusterCapacityViolation) {
             return "#E81123";
         }
 
-        if (this.load / this.capacity > 0.9) {
+        if (this.data.load / this.data.capacity > 0.9) {
             return "#FCD116";
         }
 

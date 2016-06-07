@@ -1,12 +1,25 @@
-﻿<div class="donut">
-    <canvas #chartCanvas class="donut-chart" width="150" height="150"></canvas>
-    <div class="donut-inner">
-        <h5>{{load / capacity * 100 | number:'.1-1'}}<span class="percent">%</span></h5>
-        <span>{{name}}</span>
+﻿<div class="donutChartContainer">
+    <div class="donut">
+        <canvas #chartCanvas class="chart" width="150" height="150"></canvas>
+        <div class="inner">
+            <h5>{{data.load / data.capacity * 100 | number:'.1-1'}}<span class="percent">%</span></h5>
+            <span>{{data.name}}</span>
+        </div>
+        <ul class="outer">
+            <li><label>Capacity:</label> {{data.capacity}}</li>
+            <li><label>Load:</label> {{data.load}}</li>
+            <li><label>Remaining:</label> {{data.remainingCapacity}}</li>
+        </ul>
     </div>
-    <ul class="donut-outer">
-        <li><span>Capacity:</span> {{capacity}}</li>
-        <li><span>Load:</span> {{load}}</li>
-        <li><span>Remaining:</span> {{remainingCapacity}}</li>
+    <ul class="expanded">
+        <li><label>Buffered capacity:</label>{{data.bufferedCapacity}}</li>
+        <li><label>Buffered remaining:</label>{{data.remainingBufferedCapacity}}</li>
+        <li><label>Balanced before:</label>{{data.balancedBefore}}</li>
+        <li><label>Balanced after:</label>{{data.balancedAfter}}</li>
+        <li><label>Deviation before:</label>{{data.deviationBefore | number:'.1-6'}}</li>
+        <li><label>Deviation after:</label>{{data.deviationAfter | number:'.1-6'}}</li>
+        <li><label>Balancing threshold:</label>{{data.balancingThreshold}}</li>
+        <li><label>Max loaded node:</label>{{data.maxLoadedNode}}</li>
+        <li><label>Min loaded node:</label>{{data.minLoadedNode}}</li>
     </ul>
 </div>

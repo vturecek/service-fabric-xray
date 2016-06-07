@@ -89,6 +89,7 @@ namespace Xray.Services
         public async Task<IEnumerable<ClusterCapacity>> GetClusterCapacities()
         {
             ClusterLoadInformation loadInfo = await this.fabricClient.QueryManager.GetClusterLoadInformationAsync();
+            NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
 
             return loadInfo.LoadMetricInformationList.Where(x => x.ClusterCapacity > 0).Select(
                 x => new ClusterCapacity(
@@ -99,7 +100,14 @@ namespace Xray.Services
                     x.ClusterRemainingBufferedCapacity,
                     x.ClusterRemainingCapacity,
                     x.IsClusterCapacityViolation,
-                    x.NodeBufferPercentage))
+                    x.NodeBufferPercentage,
+                    x.IsBalancedBefore,
+                    x.IsBalancedAfter,
+                    x.DeviationBefore,
+                    x.DeviationAfter,
+                    x.BalancingThreshold,
+                    nodes.FirstOrDefault(node => node.NodeId == x.MaxNodeLoadNodeId)?.NodeName,
+                    nodes.FirstOrDefault(node => node.NodeId == x.MinNodeLoadNodeId)?.NodeName))
                 .Concat(new[] { await this.GetClusterReplicaCount() });
         }
 
@@ -338,7 +346,7 @@ namespace Xray.Services
                 count += (await this.GetNodeReplicaCount(node.NodeName)).Load;
             }
 
-            return new ClusterCapacity(CountMetricName, 0, 0, count, -1, -1, false, 0);
+            return new ClusterCapacity(CountMetricName, 0, 0, count, -1, -1, false, 0, true, true, 0, 0, 0, "", "");
         }
 
         private async Task<ClusterNodeCapacity> GetNodeReplicaCount(string nodeName)
@@ -372,14 +380,12 @@ namespace Xray.Services
         {
             NodeList nodes = await this.fabricClient.QueryManager.GetNodeListAsync();
             ApplicationTypeList appTypes = await this.fabricClient.QueryManager.GetApplicationTypeListAsync();
+            ApplicationList applications = await this.fabricClient.QueryManager.GetApplicationListAsync();
             ClusterLoadInformation clusterLoadInfo = await fabricClient.QueryManager.GetClusterLoadInformationAsync();
             ClusterHealth clusterHealth = await fabricClient.HealthManager.GetClusterHealthAsync();
             ProvisionedFabricCodeVersionList codeVersionList = await fabricClient.QueryManager.GetProvisionedFabricCodeVersionListAsync();
             ProvisionedFabricCodeVersion version = codeVersionList.FirstOrDefault();
-                
             
-
-            long applicationCount = 0;
             long serviceCount = 0;
             long partitionCount = 0;
             long replicaCount = 0;
@@ -390,15 +396,17 @@ namespace Xray.Services
 
                 foreach (DeployedApplication deployedApplication in deployedApplicationList)
                 {
-                    applicationCount++;
-
                     DeployedServiceReplicaList deployedReplicas =
                         await this.fabricClient.QueryManager.GetDeployedReplicaListAsync(node.NodeName, deployedApplication.ApplicationName);
-
-                    serviceCount += deployedReplicas.GroupBy(x => x.ServiceName).Count();
-
+                    
                     replicaCount += deployedReplicas.Count;
                 }
+            }
+
+            foreach (Application application in applications)
+            {
+                ServiceList services = await this.fabricClient.QueryManager.GetServiceListAsync(application.ApplicationName);
+                serviceCount += services.Count;
             }
 
             return new ClusterInfo(
@@ -408,8 +416,8 @@ namespace Xray.Services
                 appTypes.Count(),
                 nodes.Select(x => x.FaultDomain.ToString()).Distinct().Count(),
                 nodes.Select(x => x.UpgradeDomain).Distinct().Count(),
-                nodes.Count(),
-                applicationCount,
+                nodes.Count,
+                applications.Count,
                 serviceCount,
                 partitionCount, // TODO: partition count
                 replicaCount,

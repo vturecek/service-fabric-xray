@@ -102,6 +102,13 @@ export class ClusterComponent implements OnInit, OnDestroy {
                         x.isClusterCapacityViolation,
                         x.name,
                         x.bufferPercentage,
+                        x.balancedBefore,
+                        x.balancedAfter,
+                        x.deviationBefore,
+                        x.deviationAfter,
+                        x.balancingThreshold,
+                        x.maxLoadedNode,
+                        x.minLoadedNode,
                         true
                     )));
                 

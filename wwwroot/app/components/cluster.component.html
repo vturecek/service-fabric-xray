@@ -28,9 +28,11 @@
     </div>
     <div class="filter controlGroup">
         <h4>Application types</h4>
-        <li *ngFor="#applicationType of selectedApplicationTypes">
-            <input id="{{applicationType.name}}" type="checkbox" [(ngModel)]="applicationType.selected" /><label title="{{applicationType.name}}" attr.for="{{applicationType.name}}">{{applicationType.name}}</label>
-        </li>
+        <ul>
+            <li *ngFor="#applicationType of selectedApplicationTypes">
+                <input id="{{applicationType.name}}" type="checkbox" [(ngModel)]="applicationType.selected" /><label title="{{applicationType.name}}" attr.for="{{applicationType.name}}">{{applicationType.name}}</label>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="nodes">

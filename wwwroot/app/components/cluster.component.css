@@ -1,4 +1,4 @@
-﻿.nodeList {  margin: 0 0 0 205px; white-space: nowrap; }
+﻿.nodeList {  margin: 0 0 0 215px; white-space: nowrap; }
 .nodeListItem { display: inline-block; vertical-align: top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
 .controlPanel { position: absolute; top:55px; bottom:0; width: 200px; overflow: hidden; background: #222222; }
 .controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
@@ -12,9 +12,9 @@
     .filter ul { margin: 0; padding: 0; }
     .filter li { list-style: none; margin: 0; padding: 0; }
     .filter label { margin-left: 5px; vertical-align: middle; font-weight: normal; }
-.scale { width: 30px; position:absolute; left: 210px; text-align: center; }
-    .scale label { font-size: 12px; width: 30px; }
-    .scale .scaleBar { writing-mode: bt-lr; /* IE */ -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 10px; }
+.scale { position:absolute; left: 205px; text-align: center;  }
+    .scale label { font-size: 12px; width: 50px; }
+    .scale .scaleBar {  -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 20px; background:none; }
 
 /* common */
 .invalid { }

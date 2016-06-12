@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="~/css/site.css"/>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+    </environment>
+
+    <environment names="Development">
+        <script src="~/lib/npmlibs/es6-shim/es6-shim.js"></script>
+        <script src="~/lib/npmlibs/systemjs/system-polyfills.src.js"></script>
+        <script src="~/lib/npmlibs/angular2/angular2-polyfills.js"></script>
+
+        <script src="~/lib/npmlibs/systemjs/system.src.js"></script>
+        <script src="~/lib/npmlibs/rxjs/Rx.js"></script>
+        <script src="~/lib/npmlibs/angular2/angular2.js"></script>
+        <script src="~/lib/npmlibs/angular2/router.dev.js"></script>
+        <script src="~/lib/npmlibs/angular2/http.dev.js"></script>
+        <script src="~/lib/npmlibs/chart.js/Chart.js"></script>
+        <script src="~/lib/npmlibs/dateformat/dateformat.js"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/lib/npmlibs/es6-shim/es6-shim.min.js"></script>
+        <script src="~/lib/npmlibs/systemjs/system-polyfills.js"></script>
+        <script src="~/lib/npmlibs/angular2/angular2-polyfills.min.js"></script>
+
+        <script src="~/lib/npmlibs/systemjs/system.src.js"></script>
+        <script src="~/lib/npmlibs/rxjs/Rx.min.js"></script>
+        <script src="~/lib/npmlibs/angular2/angular2.js"></script>
+        <script src="~/lib/npmlibs/angular2/router.js"></script>
+        <script src="~/lib/npmlibs/angular2/http.min.js"></script>
+        <script src="~/lib/npmlibs/chart.js/Chart.min.js"></script>
+        <script src="~/lib/npmlibs/dateformat/dateformat.js"></script>
+    </environment>
+</head>
+<body>
+@RenderBody()
+@RenderSection("scripts", required: false)
+</body>
+</html>

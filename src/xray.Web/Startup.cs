@@ -10,6 +10,7 @@ namespace xray.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Serialization;
+    using System;
     using Xray.Services;
     using Xray.Services.Mocks;
 

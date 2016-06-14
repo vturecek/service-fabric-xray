@@ -12,7 +12,8 @@ namespace xray.Web
         // Entry point for the application.
         public static void Main(string[] args)
         {
-#if DEBUG
+#if LOCALSERVER
+
             using (LocalServer listener = new LocalServer())
             {
                 listener.Open();
@@ -20,9 +21,11 @@ namespace xray.Web
             }
             
 #else
+
             ServiceRuntime.RegisterServiceAsync("WebType", context => new WebHostingService(context)).GetAwaiter().GetResult();
 
             Thread.Sleep(Timeout.Infinite);
+
 #endif
         }
     }

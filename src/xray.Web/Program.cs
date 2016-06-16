@@ -22,7 +22,7 @@ namespace xray.Web
             
 #else
 
-            ServiceRuntime.RegisterServiceAsync("WebType", context => new WebHostingService(context)).GetAwaiter().GetResult();
+            ServiceRuntime.RegisterServiceAsync("WebType", context => new WebService(context)).GetAwaiter().GetResult();
 
             Thread.Sleep(Timeout.Infinite);
 

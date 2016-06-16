@@ -31,6 +31,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\xray.Data\xray.Data.xproj" />
     <ProjectReference Include="..\xray.Web\xray.Web.xproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

@@ -2,10 +2,12 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace xray.Web
+namespace xray.Data
 {
     using Common;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.ServiceFabric.Data;
     using Microsoft.ServiceFabric.Services.Communication.Runtime;
     using Microsoft.ServiceFabric.Services.Runtime;
     using System.Collections.Generic;
@@ -15,23 +17,23 @@ namespace xray.Web
     /// <summary>
     /// A specialized stateless service for hosting ASP.NET Core web apps.
     /// </summary>
-    internal sealed class WebService : StatelessService
+    internal sealed class DataService : StatefulService
     {
-        public WebService(StatelessServiceContext serviceContext)
+        public DataService(StatefulServiceContext serviceContext)
             : base(serviceContext)
         {
         }
 
-        protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
+        protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             return new[] 
             {
-                new ServiceInstanceListener(context =>
+                new ServiceReplicaListener(context =>
                     new WebHostCommunicationListener(context, "ServiceEndpoint", uri =>
                         new WebHostBuilder().UseWebListener()
-                                           .UseContentRoot(Directory.GetCurrentDirectory())
                                            .UseStartup<Startup>()
                                            .UseUrls(uri)
+                                           .ConfigureServices(services => services.AddSingleton<IReliableStateManager>(this.StateManager))
                                            .Build()))
             };
         }

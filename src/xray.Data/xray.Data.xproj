@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>8f51d8ef-b9fb-46f4-9571-b375e780957f</ProjectGuid>
-    <RootNamespace>xray.Web</RootNamespace>
+    <ProjectGuid>7730a3d5-1c9f-4de0-a6a2-074c273cc727</ProjectGuid>
+    <RootNamespace>xray.Data</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -15,15 +15,6 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <DnxInvisibleContent Include="bower.json" />
-    <DnxInvisibleContent Include=".bowerrc" />
-    <DnxInvisibleContent Include="package.json" />
-    <DnxInvisibleContent Include=".npmrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <DnxInvisibleFolder Include="wwwroot\lib\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xray.Common\xray.Common.csproj" />
   </ItemGroup>

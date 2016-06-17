@@ -1,0 +1,21 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Ix-Async": "1.2.5",
+    "Microsoft.ServiceFabric": "5.1.150"
+  },
+  "frameworks": {
+    "net452": {
+      "frameworkAssemblies": {
+        "System.Runtime.Caching": "4.0.0.0"
+      },
+      "dependencies": {
+
+      }
+    }
+  },
+  "buildOptions": {
+    "platform": "x64"
+  }
+}

@@ -2,7 +2,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Xray.Models
+namespace xray.Models
 {
     public struct ClusterCapacity
     {

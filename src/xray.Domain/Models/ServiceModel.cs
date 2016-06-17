@@ -2,39 +2,38 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Xray.Models
+namespace xray.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.Fabric;
 
-    public struct ReplicaModel
+    public struct ServiceModel
     {
-        public ReplicaModel(
-            long id,
-            Guid partitionId,
-            string role,
+        public ServiceModel(
+            string name,
+            string type,
+            string version,
             string status,
             string healthState,
             IEnumerable<LoadMetric> metrics)
         {
-            this.Role = role;
+            this.Name = name;
+            this.Type = type;
+            this.Version = version;
             this.Status = status;
             this.HealthState = healthState;
-            this.Id = id;
-            this.PartitionId = partitionId;
             this.Metrics = metrics;
         }
 
-        public string Role { get; }
+        public string Name { get; }
 
         public string Status { get; }
 
         public string HealthState { get; }
 
-        public long Id { get; }
+        public string Type { get; }
 
-        public Guid PartitionId { get; }
+        public string Version { get; }
 
         public IEnumerable<LoadMetric> Metrics { get; }
     }

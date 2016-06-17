@@ -11,7 +11,9 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc2-final",
     "Microsoft.ServiceFabric": "5.1.150",
     "Microsoft.ServiceFabric.Data": "2.1.150",
-    "Microsoft.ServiceFabric.Services": "2.1.150"
+    "Microsoft.ServiceFabric.Services": "2.1.150",
+    "xray.Domain": "1.0.0-*",
+    "xray.Common": "1.0.0-*"
   },
 
   "tools": {
@@ -19,13 +21,7 @@
 
   "frameworks": {
     "net452": {
-      "dependencies": {
-        "xray.Common": {
-          "target": "project"
-        }
-
       }
-    }
   },
 
   "buildOptions": {

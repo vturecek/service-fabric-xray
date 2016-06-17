@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Xray.Models
+namespace xray.Models
 {
     public struct ClusterCapacityHistory
     {

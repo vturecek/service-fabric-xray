@@ -19,7 +19,9 @@
     "Microsoft.ServiceFabric.Data": "2.1.150",
     "Microsoft.ServiceFabric.Services": "2.1.150",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc2-final",
-    "Newtonsoft.Json": "8.0.3"
+    "Newtonsoft.Json": "8.0.3",
+    "xray.Domain": "1.0.0-*",
+    "xray.Common": "1.0.0-*"
   },
   "tools": {
     "Microsoft.AspNetCore.Razor.Tools": {
@@ -31,12 +33,6 @@
     "net452": {
       "frameworkAssemblies": {
         "System.Runtime.Caching": "4.0.0.0"
-      },
-      "dependencies": {
-        "xray.Common": {
-          "target": "project"
-        }
-
       }
     }
   },

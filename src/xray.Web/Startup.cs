@@ -10,9 +10,6 @@ namespace xray.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Serialization;
-    using System;
-    using Xray.Services;
-    using Xray.Services.Mocks;
 
     public class Startup
     {
@@ -38,8 +35,6 @@ namespace xray.Web
                     options.SerializerSettings.ContractResolver =
                         new CamelCasePropertyNamesContractResolver();
                 });
-            
-            services.AddSingleton<IClusterInformationService>(new ClusterInformationService(null, new MockReliableStateManager()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,14 +2,14 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Xray.Models
+namespace xray.Models
 {
     using System.Collections.Generic;
     using System.Fabric;
 
-    public struct ServiceModel
+    public struct ApplicationModel
     {
-        public ServiceModel(
+        public ApplicationModel(
             string name,
             string type,
             string version,

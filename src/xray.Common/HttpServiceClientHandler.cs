@@ -1,7 +1,11 @@
-﻿
+﻿// ------------------------------------------------------------
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
+
 namespace xray.Common
 {
     using Microsoft.ServiceFabric.Services.Client;
+    using Newtonsoft.Json.Linq;
     using System;
     using System.Fabric;
     using System.Linq;
@@ -11,25 +15,17 @@ namespace xray.Common
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class HttpServiceClient : HttpClientHandler
+    public class HttpServiceClientHandler : HttpClientHandler
     {
-        private const int MaxRetries = 10;
-        private readonly HttpClientHandler handler;
+        private const int MaxRetries = 5;
+        private const int InitialRetryDelayMs = 25;
         private readonly Random random = new Random();
-        public HttpServiceClient()
-            : this (new HttpClientHandler())
-        {
-        }
 
-        protected HttpServiceClient(HttpClientHandler handler)
-        {
-            this.handler = handler;
-        }
+        public HttpServiceClientHandler()
+        { }
 
         /// <summary>
-        /// fabric:/app/service/#/partitionkey/any/api-path
-        /// fabric:/app/service/#/partitionkey/primary/api-path
-        /// fabric:/app/service/#/partitionkey/secondary/api-path
+        /// http://fabric/app/service/#/partitionkey/any|primary|secondary/endpoint-name/api-path
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -38,70 +34,69 @@ namespace xray.Common
         {
             ServicePartitionResolver resolver = ServicePartitionResolver.GetDefault();
             ResolvedServicePartition partition = null;
-
-            Uri serviceName = new Uri(request.RequestUri.GetLeftPart(UriPartial.Path));
-            string path = request.RequestUri.Fragment.Remove(0, 2);
-
-            string[] segments = path.Split('/');
-            long int64PartitionKey;
-
-            ServicePartitionKey partitionKey = Int64.TryParse(segments[0], out int64PartitionKey)
-                ? new ServicePartitionKey(int64PartitionKey)
-                : new ServicePartitionKey(segments[0]);
-
-            string selector = segments[1].ToUpperInvariant();
-            string serviceUrlPath = String.Join("/", segments.Skip(2));
+            HttpServiceUriBuilder uriBuilder = new HttpServiceUriBuilder(request.RequestUri);
 
             int retries = MaxRetries;
-            bool resolve = true;
-            int retryDelay = 50; 
+            int retryDelay = InitialRetryDelayMs;
+            bool resolveAddress = true;
 
-            while (retries --> 0)
+            while (retries-- > 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (resolve)
+                if (resolveAddress)
                 {
                     partition = partition != null
                         ? await resolver.ResolveAsync(partition, cancellationToken)
-                        : await resolver.ResolveAsync(serviceName, partitionKey, cancellationToken);
+                        : await resolver.ResolveAsync(uriBuilder.ServiceName, uriBuilder.PartitionKey, cancellationToken);
+
+                    string serviceEndpointJson;
+
+                    switch (uriBuilder.Target)
+                    {
+                        case HttpServiceUriTarget.Primary:
+                            serviceEndpointJson = partition.GetEndpoint().Address;
+                            break;
+                        case HttpServiceUriTarget.Secondary:
+                            serviceEndpointJson = partition.Endpoints.ElementAt(this.random.Next(1, partition.Endpoints.Count)).Address;
+                            break;
+                        case HttpServiceUriTarget.Any:
+                        case HttpServiceUriTarget.Default:
+                        default:
+                            serviceEndpointJson = partition.Endpoints.ElementAt(this.random.Next(0, partition.Endpoints.Count)).Address;
+                            break;
+                    }
+
+                    string endpointUrl = JObject.Parse(serviceEndpointJson)["Endpoints"][uriBuilder.EndpointName].Value<string>();
+
+                    request.RequestUri = new Uri($"{endpointUrl.TrimEnd('/')}/{uriBuilder.ServicePathAndQuery.TrimStart('/')}", UriKind.Absolute);
                 }
-
-                string serviceUrl;
-
-                switch (selector)
-                {
-                    case "PRIMARY":
-                        serviceUrl = partition.GetEndpoint().Address;
-                        break;
-                    case "SECONDARY":
-                        serviceUrl = partition.Endpoints.ElementAt(this.random.Next(1, partition.Endpoints.Count)).Address;
-                        break;
-                    case "ANY":
-                    default:
-                        serviceUrl = partition.Endpoints.ElementAt(this.random.Next(0, partition.Endpoints.Count)).Address;
-                        break;
-                }
-
-                request.RequestUri = new Uri(new Uri(serviceUrl, UriKind.Absolute), new Uri(serviceUrlPath, UriKind.Relative));
 
                 try
                 {
                     HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
-                    response.EnsureSuccessStatusCode();
 
-                    return response;
+                    if (response.StatusCode == HttpStatusCode.NotFound ||
+                        response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                    {
+                        resolveAddress = true;
+                    }
+                    else
+                    {
+                        return response;
+                    }
                 }
                 catch (TimeoutException)
                 {
-                    resolve = true;
+                    resolveAddress = true;
                 }
                 catch (SocketException)
                 {
-                    resolve = true;
+                    resolveAddress = true;
                 }
-                catch (Exception ex) when (ex is WebException || ex.InnerException is WebException)
+                catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
                 {
+
                     WebException we = ex as WebException;
 
                     if (we == null)
@@ -117,11 +112,12 @@ namespace xray.Common
                         // where a port is shared by multiple replicas within a host process using a single web host (e.g., http.sys).
                         if (we.Status == WebExceptionStatus.ProtocolError)
                         {
-                            if (errorResponse.StatusCode == HttpStatusCode.NotFound)
+                            if (errorResponse.StatusCode == HttpStatusCode.NotFound ||
+                                errorResponse.StatusCode == HttpStatusCode.ServiceUnavailable)
                             {
                                 // This could either mean we requested an endpoint that does not exist in the service API (a user error)
                                 // or the address that was resolved by fabric client is stale (transient runtime error) in which we should re-resolve.
-                                resolve = true;
+                                resolveAddress = true;
                             }
 
                             if (errorResponse.StatusCode == HttpStatusCode.InternalServerError)
@@ -129,7 +125,7 @@ namespace xray.Common
                                 // The address is correct, but the server processing failed.
                                 // This could be due to conflicts when writing the word to the dictionary.
                                 // Retry the operation without re-resolving the address.
-                                resolve = false;
+                                resolveAddress = false;
                             }
                         }
 
@@ -138,16 +134,22 @@ namespace xray.Common
                             we.Status == WebExceptionStatus.ConnectionClosed ||
                             we.Status == WebExceptionStatus.ConnectFailure)
                         {
-                            resolve = true;
+                            resolveAddress = true;
                         }
+                    }
+                    else
+                    {
+                        resolveAddress = true;
                     }
                 }
 
-                retryDelay += retryDelay;
                 await Task.Delay(retryDelay);
+
+                retryDelay += retryDelay;
             }
 
             throw new Exception(); // throw something better
         }
+
     }
 }

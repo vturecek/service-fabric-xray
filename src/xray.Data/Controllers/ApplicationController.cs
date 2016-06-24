@@ -15,7 +15,7 @@ namespace xray.Data.Controllers
     using xray.Models;
 
     [Route("api/[controller]")]
-    internal class ApplicationController : Controller
+    public class ApplicationController : Controller
     {
         private readonly IServiceFabricQuery query;
         private readonly IReliableStateManager stateManager;

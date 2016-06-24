@@ -17,7 +17,7 @@ namespace xray.Data.Controllers
     using xray.Models;
 
     [Route("api/[controller]")]
-    internal class ClusterController : Controller
+    public class ClusterController : Controller
     {
         private readonly IServiceFabricQuery query;
         private readonly IReliableStateManager stateManager;

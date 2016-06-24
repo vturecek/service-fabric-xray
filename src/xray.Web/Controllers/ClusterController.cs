@@ -22,9 +22,10 @@ namespace xray.Controllers
             HttpClient client = new HttpClient(new HttpServiceClientHandler());
 
             return client.GetAsync(new HttpServiceUriBuilder()
-                .SetServiceName(new ServiceUriBuilder("Data").Build())
-                .SetPartitionKey(0)
-                .SetServicePathAndQuery("api/cluster/info").Build());
+                    .SetServiceName(new ServiceUriBuilder("Data").Build())
+                    .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
+                    .SetServicePathAndQuery("api/cluster/info").Build());
         }
 
         [HttpGet("filters")]
@@ -35,6 +36,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery("api/cluster/filters").Build());
         }
 
@@ -46,6 +48,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery("api/cluster/capacity").Build());
         }
 
@@ -57,6 +60,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery($"api/cluster/history/{capacityName}/{startTime}").Build());
         }
     }

@@ -6,6 +6,7 @@ namespace xray.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -29,12 +30,14 @@ namespace xray.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc().AddJsonOptions(
-                options =>
-                {
-                    options.SerializerSettings.ContractResolver =
-                        new CamelCasePropertyNamesContractResolver();
-                });
+            services.AddMvc()
+                .AddWebApiConventions()
+                .AddJsonOptions(
+                    options =>
+                    {
+                        options.SerializerSettings.ContractResolver =
+                            new CamelCasePropertyNamesContractResolver();
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

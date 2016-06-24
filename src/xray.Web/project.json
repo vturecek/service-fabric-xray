@@ -21,7 +21,8 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc2-final",
     "Newtonsoft.Json": "8.0.3",
     "xray.Domain": "1.0.0-*",
-    "xray.Common": "1.0.0-*"
+    "xray.Common": "1.0.0-*",
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.0-rc2-final"
   },
   "tools": {
     "Microsoft.AspNetCore.Razor.Tools": {

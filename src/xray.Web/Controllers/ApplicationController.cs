@@ -20,6 +20,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery($"api/application/{nodeName ?? ""}").Build());
         }
     }

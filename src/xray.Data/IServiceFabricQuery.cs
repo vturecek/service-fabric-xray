@@ -10,7 +10,7 @@ namespace xray.Data
     using System.Fabric.Query;
     using System.Threading.Tasks;
 
-    internal interface IServiceFabricQuery
+    public interface IServiceFabricQuery
     {
         Task<Application> GetApplicationAsync(Uri applicationName);
 

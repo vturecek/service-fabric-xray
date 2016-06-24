@@ -12,7 +12,7 @@ namespace xray.Data.Controllers
     using xray.Models;
 
     [Route("api/[controller]")]
-    internal class NodeController : Controller
+    public class NodeController : Controller
     {
         private readonly IServiceFabricQuery query;
 

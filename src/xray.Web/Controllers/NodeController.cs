@@ -23,6 +23,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery($"api/node/info/{nodeTypeFilter ?? ""}").Build());
         }
 
@@ -34,6 +35,7 @@ namespace xray.Controllers
             return client.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
+                    .SetTarget(HttpServiceUriTarget.Primary)
                 .SetServicePathAndQuery($"api/node/capacity/{nodeName}").Build());
         }
     }

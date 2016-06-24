@@ -21,7 +21,10 @@
 
   "frameworks": {
     "net452": {
+      "frameworkAssemblies": {
+        "System.Numerics": "4.0.0.0"
       }
+    }
   },
 
   "buildOptions": {

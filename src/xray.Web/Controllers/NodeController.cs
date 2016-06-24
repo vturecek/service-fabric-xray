@@ -4,31 +4,37 @@
 
 namespace xray.Controllers
 {
+    using Common;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using xray.Models;
 
     [Route("api/[controller]")]
     public class NodeController : Controller
     {
-
-        [HttpGet("info")]
-        public Task<IEnumerable<ClusterNode>> Info()
+        
+        [HttpGet("info/{nodeTypeFilter?}")]
+        public Task<HttpResponseMessage> Info(string nodeTypeFilter = null)
         {
-           // return this.clusterInfoService.GetNodes(null);
-        }
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
 
-        [HttpGet("info/{nodeTypeFilter}")]
-        public Task<IEnumerable<ClusterNode>> Info(string nodeTypeFilter)
-        {
-           // return this.clusterInfoService.GetNodes(nodeTypeFilter);
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery($"api/node/info/{nodeTypeFilter ?? ""}").Build());
         }
 
         [HttpGet("capacity/{nodeName}")]
-        public Task<IEnumerable<ClusterNodeCapacity>> Capacity(string nodeName)
+        public Task<HttpResponseMessage> Capacity(string nodeName)
         {
-           // return this.clusterInfoService.GetNodeCapacity(nodeName);
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
+
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery($"api/node/capacity/{nodeName}").Build());
         }
     }
 }

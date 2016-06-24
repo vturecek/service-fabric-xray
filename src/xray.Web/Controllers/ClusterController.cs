@@ -4,9 +4,11 @@
 
 namespace xray.Controllers
 {
+    using Common;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using xray.Models;
 
@@ -15,27 +17,47 @@ namespace xray.Controllers
     {
 
         [HttpGet("info")]
-        public Task<ClusterInfo> Info()
+        public Task<HttpResponseMessage> Info()
         {
-           // return this.clusterInfoService.GetClusterInfo();
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
+
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery("api/cluster/info").Build());
         }
 
         [HttpGet("filters")]
-        public Task<ClusterFilters> Filters()
+        public Task<HttpResponseMessage> Filters()
         {
-           // return this.clusterInfoService.GetClusterFilters();
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
+
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery("api/cluster/filters").Build());
         }
 
         [HttpGet("capacity")]
-        public Task<IEnumerable<ClusterCapacity>> Capacity()
+        public Task<HttpResponseMessage> Capacity()
         {
-           // return this.clusterInfoService.GetClusterCapacities();
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
+
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery("api/cluster/capacity").Build());
         }
 
         [HttpGet("history/{capacityName}/{startTime}")]
-        public Task<IEnumerable<ClusterCapacityHistory>> History(string capacityName, DateTimeOffset startTime)
+        public Task<HttpResponseMessage> History(string capacityName, DateTimeOffset startTime)
         {
-           // return this.clusterInfoService.GetClusterCapacityHistory(capacityName, startTime);
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
+
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery($"api/cluster/history/{capacityName}/{startTime}").Build());
         }
     }
 }

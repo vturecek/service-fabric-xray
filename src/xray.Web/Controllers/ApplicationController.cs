@@ -4,26 +4,23 @@
 
 namespace xray.Controllers
 {
+    using Common;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using xray.Models;
 
     [Route("api/[controller]")]
     public class ApplicationController : Controller
     {
-
-        [HttpGet("{nodeName}")]
-        public Task<IEnumerable<DeployedApplicationModel>> Get(string nodeName)
+        [HttpGet("{nodeName}/{appTypeFilter?}")]
+        public Task<HttpResponseMessage> Get(string nodeName, string appTypeFilter = null)
         {
-           // return this.clusterInfoService.GetApplicationMetrics(nodeName, null);
-        }
+            HttpClient client = new HttpClient(new HttpServiceClientHandler());
 
-        [HttpGet("{nodeName}/{appTypeFilter}")]
-        public Task<IEnumerable<DeployedApplicationModel>> Get(string nodeName, string appTypeFilter)
-        {
-           // return this.clusterInfoService.GetApplicationMetrics(nodeName, appTypeFilter);
+            return client.GetAsync(new HttpServiceUriBuilder()
+                .SetServiceName(new ServiceUriBuilder("Data").Build())
+                .SetPartitionKey(0)
+                .SetServicePathAndQuery($"api/application/{nodeName ?? ""}").Build());
         }
     }
 }

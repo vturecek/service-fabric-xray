@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "xray", "xray\xray.sfproj", "{41829464-E11F-4394-BDAF-D7C66E770C0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6D846210-BB27-4D90-A264-A5F2210449DC} = {6D846210-BB27-4D90-A264-A5F2210449DC}
+		{91F73C62-AD72-43B2-9574-6BF4AF0387E0} = {91F73C62-AD72-43B2-9574-6BF4AF0387E0}
+	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "xray.Web", "xray.Web\xray.Web.xproj", "{8F51D8EF-B9FB-46F4-9571-B375E780957F}"
 EndProject
@@ -67,8 +71,8 @@ Global
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.Debug|x64.Build.0 = Debug|Any CPU
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|Any CPU.ActiveCfg = Debug|Any CPU
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|Any CPU.Build.0 = Debug|Any CPU
-		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|x64.ActiveCfg = Debug|Any CPU
-		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|x64.Build.0 = Debug|Any CPU
+		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|x64.ActiveCfg = LocalServer|Any CPU
+		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.LocalServer|x64.Build.0 = LocalServer|Any CPU
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91F73C62-AD72-43B2-9574-6BF4AF0387E0}.Release|x64.ActiveCfg = Release|Any CPU
@@ -79,8 +83,8 @@ Global
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.Debug|x64.Build.0 = Debug|Any CPU
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|Any CPU.Build.0 = Debug|Any CPU
-		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|x64.ActiveCfg = Debug|Any CPU
-		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|x64.Build.0 = Debug|Any CPU
+		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|x64.ActiveCfg = LocalServer|Any CPU
+		{6D846210-BB27-4D90-A264-A5F2210449DC}.LocalServer|x64.Build.0 = LocalServer|Any CPU
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D846210-BB27-4D90-A264-A5F2210449DC}.Release|x64.ActiveCfg = Release|Any CPU

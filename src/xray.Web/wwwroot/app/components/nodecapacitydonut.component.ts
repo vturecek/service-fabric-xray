@@ -31,6 +31,8 @@ export class NodeCapacityDonut implements AfterViewInit, OnChanges {
     private chartCanvasElement: ElementRef;
 
     private chart: any;
+
+    private percent: string;
     
     public ngAfterViewInit(): void {
         this.chart = new Chart(this.chartCanvasElement.nativeElement, {
@@ -66,7 +68,8 @@ export class NodeCapacityDonut implements AfterViewInit, OnChanges {
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }) {
-        
+
+        this.percent = (this.capacity > 0 ? this.load / this.capacity * 100 : 0).toFixed(1);
         if (this.chart) {
             this.update();
         }

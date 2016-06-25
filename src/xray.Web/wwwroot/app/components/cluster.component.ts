@@ -1,13 +1,16 @@
 ﻿import {Component, OnInit, OnDestroy, ElementRef, ViewChild} from 'angular2/core';
+import {Router} from 'angular2/router';
 import {Observable, Subscription}     from "rxjs/rx";
 import {NodeComponent} from './node.component';
 import {Selectable} from './../viewmodels/selectable';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
+import {ClusterInfoViewModel} from './../viewmodels/clusterinfoviewmodel';
 import {List} from './../viewmodels/list';
-
 import {DataService} from './../services/data.service';
+
+declare var dateFormat: any;
 
 @Component({
     selector: 'cluster-component',
@@ -31,6 +34,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
 
     private nodes: NodeViewModel[];
     private clusterCapacities: ClusterCapacityViewModel[];
+    private clusterInfo: ClusterInfoViewModel;
 
     private applicationsExpanded: boolean;
     private servicesExpanded: boolean;
@@ -39,9 +43,11 @@ export class ClusterComponent implements OnInit, OnDestroy {
     private nodeSubscription: Subscription;
     private clusterInfoSubscription: Subscription;
     private clusterSubscription: Subscription;
+    private clusterFiltersSubscription: Subscription;
 
     constructor(
-        private dataService: DataService )
+        private dataService: DataService,
+        private router: Router)
     {
         this.scaleFactor = 1;
         this.applicationsExpanded = true;
@@ -74,7 +80,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
             },
             error => console.log("error from observable: " + error));
 
-        this.clusterInfoSubscription = this.dataService.getClusterFilters().subscribe(
+        this.clusterFiltersSubscription = this.dataService.getClusterFilters().subscribe(
             result => {
                 if (!result) {
                     return;
@@ -115,6 +121,31 @@ export class ClusterComponent implements OnInit, OnDestroy {
                 this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
             },
             error => console.log("error from observable: " + error));
+
+        this.clusterInfoSubscription = this.dataService.getClusterInfo().subscribe(
+            result => {
+                if (!result) {
+                    return;
+                }
+
+                this.clusterInfo = new ClusterInfoViewModel(
+                    result.healthStatus,
+                    result.version,
+                    result.nodeTypes,
+                    result.applicationTypes,
+                    result.faultDomains,
+                    result.upgradeDomains,
+                    dateFormat(result.lastBalanceStartTime, 'mm/dd/yy HH:mm:ss'),
+                    dateFormat(result.lastBalanceEndTime, 'mm/dd/yy HH:mm:ss'),
+                    result.nodes,
+                    result.applications,
+                    result.services,
+                    result.partitions,
+                    result.replicas);
+
+                console.log("got cluster info.");
+            },
+            error => console.log("error from observable: " + error));
     }
 
     public ngOnDestroy(): void {
@@ -128,6 +159,10 @@ export class ClusterComponent implements OnInit, OnDestroy {
 
         if (this.clusterSubscription) {
             this.clusterSubscription.unsubscribe();
+        }
+
+        if (this.clusterFiltersSubscription) {
+            this.clusterFiltersSubscription.unsubscribe();
         }
     }
 

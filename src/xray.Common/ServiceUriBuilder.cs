@@ -45,6 +45,7 @@ namespace xray.Common
                 {
                     // FabricRuntime is not available. 
                     // This indicates that this is being called from somewhere outside the Service Fabric cluster.
+                    applicationInstance = "xray";
                 }
             }
 

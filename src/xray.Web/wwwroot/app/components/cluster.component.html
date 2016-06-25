@@ -1,4 +1,22 @@
 ﻿<div class="controlPanel">
+    <div class="status controlGroup" *ngIf="clusterInfo">
+        <h4>Cluster status</h4>
+        <ul>
+            <li><label>Cluster health:</label><span *ngIf="clusterInfo.healthStatus" class="{{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span></li>
+            <li><label>Runtime version:</label>{{clusterInfo.version}}</li>
+            <li><label>nodes:</label>{{clusterInfo.nodes}}</li>
+            <li><label>applications:</label>{{clusterInfo.applications}}</li>
+            <li><label>services:</label>{{clusterInfo.services}}</li>
+            <li><label>replicas and instances:</label>{{clusterInfo.replicas}}</li>
+        </ul>
+    </div>
+    <div class="balance controlGroup" *ngIf="clusterInfo">
+        <h4>Balancing status</h4>
+        <ul>
+            <li><label>Last started:</label>{{clusterInfo.lastBalanceStartTime}}</li>
+            <li><label>Last ended:</label>{{clusterInfo.lastBalanceEndTime}}</li>
+        </ul>
+    </div>
     <div class="filter controlGroup">
         <a class="expandButton" (click)="expandApplications()">{{!applicationsExpanded && '[+] Expand applications' || '[-] Collapse applications'}}</a>
         <a class="expandButton" (click)="expandServices()">{{!servicesExpanded && '[+] Expand services' || '[-] Collapse services'}}</a>

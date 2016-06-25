@@ -5,6 +5,11 @@
     .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
         .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
     .controlGroup select { width: 120px; }
+    .controlGroup h4 { font-size: 12px; }
+    .controlGroup ul { margin: 0; padding: 0; }
+    .controlGroup li { list-style: none; padding: 0; margin: 0; font-weight: bold; }
+    .controlGroup label { display: inline-block; margin: 2px 0; width: 87px; font-weight: normal; padding: 0; }
+
 .controls label { display: inline-block; margin: 5px 0; width: 50px; font-weight:normal; }
 .expandButton { display: block; padding: 4px 0; }
 .filter { }
@@ -15,6 +20,9 @@
 .scale { position:absolute; left: 205px; text-align: center;  }
     .scale label { font-size: 12px; width: 50px; }
     .scale .scaleBar {  -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 20px; background:none; }
+    
+.status label { width: 115px; }
+.status span { font-weight: bold; }
 
 /* common */
 .invalid { }
@@ -32,3 +40,8 @@
 .ok { border-color: #7FBA00; }
 .warning { border-color: #FCD116; }
 .error { border-color: #E81123; }
+
+/* health states */
+.status .ok { color: #7FBA00; }
+.status .warning { color: #FCD116; }
+.status .error { color: #E81123; }

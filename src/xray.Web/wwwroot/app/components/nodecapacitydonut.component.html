@@ -1,7 +1,7 @@
 ﻿<div class="donut">
     <canvas #chartCanvas class="donut-chart" width="100" height="100"></canvas>
     <div class="donut-inner">
-        <h3>{{capacity > 0 ? load / capacity * 100 : 0 | number:'.1-1'}}<span class="percent">%</span></h3>
+        <h3>{{percent}}<span class="percent">%</span></h3>
         <span>{{name}}</span>
     </div>
     <div class="donut-outer">{{load}} of {{capacity}}</div>

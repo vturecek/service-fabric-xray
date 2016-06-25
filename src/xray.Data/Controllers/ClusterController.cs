@@ -96,7 +96,7 @@ namespace xray.Data.Controllers
             ClusterLoadInformation loadInfo = await this.query.GetClusterLoadAsync();
             NodeList nodes = await this.query.GetNodesAsync();
 
-            return loadInfo.LoadMetricInformationList.Where(x => x.ClusterCapacity > 0).Select(
+            return loadInfo.LoadMetricInformationList.Select(
                 x => new ClusterCapacity(
                     x.Name,
                     x.ClusterBufferedCapacity,

@@ -16,6 +16,21 @@ namespace xray.Data
     internal class FabricClientServiceFabricQuery : IServiceFabricQuery
     {
         private const string CountMetricName = "Count";
+        private static readonly IEnumerable<string> systemMetrics = new[]
+        {
+            "__FaultAnalysisServicePrimaryCount__",
+            "__FaultAnalysisServiceReplicaCount__",
+            "__ClusterManagerServiceReplicaCount__",
+            "__ClusterManagerServicePrimaryCount_",
+            "__FaultAnalysisServicePrimaryCount__",
+            "__NamingServicePrimaryCount__",
+            "__NamingServiceReplicaCount__",
+            "__FileStoreServicePrimaryCount__",
+            "__FileStoreServiceReplicaCount__",
+            "PrimaryCount",
+            "Count",
+            "ReplicaCount"
+        };
 
         private static readonly IEnumerable<LoadMetric> defaultMetrics = new[] { new LoadMetric(CountMetricName, 1) };
 
@@ -82,6 +97,15 @@ namespace xray.Data
             ClusterLoadInformation loadInfo = await this.fabricClient.QueryManager.GetClusterLoadInformationAsync();
             long replicaCount = await this.GetClusterReplicaCountAsync();
 
+            foreach (string systemService in systemMetrics)
+            {
+                LoadMetricInformation item = loadInfo.LoadMetricInformationList.FirstOrDefault(x => String.Equals(x.Name, systemService, StringComparison.OrdinalIgnoreCase));
+                if (item != null)
+                {
+                    loadInfo.LoadMetricInformationList.Remove(item);
+                }
+            }
+
             Type t = typeof(LoadMetricInformation);
             LoadMetricInformation countMetric = new LoadMetricInformation();
             t.GetProperty("Name").SetValue(countMetric, CountMetricName);
@@ -109,6 +133,16 @@ namespace xray.Data
         {
             long replicaCount = await this.GetNodeReplicaCountAsync(nodeName);
             NodeLoadInformation loadInfo = await this.fabricClient.QueryManager.GetNodeLoadInformationAsync(nodeName);
+
+
+            foreach (string systemService in systemMetrics)
+            {
+                NodeLoadMetricInformation item = loadInfo.NodeLoadMetricInformationList.FirstOrDefault(x => String.Equals(x.Name, systemService, StringComparison.OrdinalIgnoreCase));
+                if (item != null)
+                {
+                    loadInfo.NodeLoadMetricInformationList.Remove(item);
+                }
+            }
 
             Type t = typeof(NodeLoadMetricInformation);
             NodeLoadMetricInformation countMetric = new NodeLoadMetricInformation();

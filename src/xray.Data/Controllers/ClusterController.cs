@@ -134,7 +134,8 @@ namespace xray.Data.Controllers
                     .Where(x => x.Key > startTime)
                     .Select(x => new ClusterCapacityHistory(x.Value, x.Key))
                     .OrderBy(x => x.Timestamp)
-                    .ToEnumerable();
+                    .ToEnumerable()
+                    .ToList();
             }
         }
         

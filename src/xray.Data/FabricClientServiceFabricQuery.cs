@@ -21,7 +21,7 @@ namespace xray.Data
             "__FaultAnalysisServicePrimaryCount__",
             "__FaultAnalysisServiceReplicaCount__",
             "__ClusterManagerServiceReplicaCount__",
-            "__ClusterManagerServicePrimaryCount_",
+            "__ClusterManagerServicePrimaryCount__",
             "__FaultAnalysisServicePrimaryCount__",
             "__NamingServicePrimaryCount__",
             "__NamingServiceReplicaCount__",

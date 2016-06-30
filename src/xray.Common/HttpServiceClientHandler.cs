@@ -40,8 +40,12 @@ namespace xray.Common
             int retryDelay = InitialRetryDelayMs;
             bool resolveAddress = true;
 
-            while (retries-- > 0)
+            HttpResponseMessage lastResponse = null;
+            Exception lastException = null;
+
+            while (retries --> 0)
             {
+                lastResponse = null;
                 cancellationToken.ThrowIfCancellationRequested();
 
                 if (resolveAddress)
@@ -74,29 +78,31 @@ namespace xray.Common
 
                 try
                 {
-                    HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+                    lastResponse = await base.SendAsync(request, cancellationToken);
 
-                    if (response.StatusCode == HttpStatusCode.NotFound ||
-                        response.StatusCode == HttpStatusCode.ServiceUnavailable)
+                    if (lastResponse.StatusCode == HttpStatusCode.NotFound ||
+                        lastResponse.StatusCode == HttpStatusCode.ServiceUnavailable)
                     {
                         resolveAddress = true;
                     }
                     else
                     {
-                        return response;
+                        return lastResponse;
                     }
                 }
-                catch (TimeoutException)
+                catch (TimeoutException te)
                 {
+                    lastException = te;
                     resolveAddress = true;
                 }
-                catch (SocketException)
+                catch (SocketException se)
                 {
+                    lastException = se;
                     resolveAddress = true;
                 }
                 catch (Exception ex) when (ex is HttpRequestException || ex is WebException)
                 {
-
+                    lastException = ex;
                     WebException we = ex as WebException;
 
                     if (we == null)
@@ -148,7 +154,14 @@ namespace xray.Common
                 retryDelay += retryDelay;
             }
 
-            throw new Exception(); // throw something better
+            if (lastResponse != null)
+            {
+                return lastResponse;
+            }
+            else
+            {
+                throw lastException;
+            }
         }
 
     }

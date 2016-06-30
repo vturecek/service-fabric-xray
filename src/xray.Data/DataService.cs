@@ -20,7 +20,7 @@ namespace xray.Data
 
     internal class DataService : Microsoft.ServiceFabric.Services.Runtime.StatefulService
     {
-        private static readonly TimeSpan HourlyInterval = TimeSpan.FromSeconds(10);
+        private static readonly TimeSpan HourlyInterval = TimeSpan.FromMinutes(1);
         private readonly IServiceFabricQuery query;
 
         public DataService(StatefulServiceContext context, IReliableStateManagerReplica stateManager, IServiceFabricQuery query)
@@ -54,38 +54,43 @@ namespace xray.Data
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                ClusterLoadInformation capacities = await this.query.GetClusterLoadAsync();
-
-                using (ITransaction tx = this.StateManager.CreateTransaction())
+                try
                 {
-                    DateTimeOffset utcnow = DateTimeOffset.UtcNow;
-                    DateTimeOffset timestamp = new DateTimeOffset(utcnow.Year, utcnow.Month, utcnow.Day, utcnow.Hour, utcnow.Minute, utcnow.Second, utcnow.Offset);
+                    ClusterLoadInformation capacities = await this.query.GetClusterLoadAsync();
 
-                    foreach (var capacity in capacities.LoadMetricInformationList)
+                    using (ITransaction tx = this.StateManager.CreateTransaction())
                     {
-                        IReliableDictionary<DateTimeOffset, long> dictionary = await
-                            this.StateManager.GetOrAddAsync<IReliableDictionary<DateTimeOffset, long>>($"history:/{capacity.Name}/hourly");
+                        DateTimeOffset utcnow = DateTimeOffset.UtcNow;
+                        DateTimeOffset timestamp = new DateTimeOffset(utcnow.Year, utcnow.Month, utcnow.Day, utcnow.Hour, utcnow.Minute, utcnow.Second, utcnow.Offset);
 
-                        long count = await dictionary.GetCountAsync(tx);
-
-                        if (count >= hourlyLimit)
+                        foreach (var capacity in capacities.LoadMetricInformationList)
                         {
-                            var min = await (await dictionary.CreateLinqAsyncEnumerable(tx)).Min(x => x.Key);
+                            IReliableDictionary<DateTimeOffset, long> dictionary = await
+                                this.StateManager.GetOrAddAsync<IReliableDictionary<DateTimeOffset, long>>($"history:/{capacity.Name}/hourly");
 
-                            await dictionary.TryRemoveAsync(tx, min);
+                            long count = await dictionary.GetCountAsync(tx);
+
+                            if (count >= hourlyLimit)
+                            {
+                                var min = await (await dictionary.CreateLinqAsyncEnumerable(tx)).Min(x => x.Key);
+
+                                await dictionary.TryRemoveAsync(tx, min);
+                            }
+
+                            await dictionary.SetAsync(tx, timestamp, capacity.ClusterLoad);
+
                         }
 
-                        await dictionary.SetAsync(tx, timestamp, capacity.ClusterLoad);
-
+                        await tx.CommitAsync();
                     }
-
-                    await tx.CommitAsync();
+                }
+                catch (FabricTransientException)
+                {
+                    // retry
                 }
 
                 await Task.Delay(HourlyInterval, cancellationToken);
             }
-
         }
-
     }
 }

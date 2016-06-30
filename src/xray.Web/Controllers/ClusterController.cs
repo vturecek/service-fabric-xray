@@ -61,7 +61,7 @@ namespace xray.Controllers
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
-                .SetServicePathAndQuery($"api/cluster/history/{capacityName}/{startTime}").Build());
+                .SetServicePathAndQuery($"api/cluster/history/{capacityName}/{startTime.ToString("o")}").Build());
         }
     }
 }

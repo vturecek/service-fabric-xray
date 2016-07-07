@@ -50,6 +50,9 @@ namespace xray.Data
         {
             int hourlyLimit = (int)Math.Round(3600D / HourlyInterval.TotalSeconds);
 
+            IReliableDictionary<DateTimeOffset, Dictionary<string, long>> dictionary = await
+                this.StateManager.GetOrAddAsync<IReliableDictionary<DateTimeOffset, Dictionary<string, long>>>($"history:/hourly");
+
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -58,29 +61,25 @@ namespace xray.Data
                 {
                     ClusterLoadInformation capacities = await this.query.GetClusterLoadAsync();
 
+                    DateTimeOffset utcnow = DateTimeOffset.UtcNow;
+                    DateTimeOffset timestamp = new DateTimeOffset(utcnow.Year, utcnow.Month, utcnow.Day, utcnow.Hour, utcnow.Minute, utcnow.Second, utcnow.Offset);
+                    Dictionary<string, long> values = new Dictionary<string, long>();
+
+                    foreach (var capacity in capacities.LoadMetricInformationList)
+                    {
+                        values[capacity.Name] = capacity.ClusterLoad;
+                    }
+
                     using (ITransaction tx = this.StateManager.CreateTransaction())
                     {
-                        DateTimeOffset utcnow = DateTimeOffset.UtcNow;
-                        DateTimeOffset timestamp = new DateTimeOffset(utcnow.Year, utcnow.Month, utcnow.Day, utcnow.Hour, utcnow.Minute, utcnow.Second, utcnow.Offset);
-
-                        foreach (var capacity in capacities.LoadMetricInformationList)
+                        long count = await dictionary.GetCountAsync(tx);
+                        if (count >= hourlyLimit)
                         {
-                            IReliableDictionary<DateTimeOffset, long> dictionary = await
-                                this.StateManager.GetOrAddAsync<IReliableDictionary<DateTimeOffset, long>>($"history:/{capacity.Name}/hourly");
-
-                            long count = await dictionary.GetCountAsync(tx);
-
-                            if (count >= hourlyLimit)
-                            {
-                                var min = await (await dictionary.CreateLinqAsyncEnumerable(tx)).Min(x => x.Key);
-
-                                await dictionary.TryRemoveAsync(tx, min);
-                            }
-
-                            await dictionary.SetAsync(tx, timestamp, capacity.ClusterLoad);
-
+                            var min = await (await dictionary.CreateLinqAsyncEnumerable(tx)).Min(x => x.Key);
+                            await dictionary.TryRemoveAsync(tx, min);
                         }
-
+                        
+                        await dictionary.SetAsync(tx, timestamp, values);
                         await tx.CommitAsync();
                     }
                 }

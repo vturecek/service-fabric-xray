@@ -118,21 +118,18 @@ namespace xray.Data.Controllers
         [HttpGet("history/{capacityName}/{startTime}")]
         public async Task<IEnumerable<ClusterCapacityHistory>> History(string capacityName, DateTimeOffset startTime)
         {
-            ConditionalValue<IReliableDictionary<DateTimeOffset, long>> result = await
-                this.stateManager.TryGetAsync<IReliableDictionary<DateTimeOffset, long>>($"history:/{capacityName}/hourly");
-
-            if (!result.HasValue)
-            {
-                throw new ArgumentException($"capacity history doesn't exist for {capacityName}", "capacityName");
-            }
-
-            IReliableDictionary<DateTimeOffset, long> dictionary = result.Value;
-
+            IReliableDictionary<DateTimeOffset, Dictionary<string, long>> dictionary = await
+                   this.stateManager.GetOrAddAsync<IReliableDictionary<DateTimeOffset, Dictionary<string, long>>>($"history:/hourly");
+            
             using (ITransaction tx = this.stateManager.CreateTransaction())
             {
                 return (await dictionary.CreateLinqAsyncEnumerable(tx))
                     .Where(x => x.Key > startTime)
-                    .Select(x => new ClusterCapacityHistory(x.Value, x.Key))
+                    .Select(x => {
+                        long capacity;
+                        x.Value.TryGetValue(capacityName, out capacity);
+                        return new ClusterCapacityHistory(capacity, x.Key);
+                    })
                     .OrderBy(x => x.Timestamp)
                     .ToEnumerable()
                     .ToList();

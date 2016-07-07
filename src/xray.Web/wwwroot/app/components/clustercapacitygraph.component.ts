@@ -94,6 +94,7 @@ export class ClusterCapacityGraph implements AfterViewInit {
 
     private addData(name: string, data: ClusterCapacityHistory[]): void {
 
+        let labels: string[] = this.chart.config.data.labels;
         let dataset = this.chart.config.data.datasets.find(x => x.label == name);
 
         if (!dataset) {
@@ -124,16 +125,30 @@ export class ClusterCapacityGraph implements AfterViewInit {
             };
 
             this.chart.config.data.datasets.push(dataset);
+
+            for (var label of labels) {
+                dataset.data.push(0);
+            }
         }
+        
+        for (var item of data) {
+
+            let timestamp: string = this.formatDateLabel(item.timestamp);
+            let ix: number = labels.indexOf(timestamp);
+
+            if (ix < 0) {
+                labels.push(timestamp);
+            }
+        }
+
+        labels.sort();
 
         for (var item of data) {
 
-            console.log((item.timestamp));
-            if (!this.chart.config.data.labels.find(x => x == this.formatDateLabel(item.timestamp))) {
-                this.chart.config.data.labels.push(this.formatDateLabel(item.timestamp));
-            }
-
-            dataset.data.push(item.data);
+            let timestamp: string = this.formatDateLabel(item.timestamp);
+            let ix: number = labels.indexOf(timestamp);
+            
+            dataset.data[ix] = item.data;
         }
 
         this.chart.update();

@@ -1,59 +1,82 @@
-﻿<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" class="nodeHeader {{selectedColors == 'status' ? status : health}}">
+﻿<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" 
+     class="nodeHeader {{selectedColors == 'status' ? status : health}}">
+    
     <div class="nodeTitle">
         <h4 class="nodeName">{{nodeName}}</h4>
         <span class="nodeType">{{nodeType}}</span>
     </div>
+    
     <div class="nodeStatus">
         <h4 class="highlight">{{selectedColors == 'status' ? status : health}}</h4>
         <span>{{address}}</span>
     </div>
-    <div [ngClass]="{ 'nodeStats': true, 'nodeCapacityWarning': loadPercent >= 90 && !selectedNodeCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedNodeCapacity.isCapacityViolation }">
-        <node-capacity-donut [name]="selectedNodeCapacity.name"
-                             [load]="selectedNodeCapacity.load"
-                             [capacity]="selectedNodeCapacity.capacity > 0 ? selectedNodeCapacity.capacity : selectedClusterCapacity.load"
-                             [remainingCapacity]="selectedNodeCapacity.remainingCapacity >= 0 ? selectedNodeCapacity.remainingCapacity : selectedClusterCapacity.load - selectedNodeCapacity.load"
-                             [isCapacityViolation]="selectedNodeCapacity.isCapacityViolation"
-                             [selectedColors]="selectedColors">
-        </node-capacity-donut>
+
+    <div class="nodeStats nodeStats-{{selectedColors}}">
+        <div [ngClass]="{ 'selectedCapacityBar': true, 'nodeCapacityWarning': getPercentage(selectedNodeCapacity) >= 90 && !selectedNodeCapacity.isCapacityViolation, 'nodeCapacityViolation': selectedNodeCapacity.isCapacityViolation }">
+            <h3>{{getPercentage(selectedNodeCapacity)}}<span class="percent">%</span></h3>
+            <div class="capacityBar">
+                <div class="loadBar" [style.width]="getPercentage(selectedNodeCapacity, true) + '%'"></div>
+                <div class="capacityLabel">{{selectedNodeCapacity.load}} of {{selectedNodeCapacity.capacity > 0 ? selectedNodeCapacity.capacity : selectedClusterCapacity.load}}</div>
+            </div>
+            <div>{{selectedNodeCapacity.name}}</div>
+        </div>
+        <div *ngFor="#nodeCapacity of nodeCapacities" >
+            <div *ngIf="nodeCapacity.name != selectedNodeCapacity.name" 
+                 [ngClass]="{ 'capacityBar': true, 'nodeCapacityWarning': getPercentage(nodeCapacity) >= 90 && !nodeCapacity.isCapacityViolation, 'nodeCapacityViolation': nodeCapacity.isCapacityViolation }">
+                <div class="loadBar" [style.width]="getPercentage(nodeCapacity, true) + '%'"></div>
+            </div>
+        </div>
     </div>
+
 </div>
-<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" class="{{selectedColors == 'status' ? status : ''}} node"
+
+<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" 
+     class="{{selectedColors == 'status' ? status : ''}} node"
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
+
     <ul class="application-list">
         <li *ngFor="#applicationView of applications">
             <div *ngIf="applicationView.selectedMetric > 0"
                  class="application {{applicationView.selectedClass}}"
                  [style.height.px]="applicationView.elementHeight">
 
-                <a *ngIf="applicationView.expanded" class="selectorButton" (click)="applicationView.expanded = !applicationView.expanded">
+                <a *ngIf="applicationView.expanded" 
+                   class="selectorButton" 
+                   (click)="applicationView.expanded = !applicationView.expanded">
                     <span class="selectorArrow">[>]</span>
                     <span class="selectorLabel">{{applicationView.application.name}}</span>
                 </a>
 
-                <div *ngIf="!applicationView.expanded" class="applicationDetails">
+                <div *ngIf="!applicationView.expanded" 
+                     class="applicationDetails">
                     <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
                     <h5>{{applicationView.selectedMetric}}</h5>
                     <h6>{{selectedNodeCapacity.name}}</h6>
                 </div>
 
-                <ul *ngIf="applicationView.expanded" class="service-list">
+                <ul *ngIf="applicationView.expanded" 
+                    class="service-list">
                     <li *ngFor="#serviceView of applicationView.services">
                         <div *ngIf="serviceView.selectedMetric > 0"
                              class="service {{serviceView.selectedClass}}"
                              [style.height.px]="serviceView.elementHeight">
 
-                            <a *ngIf="serviceView.expanded" class="selectorButton" (click)="serviceView.expanded = !serviceView.expanded">
+                            <a *ngIf="serviceView.expanded" 
+                               class="selectorButton" 
+                               (click)="serviceView.expanded = !serviceView.expanded">
                                 <span class="selectorArrow">[>]</span>
                                 <span class="selectorLabel">{{serviceView.service.name}}</span>
                             </a>
 
-                            <div *ngIf="!serviceView.expanded" class="applicationDetails">
+                            <div *ngIf="!serviceView.expanded" 
+                                 class="applicationDetails">
                                 <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
                                 <h5>{{serviceView.selectedMetric}}</h5>
                                 <h6>{{selectedNodeCapacity.name}}</h6>
                             </div>
 
-                            <ul *ngIf="serviceView.expanded" class="replica-list">
+                            <ul *ngIf="serviceView.expanded" 
+                                class="replica-list">
                                 <li *ngFor="#replicaView of serviceView.replicas"
                                     class="replica replica-{{replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
                                     [style.height.px]="replicaView.elementHeight">

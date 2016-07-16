@@ -1,15 +1,25 @@
 ﻿.node { margin: 3px 0px; padding: 3px 7px; background: #151515; height: auto; }
     .node li { list-style: none; }
-.nodeHeader { height: 170px; margin: 0; padding: 8px; background: #222222; }
+.nodeHeader { min-height: 100px; margin: 0; padding: 8px; background: #222222; }
     .nodeHeader h3 { font-size: 24px; font-weight: lighter; margin-top: 0; margin-bottom: 5px; }
     .nodeHeader h4 { font-size: 14px; font-weight: bold; margin-top: 0; margin-bottom: 3px; }
     .nodeHeader h5 { font-size: 12px; margin-top: 0; margin-bottom: 2px; }
     .nodeHeader span { font-size: 10px; font-style: italic; }
 .nodeTitle { float: left; }
 .nodeStatus { float: right; text-align: right; }
-.nodeStats { clear: both; text-align: center; }
-.nodeCapacityViolation { color: #e81123; }
-.nodeCapacityWarning { color: #FCD116; }
+
+.nodeStats { clear: both; text-align: center; padding-top:1px }
+
+.capacityBar { height: 5px; background: #444444; position: relative; margin: 1px 0; opacity: 0.7; }
+.capacityLabel { position: absolute; width: 100%; top: 0; left: 0; text-align: center; text-shadow: 1px 1px 2px #000000; }
+.selectedCapacityBar { margin: 10px 0; }
+    .selectedCapacityBar .capacityBar { height: 15px; opacity: 1; }
+.loadBar { background-color: #00ABEC; height: 100%; }
+.nodeStats-status .loadBar { background-color: #00ABEC; }
+.nodeStats-health .loadBar { background-color: #7FBA00; }
+.nodeCapacityViolation .loadBar { background-color: #E81123; }
+.nodeCapacityWarning .loadBar { background-color: #FCD116; }
+.nodeCapacityWarning .capacityLabel { color:#222222; text-shadow: 1px 1px 2px #FFFFFF; }
 
 .selectorButton { cursor: pointer; color: #CCCCCC; line-height: 1em; }
 .selectorArrow { position: absolute; }
@@ -23,13 +33,14 @@
     .applicationDetails a { display: block; margin: 2px 0; cursor: pointer; color: #EEE; font-weight: bold; }
     .applicationDetails ul { margin: 10px 0 0 5px; padding: 0; }
     .applicationDetails li { list-style: none; margin: 0; padding: 0; }
-        .applicationDetails li span { font-weight: bold; margin: 0 5px 0 0 }
+        .applicationDetails li span { font-weight: bold; margin: 0 5px 0 0; }
 
 .service-list { margin: 0; padding: 0; }
 .service { margin: 1px 0 0 15px; padding: 0; border: 1px solid #000000; font-size: 10px; position: relative; overflow: hidden; }
 
 .replica-list { margin: 0; padding: 0; }
 .replica { margin: 0 0 0 15px; padding: 0; border: 1px solid #000000; }
+
 
 /* replica roles*/
 .primary { opacity: 1; border-color: #DDDDDD; }
@@ -43,7 +54,7 @@
 .replica-invalid { background-color: #000000; }
 .replica-inbuild { background-color: #D17D00; }
 .replica-standby { background-color: #A0B9C1; }
-.replica-ready { background-color: #5490a5; }
+.replica-ready { background-color: #5490A5; }
 .replica-down { background-color: #E81123; }
 .replica-dropped { background-color: #333333; }
 .replica-ok { background-color: #7FBA00; }
@@ -63,17 +74,17 @@
 .removed .highlight { color: #000000; }
 
 /* health states */
-.ok { border-color: #7FBA00; } 
+.ok { border-color: #7FBA00; }
 .warning { border-color: #FCD116; }
 .error { border-color: #E81123; }
 
-.ok .highlight { color: #7FBA00; } 
+.ok .highlight { color: #7FBA00; }
 .warning .highlight { color: #FCD116; }
 .error .highlight { color: #E81123; }
 
 /* application and service statuses */
-.ready { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11) }
-.creating { border-color: #D17D00; background-color: rgba(206, 163, 103, 0.11) }
-.active { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11) }
-.upgrading { border-color: #00C69F; background-color: rgba(98, 196, 176, 0.11) }
-.deleting { border-color: #AAAAAA; background-color:  rgba(170, 170, 170, 0.11) }
+.ready { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11); }
+.creating { border-color: #D17D00; background-color: rgba(206, 163, 103, 0.11); }
+.active { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11); }
+.upgrading { border-color: #00C69F; background-color: rgba(98, 196, 176, 0.11); }
+.deleting { border-color: #AAAAAA; background-color: rgba(170, 170, 170, 0.11); }

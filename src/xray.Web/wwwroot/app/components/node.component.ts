@@ -1,6 +1,5 @@
 ﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
-import {NodeCapacityDonut} from './nodecapacitydonut.component';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
 import {ClusterCapacityViewModel} from './../viewmodels/clustercapacityviewmodel';
@@ -16,8 +15,7 @@ import {Selectable} from './../viewmodels/selectable';
     selector: 'node-component',
     templateUrl: 'app/components/node.component.html',
     styleUrls: ['app/components/node.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    directives: [NodeCapacityDonut]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeComponent implements OnInit, OnDestroy {
 
@@ -65,7 +63,6 @@ export class NodeComponent implements OnInit, OnDestroy {
     private nodeCapacitySubscription: Subscription;
     private selectedNodeCapacity: NodeCapacityViewModel;
     private nodeCapacities: NodeCapacityViewModel[];
-    private loadPercent: number;
 
     // element spacing in pixel values. 
     // Margin is outer spacing: margin-top + margin-bottom
@@ -198,6 +195,18 @@ export class NodeComponent implements OnInit, OnDestroy {
             this.nodeCapacitySubscription.unsubscribe();
         }
     }
+
+    private getPercentage(item: NodeCapacityViewModel, cap: boolean = false): string {
+        if (!item) return '0';
+        let capacity: number = item.capacity > 0 ? item.capacity : this.selectedClusterCapacity.load;
+        let result = capacity > 0 ? item.load / capacity * 100 : 0;
+
+        if (cap && result > 100.0) {
+            return '100.0';
+        }
+
+        return result.toFixed(1);
+    }
     
     private getSelectedMetricValue(metrics: LoadMetric[]): number {
 
@@ -242,13 +251,11 @@ export class NodeComponent implements OnInit, OnDestroy {
             var nodeContainerSize: number;
             
             if (this.selectedNodeCapacity.capacity <= 0) {
-                this.loadPercent = Math.round(this.selectedNodeCapacity.load / this.selectedClusterCapacity.load * 100);
                 this.elementHeight = -1; // lets the browser auto scale height  
                 nodeCapacity = this.DefaultCapacitySize / 20;
                 nodeContainerSize = this.DefaultCapacitySize * this.scaleFactor;
             }
             else {
-                this.loadPercent = Math.round(this.selectedNodeCapacity.load / this.selectedNodeCapacity.capacity * 100);
                 this.elementHeight = Math.max(0, (this.selectedNodeCapacity.capacity * this.scaleFactor) - this.nodeMargin);
                 nodeCapacity = this.selectedNodeCapacity.capacity;
                 nodeContainerSize = Math.max(0, this.elementHeight - this.nodePaddingAndBorder);

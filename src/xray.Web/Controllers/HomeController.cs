@@ -6,14 +6,11 @@ namespace xray.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 
+    [Route("")]
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            return this.View();
-        }
-
-        public IActionResult Error()
+        [Route("{section:regex(^cluster|dashboard$)?}")]
+        public IActionResult Index(string section = null)
         {
             return this.View();
         }

@@ -58,15 +58,7 @@ namespace xray.Web
 
             app.UseStaticFiles();
 
-            app.UseMvc(
-                routes =>
-                {
-                    routes
-                        .MapRoute(
-                            name: "default",
-                            defaults: new { controller = "Home", action = "Index" },
-                            template: "{*url}");
-                });
+            app.UseMvc();
         }
     }
 }

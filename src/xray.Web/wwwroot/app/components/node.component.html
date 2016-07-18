@@ -1,5 +1,6 @@
-﻿<div *ngIf="selectedNodeCapacity && selectedClusterCapacity" 
-     class="nodeHeader {{selectedColors == 'status' ? status : health}}">
+﻿<div *ngIf="selectedNodeCapacity && selectedClusterCapacity"
+     class="nodeHeader {{selectedColors == 'status' ? status : health}}"
+     [style.height.px]="nodeHeaderHeight">
     
     <div class="nodeTitle">
         <h4 class="nodeName">{{nodeName}}</h4>
@@ -21,7 +22,8 @@
             <div>{{selectedNodeCapacity.name}}</div>
         </div>
         <div *ngFor="#nodeCapacity of nodeCapacities" >
-            <div *ngIf="nodeCapacity.name != selectedNodeCapacity.name" 
+            <div *ngIf="nodeCapacity.name != selectedNodeCapacity.name"
+                 [nodeCapacityInfo]="nodeCapacity.name"
                  [ngClass]="{ 'capacityBar': true, 'nodeCapacityWarning': getPercentage(nodeCapacity) >= 90 && !nodeCapacity.isCapacityViolation, 'nodeCapacityViolation': nodeCapacity.isCapacityViolation }">
                 <div class="loadBar" [style.width]="getPercentage(nodeCapacity, true) + '%'"></div>
             </div>

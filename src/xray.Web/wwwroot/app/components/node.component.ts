@@ -1,4 +1,4 @@
-﻿import {Component, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
+﻿import {Component, EventEmitter, ElementRef, Output, ChangeDetectorRef, ChangeDetectionStrategy, OnInit, OnDestroy, OnChanges, SimpleChange, Input} from 'angular2/core';
 import {Observable, Subscription}     from 'rxjs/rx';
 import {NodeViewModel} from './../viewmodels/nodeviewmodel';
 import {NodeCapacityViewModel} from './../viewmodels/nodecapacityviewmodel';
@@ -10,17 +10,25 @@ import {List} from './../viewmodels/list';
 import {LoadMetric} from './../models/loadmetric';
 import {DataService} from './../services/data.service';
 import {Selectable} from './../viewmodels/selectable';
+import {NodeCapacityInfoDirective} from './../directives/nodecapacityinfo.directive';
 
 @Component({
     selector: 'node-component',
     templateUrl: 'app/components/node.component.html',
     styleUrls: ['app/components/node.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    directives: [NodeCapacityInfoDirective]
 })
 export class NodeComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
-    
+
+    @Output()
+    private capacityCountChange: EventEmitter<number> = new EventEmitter();
+
+    @Input()
+    private capacityCount: number;
+
     @Input()
     private selectedClusterCapacity: ClusterCapacityViewModel;
 
@@ -58,6 +66,7 @@ export class NodeComponent implements OnInit, OnDestroy {
     private address: string;
     
     private elementHeight: number;
+    private nodeHeaderHeight: number;
     private applicationSubscription: Subscription;
     private applications: DeployedApplicationViewModel[];
     private nodeCapacitySubscription: Subscription;
@@ -84,6 +93,11 @@ export class NodeComponent implements OnInit, OnDestroy {
     }
 
     public ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+
+        if (changes['capacityCount']) {
+            console.log(this.capacityCount);
+            this.nodeHeaderHeight = 120 + this.capacityCount * 7;
+        }
 
         if (changes['applicationsExpanded']) {
             for (var appView of this.applications) {
@@ -137,6 +151,8 @@ export class NodeComponent implements OnInit, OnDestroy {
                     return;
                 }
 
+                let currentCount = this.nodeCapacities.length;
+
                 List.updateList(this.nodeCapacities, result.map(x =>
                     new NodeCapacityViewModel(
                         x.isCapacityViolation,
@@ -149,6 +165,10 @@ export class NodeComponent implements OnInit, OnDestroy {
 
                 this.computeElementHeights();
                 this.changeDetector.markForCheck();
+
+                if (currentCount != this.nodeCapacities.length) {
+                    this.capacityCountChange.emit(this.nodeCapacities.length);
+                }
             },
             error => console.log("error from observable: " + error)
 

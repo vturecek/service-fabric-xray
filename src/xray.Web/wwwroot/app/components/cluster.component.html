@@ -68,11 +68,13 @@
                             [status]="node.status"
                             [upTime]="node.upTime"
                             [address]="node.address"
+                            [capacityCount]="maxCapacityCount"
                             [applicationsExpanded]="node.applicationsExpanded"
                             [servicesExpanded]="node.servicesExpanded"
                             [scaleFactor]="scaleFactor * scaleFactor"
                             [selectedClusterCapacity]="selectedClusterCapacity"
-                            [selectedColors]="selectedColors">
+                            [selectedColors]="selectedColors"
+                            (capacityCountChange)="onCapacityCountChange($event)">
             </node-component>
         </li>
     </ul>

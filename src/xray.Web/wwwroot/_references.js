@@ -8,7 +8,6 @@
 /// <reference path="app/components/clustercapacitygraph.component.js" />
 /// <reference path="app/components/dashboard.component.js" />
 /// <reference path="app/components/node.component.js" />
-/// <reference path="app/components/nodecapacitydonut.component.js" />
 /// <reference path="app/components/service-detail.component.js" />
 /// <reference path="app/models/application.js" />
 /// <reference path="app/models/clustercapacity.js" />

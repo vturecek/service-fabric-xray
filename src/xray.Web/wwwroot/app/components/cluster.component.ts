@@ -39,6 +39,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
     private applicationsExpanded: boolean;
     private servicesExpanded: boolean;
     private scaleFactor: number;
+    private maxCapacityCount: number;
 
     private nodeSubscription: Subscription;
     private clusterInfoSubscription: Subscription;
@@ -50,6 +51,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
         private router: Router)
     {
         this.scaleFactor = 1;
+        this.maxCapacityCount = 0;
         this.applicationsExpanded = true;
         this.servicesExpanded = true;
         this.nodes = [];
@@ -189,6 +191,12 @@ export class ClusterComponent implements OnInit, OnDestroy {
             {
                 this.nodes.splice(ix, 1);
             }
+        }
+    }
+
+    private onCapacityCountChange(count:number): void {
+        if (count > this.maxCapacityCount) {
+            this.maxCapacityCount = count;
         }
     }
 

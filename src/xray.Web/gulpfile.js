@@ -73,7 +73,11 @@ gulp.task("copy-deps:dateformat", function () {
     return gulp.src(paths.npmSrc + '/dateformat/lib/*.*', { base: paths.npmSrc + '/dateformat/lib/' })
          .pipe(gulp.dest(paths.npmLibs + '/dateformat/'));
 });
+gulp.task("copy-deps:web-animations", function () {
+    return gulp.src(paths.npmSrc + '/web-animations-js/*.*', { base: paths.npmSrc + '/web-animations-js/' })
+         .pipe(gulp.dest(paths.npmLibs + '/web-animations/'));
+});
 
 
 
-gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:chartjs', 'copy-deps:dateformat']);
+gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:es6-shim', 'copy-deps:chartjs', 'copy-deps:dateformat', 'copy-deps:web-animations']);

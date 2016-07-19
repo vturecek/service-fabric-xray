@@ -24,7 +24,8 @@
         <div *ngFor="#nodeCapacity of nodeCapacities" >
             <div *ngIf="nodeCapacity.name != selectedNodeCapacity.name"
                  [nodeCapacityInfo]="nodeCapacity.name"
-                 [ngClass]="{ 'capacityBar': true, 'nodeCapacityWarning': getPercentage(nodeCapacity) >= 90 && !nodeCapacity.isCapacityViolation, 'nodeCapacityViolation': nodeCapacity.isCapacityViolation }">
+                 [ngClass]="{ 'capacityBar': true, 'nodeCapacityWarning': getPercentage(nodeCapacity) >= 90 && !nodeCapacity.isCapacityViolation, 'nodeCapacityViolation': nodeCapacity.isCapacityViolation }"
+                 (click)="onCapacityClick(nodeCapacity.name)">
                 <div class="loadBar" [style.width]="getPercentage(nodeCapacity, true) + '%'"></div>
             </div>
         </div>

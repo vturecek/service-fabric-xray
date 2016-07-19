@@ -169,7 +169,12 @@ export class ClusterComponent implements OnInit, OnDestroy {
     }
 
     private onChangeCapacity(newValue: string): void {
-        this.selectedMetricName = newValue.split(":")[1].trim(); // yeah this is weird but that's what angular gives us.
+        // select change event gives index:value, but other places it's just the value. Nice.
+        let ix: number = newValue.indexOf(":");
+        this.selectedMetricName = ix >= 0
+            ? newValue.slice(ix)
+            : newValue;
+        
         this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
     }
 

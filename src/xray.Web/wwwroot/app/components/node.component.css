@@ -10,10 +10,10 @@
 
 .nodeStats { clear: both; text-align: center; padding-top:1px }
 
-.capacityBar { height: 5px; background: #444444; position: relative; margin: 1px 0; opacity: 0.7; }
+.capacityBar { height: 5px; background: #444444; position: relative; margin: 1px 0; opacity: 0.7; cursor:pointer; }
 .capacityLabel { position: absolute; width: 100%; top: 0; left: 0; text-align: center; text-shadow: 1px 1px 2px #000000; }
-.selectedCapacityBar { margin: 10px 0; }
-    .selectedCapacityBar .capacityBar { height: 15px; opacity: 1; }
+.selectedCapacityBar { margin: 10px 0;  }
+    .selectedCapacityBar .capacityBar { height: 15px; opacity: 1; cursor:default}
 .loadBar { background-color: #00ABEC; height: 100%; }
 .nodeStats-status .loadBar { background-color: #00ABEC; }
 .nodeStats-health .loadBar { background-color: #7FBA00; }

@@ -9,6 +9,7 @@
 /// <reference path="app/components/dashboard.component.js" />
 /// <reference path="app/components/node.component.js" />
 /// <reference path="app/components/service-detail.component.js" />
+/// <reference path="app/directives/nodecapacityinfo.directive.js" />
 /// <reference path="app/models/application.js" />
 /// <reference path="app/models/clustercapacity.js" />
 /// <reference path="app/models/clustercapacityhistory.js" />

@@ -24,7 +24,7 @@
     <div class="controls controlGroup">
         <div>
             <label>Metric:</label>
-            <select name="metricDropDown" [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target.value)">
+            <select name="metricDropDown" [ngModel]="selectedMetricName" (change)="onChangeCapacity($event.target)">
                 <option *ngFor="#capacity of clusterCapacities" [ngValue]="capacity.name">{{capacity.name}}</option>
             </select>
         </div>
@@ -74,7 +74,8 @@
                             [scaleFactor]="scaleFactor * scaleFactor"
                             [selectedClusterCapacity]="selectedClusterCapacity"
                             [selectedColors]="selectedColors"
-                            (capacityCountChange)="onCapacityCountChange($event)">
+                            (capacityCountChange)="onCapacityCountChange($event)"
+                            (selectedCapacityChange)="onChangeCapacity($event)">
             </node-component>
         </li>
     </ul>

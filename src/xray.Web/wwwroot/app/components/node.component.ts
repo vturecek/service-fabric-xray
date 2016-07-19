@@ -22,9 +22,13 @@ import {NodeCapacityInfoDirective} from './../directives/nodecapacityinfo.direct
 export class NodeComponent implements OnInit, OnDestroy {
 
     private DefaultCapacitySize: number = 500;
+    private NodeHeaderHeight: number = 120;
 
     @Output()
     private capacityCountChange: EventEmitter<number> = new EventEmitter();
+
+    @Output()
+    private selectedCapacityChange: EventEmitter<string> = new EventEmitter();
 
     @Input()
     private capacityCount: number;
@@ -96,7 +100,7 @@ export class NodeComponent implements OnInit, OnDestroy {
 
         if (changes['capacityCount']) {
             console.log(this.capacityCount);
-            this.nodeHeaderHeight = 120 + this.capacityCount * 7;
+            this.nodeHeaderHeight = this.NodeHeaderHeight + this.capacityCount * 7;
         }
 
         if (changes['applicationsExpanded']) {
@@ -216,6 +220,10 @@ export class NodeComponent implements OnInit, OnDestroy {
         }
     }
 
+    private onCapacityClick(name: string): void {
+        this.selectedCapacityChange.emit(name);
+    }
+
     private getPercentage(item: NodeCapacityViewModel, cap: boolean = false): string {
         if (!item) return '0';
         let capacity: number = item.capacity > 0 ? item.capacity : this.selectedClusterCapacity.load;
@@ -224,7 +232,6 @@ export class NodeComponent implements OnInit, OnDestroy {
         if (cap && result > 100.0) {
             return '100.0';
         }
-
         return result.toFixed(1);
     }
     

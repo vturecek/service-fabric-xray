@@ -31,6 +31,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
     private selectedClusterCapacity: ClusterCapacityViewModel;
     private selectedNodeTypes: Selectable[];
     private selectedApplicationTypes: Selectable[];
+    private highlightedReplica: string;
 
     private nodes: NodeViewModel[];
     private clusterCapacities: ClusterCapacityViewModel[];
@@ -172,7 +173,7 @@ export class ClusterComponent implements OnInit, OnDestroy {
         // select change event gives index:value, but other places it's just the value. Nice.
         let ix: number = newValue.indexOf(":");
         this.selectedMetricName = ix >= 0
-            ? newValue.slice(ix)
+            ? newValue.slice(ix + 1).trim()
             : newValue;
         
         this.selectedClusterCapacity = this.clusterCapacities.find(x => x.name == this.selectedMetricName);
@@ -203,6 +204,10 @@ export class ClusterComponent implements OnInit, OnDestroy {
         if (count > this.maxCapacityCount) {
             this.maxCapacityCount = count;
         }
+    }
+
+    private onHighlightedReplicaChange(replica: string): void {
+        this.highlightedReplica = replica;
     }
 
     private expandApplications(): void {

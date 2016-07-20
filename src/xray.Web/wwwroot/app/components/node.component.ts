@@ -30,6 +30,12 @@ export class NodeComponent implements OnInit, OnDestroy {
     @Output()
     private selectedCapacityChange: EventEmitter<string> = new EventEmitter();
 
+    @Output()
+    private highlightedReplicaChange: EventEmitter<string> = new EventEmitter();
+
+    @Input()
+    private highlightedReplica: string;
+
     @Input()
     private capacityCount: number;
 
@@ -145,6 +151,16 @@ export class NodeComponent implements OnInit, OnDestroy {
             }
         }
 
+        if (changes['highlightedReplica']) {
+            for (var appView of this.applications) {
+                for (var serviceView of appView.services) {
+                    for (var replicaView of serviceView.replicas) {
+                        replicaView.highlighted = replicaView.replica.partitionId + serviceView.service.name == this.highlightedReplica;
+                    }
+                }
+            }
+        }
+
         this.computeElementHeights();
     }
     
@@ -198,6 +214,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                                 y.service,
                                 y.replicas.map(z =>
                                     new DeployedReplicaViewModel(
+                                        false,
                                         this.getSelectedMetricValue(z.metrics),
                                         this.getSelectedColors(z),
                                         z.role ? z.role.toLowerCase() : 'unknown',
@@ -222,6 +239,13 @@ export class NodeComponent implements OnInit, OnDestroy {
 
     private onCapacityClick(name: string): void {
         this.selectedCapacityChange.emit(name);
+    }
+
+    private onReplicaMouseOver(name: string): void {
+        this.highlightedReplicaChange.emit(name);
+    }
+    private onReplicaMouseLeave(): void {
+        this.highlightedReplicaChange.emit('');
     }
 
     private getPercentage(item: NodeCapacityViewModel, cap: boolean = false): string {

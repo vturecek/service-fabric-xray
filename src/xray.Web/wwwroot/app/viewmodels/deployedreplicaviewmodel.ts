@@ -6,6 +6,7 @@ export class DeployedReplicaViewModel extends ViewModel<DeployedReplicaViewModel
     public elementHeight: number;
 
     public constructor(
+        public highlighted: boolean,
         public selectedMetric: number,
         public selectedClass: string,
         public roleClass: string,

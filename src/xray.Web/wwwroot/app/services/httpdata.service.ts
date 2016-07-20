@@ -20,7 +20,7 @@ export class HttpDataService extends DataService {
         private http: Http)
     { super(); }
 
-    private refreshInterval: number = 6;
+    private refreshInterval: number = 10;
 
     private apiUrl:string = "api/";
 

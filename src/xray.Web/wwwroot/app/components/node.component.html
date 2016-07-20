@@ -81,7 +81,9 @@
                             <ul *ngIf="serviceView.expanded" 
                                 class="replica-list">
                                 <li *ngFor="#replicaView of serviceView.replicas"
-                                    class="replica replica-{{replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
+                                    class="replica replica-{{replicaView.highlighted? 'highlighted' : replicaView.selectedClass}} {{replicaView.roleClass || 'stateless' }}"
+                                    (mouseover)="onReplicaMouseOver(replicaView.replica.partitionId + serviceView.service.name)"
+                                    (mouseleave)="onReplicaMouseLeave()"
                                     [style.height.px]="replicaView.elementHeight">
                                 </li>
                             </ul>

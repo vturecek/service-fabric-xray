@@ -41,7 +41,6 @@
 .replica-list { margin: 0; padding: 0; }
 .replica { margin: 0 0 0 15px; padding: 0; border: 1px solid #000000; }
 
-
 /* replica roles*/
 .primary { opacity: 1; border-color: #DDDDDD; }
 .stateless { opacity: 1; border-color: #DDDDDD; }
@@ -60,6 +59,7 @@
 .replica-ok { background-color: #7FBA00; }
 .replica-warning { background-color: #FCD116; }
 .replica-error { background-color: #E81123; }
+.replica-highlighted { background-color: #EEEEEE; }
 
 /* common */
 .invalid { border-color: #000000; }

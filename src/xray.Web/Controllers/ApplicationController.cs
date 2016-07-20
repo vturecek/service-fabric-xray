@@ -21,7 +21,7 @@ namespace xray.Controllers
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
-                .SetServicePathAndQuery($"api/application/{nodeName ?? ""}").Build());
+                .SetServicePathAndQuery($"api/application/{nodeName}/{appTypeFilter ?? ""}").Build());
         }
     }
 }

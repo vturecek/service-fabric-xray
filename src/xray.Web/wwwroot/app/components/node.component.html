@@ -47,12 +47,12 @@
                    class="selectorButton" 
                    (click)="applicationView.expanded = !applicationView.expanded">
                     <span class="selectorArrow">[>]</span>
-                    <span class="selectorLabel">{{applicationView.application.name}}</span>
+                    <span class="selectorLabel">{{applicationView.shortName}}</span>
                 </a>
 
                 <div *ngIf="!applicationView.expanded" 
                      class="applicationDetails">
-                    <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.application.name}}</a>
+                    <a (click)="applicationView.expanded = !applicationView.expanded">{{applicationView.shortName}}</a>
                     <h5>{{applicationView.selectedMetric}}</h5>
                     <h6>{{selectedNodeCapacity.name}}</h6>
                 </div>
@@ -68,12 +68,12 @@
                                class="selectorButton" 
                                (click)="serviceView.expanded = !serviceView.expanded">
                                 <span class="selectorArrow">[>]</span>
-                                <span class="selectorLabel">{{serviceView.service.name}}</span>
+                                <span class="selectorLabel">{{serviceView.shortName}}</span>
                             </a>
 
                             <div *ngIf="!serviceView.expanded" 
                                  class="applicationDetails">
-                                <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.service.name}}</a>
+                                <a (click)="serviceView.expanded = !serviceView.expanded">{{serviceView.shortName}}</a>
                                 <h5>{{serviceView.selectedMetric}}</h5>
                                 <h6>{{selectedNodeCapacity.name}}</h6>
                             </div>

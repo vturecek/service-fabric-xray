@@ -6,6 +6,7 @@ import {List} from './list';
 export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationViewModel> {
 
     public elementHeight: number;
+    public shortName: string;
 
     public constructor(
         public expanded: boolean,
@@ -14,6 +15,7 @@ export class DeployedApplicationViewModel extends ViewModel<DeployedApplicationV
         public application: Application,
         public services: DeployedServiceViewModel[]) {
         super(application.name);
+        this.shortName = application.name.replace("fabric:/", "");
     }
 
     public copyFrom(other: DeployedApplicationViewModel) {

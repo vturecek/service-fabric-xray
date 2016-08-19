@@ -211,6 +211,7 @@ export class NodeComponent implements OnInit, OnDestroy {
                                 true,
                                 this.getSelectedMetricValue(y.service.metrics),
                                 this.getSelectedColors(y.service),
+                                x.application.name,
                                 y.service,
                                 y.replicas.map(z =>
                                     new DeployedReplicaViewModel(

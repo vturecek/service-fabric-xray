@@ -23,7 +23,7 @@
 
 .selectorButton { cursor: pointer; color: #CCCCCC; line-height: 1em; }
 .selectorArrow { position: absolute; }
-.selectorLabel { position: absolute; top: 18px; left: 15px; color: #CCCCCC; transform: rotate(90deg); transform-origin: left top 0; }
+.selectorLabel { position: absolute; top: 18px; left: 18px; font-size:12px; color: #CCCCCC; transform: rotate(90deg); transform-origin: left top 0; }
 
 .application-list { margin: 0; padding: 0; }
 .application { margin: 2px 0; padding: 0 2px; border: 1px solid #000000; font-size: 10px; position: relative; overflow: hidden; }

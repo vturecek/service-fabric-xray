@@ -1,6 +1,7 @@
-﻿.nodeList {  margin: 0 0 0 215px; white-space: nowrap; }
+﻿.nodeList { margin: 0 0 0 215px; white-space: nowrap; }
 .nodeListItem { display: inline-block; vertical-align: top; width: 175px; min-height: 120px; margin: 0 5px; list-style: none; }
-.controlPanel { position: absolute; top:55px; bottom:0; width: 200px; overflow: hidden; background: #222222; }
+.controlPanel { position: absolute; top: 55px; bottom: 0; width: 200px; overflow: hidden; background: #222222; }
+    .controlPanel .status .clusterHealth { font-size: 12px; left: 124px; position: absolute; top: 19px; }
 .controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
     .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
         .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }
@@ -10,17 +11,17 @@
     .controlGroup li { list-style: none; padding: 0; margin: 0; font-weight: bold; }
     .controlGroup label { display: inline-block; margin: 2px 0; width: 87px; font-weight: normal; padding: 0; }
 
-.controls label { display: inline-block; margin: 5px 0; width: 50px; font-weight:normal; }
+.controls label { display: inline-block; margin: 5px 0; width: 50px; font-weight: normal; }
 .expandButton { display: block; padding: 4px 0; }
 .filter { }
     .filter h4 { font-size: 12px; }
     .filter ul { margin: 0; padding: 0; }
     .filter li { list-style: none; margin: 0; padding: 0; }
     .filter label { margin-left: 5px; vertical-align: middle; font-weight: normal; }
-.scale { position:absolute; left: 205px; text-align: center;  }
+.scale { position: absolute; left: 205px; text-align: center; }
     .scale label { font-size: 12px; width: 50px; }
-    .scale .scaleBar {  -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 20px; background:none; }
-    
+    .scale .scaleBar { -webkit-appearance: slider-vertical; /* WebKit */ width: 8px; height: 400px; padding: 0 5px; margin-left: 20px; background: none; }
+
 .status label { width: 115px; }
 .status span { font-weight: bold; }
 

@@ -6,6 +6,7 @@
     .capacityDonuts li { display: inline-block; list-style: none; margin: 0; }
 
 .controlPanel { position: absolute; top:55px; bottom:0; width: 200px; white-space: nowrap; background: #222222; }
+    .controlPanel .status .clusterHealth { font-size: 12px; left: 124px; position: absolute; top: 19px; }
 .controlGroup { padding: 10px; border-bottom: 2px solid #333; white-space: nowrap; }
     .controlGroup a, .controlGroup a:visited { color: #DDD; cursor: pointer; font-weight: bold; }
         .controlGroup a:hover { color: #FFF; cursor: pointer; text-decoration: none; }

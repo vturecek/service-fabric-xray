@@ -1,8 +1,7 @@
 ﻿<div class="controlPanel">
     <div class="status controlGroup" *ngIf="clusterInfo">
-        <h4>Cluster status</h4>
+        <h4>Cluster status</h4><span *ngIf="clusterInfo.healthStatus" class="clusterHealth {{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span>
         <ul>
-            <li><label>Cluster health:</label><span *ngIf="clusterInfo.healthStatus" class="{{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span></li>
             <li><label>Runtime version:</label>{{clusterInfo.version}}</li>
             <li><label>nodes:</label>{{clusterInfo.nodes}}</li>
             <li><label>applications:</label>{{clusterInfo.applications}}</li>

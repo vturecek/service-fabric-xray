@@ -38,9 +38,10 @@
      [style.height]="elementHeight < 0 ? 'auto' : elementHeight + 'px'">
 
     <ul class="application-list">
-        <li *ngFor="#applicationView of applications">
+        <li *ngFor="#applicationView of applications"
+            class="application {{applicationView.selectedClass}}">
             <div *ngIf="applicationView.selectedMetric > 0"
-                 class="application {{applicationView.selectedClass}}"
+                 class="shaded"
                  [style.height.px]="applicationView.elementHeight">
 
                 <a *ngIf="applicationView.expanded" 
@@ -59,9 +60,10 @@
 
                 <ul *ngIf="applicationView.expanded" 
                     class="service-list">
-                    <li *ngFor="#serviceView of applicationView.services">
+                    <li *ngFor="#serviceView of applicationView.services"
+                        class="service {{serviceView.selectedClass}}">
                         <div *ngIf="serviceView.selectedMetric > 0"
-                             class="service {{serviceView.selectedClass}}"
+                             class="shaded"
                              [style.height.px]="serviceView.elementHeight">
 
                             <a *ngIf="serviceView.expanded" 

@@ -82,9 +82,19 @@
 .warning .highlight { color: #FCD116; }
 .error .highlight { color: #E81123; }
 
+.ok .shaded { background-color: rgba(79, 100, 72, 0.2)}
+.warning .shaded { background-color: rgba(48, 91, 98, 0.2) }
+.error .shaded { background-color: rgba(354, 92, 90, 0.2)}
+
 /* application and service statuses */
-.ready { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11); }
-.creating { border-color: #D17D00; background-color: rgba(206, 163, 103, 0.11); }
-.active { border-color: #00ABEC; background-color: rgba(119, 203, 234, 0.11); }
-.upgrading { border-color: #00C69F; background-color: rgba(98, 196, 176, 0.11); }
-.deleting { border-color: #AAAAAA; background-color: rgba(170, 170, 170, 0.11); }
+.ready { border-color: #00ABEC; }
+.creating { border-color: #D17D00; }
+.active { border-color: #00ABEC; }
+.upgrading { border-color: #00C69F; }
+.deleting { border-color: #AAAAAA; }
+
+.ready .shaded { background-color: rgba(119, 203, 234, 0.11); }
+.creating .shaded { background-color: rgba(206, 163, 103, 0.11); }
+.active .shaded { background-color: rgba(119, 203, 234, 0.11); }
+.upgrading .shaded { background-color: rgba(98, 196, 176, 0.11); }
+.deleting .shaded { background-color: rgba(170, 170, 170, 0.11); }

@@ -177,17 +177,19 @@ namespace xray.Data
 
         public async Task<IEnumerable<LoadMetricReport>> GetReplicaLoad(string nodeName, Guid partitionId, long replicaOrInstanceId)
         {
-            DeployedServiceReplicaDetail detail = await
-                this.fabricClient.QueryManager.GetDeployedReplicaDetailAsync(nodeName, partitionId, replicaOrInstanceId);
+            ReplicaLoadInformation detail = await
+                this.fabricClient.QueryManager.GetReplicaLoadInformationAsync(partitionId, replicaOrInstanceId);
+            
 
             Type t = typeof(LoadMetricReport);
             LoadMetricReport countMetric = new LoadMetricReport();
             t.GetProperty("Name").SetValue(countMetric, CountMetricName);
             t.GetProperty("Value").SetValue(countMetric, 1);
 
-            detail.ReportedLoad.Add(countMetric);
+            
+            detail.LoadMetricReports.Add(countMetric);
 
-            return detail.ReportedLoad;
+            return detail.LoadMetricReports;
         }
 
         public async Task<Service> GetServiceAsync(Uri applicationName, Uri serviceName)

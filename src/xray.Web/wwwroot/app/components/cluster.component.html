@@ -3,10 +3,10 @@
         <h4>Cluster status</h4><span *ngIf="clusterInfo.healthStatus" class="clusterHealth {{clusterInfo.healthStatus.toLowerCase()}}">{{clusterInfo.healthStatus}}</span>
         <ul>
             <li><label>Runtime version:</label>{{clusterInfo.version}}</li>
-            <li><label>nodes:</label>{{clusterInfo.nodes}}</li>
-            <li><label>applications:</label>{{clusterInfo.applications}}</li>
-            <li><label>services:</label>{{clusterInfo.services}}</li>
-            <li><label>replicas and instances:</label>{{clusterInfo.replicas}}</li>
+            <li><label>Nodes:</label>{{clusterInfo.nodes}}</li>
+            <li><label>Applications:</label>{{clusterInfo.applications}}</li>
+            <li><label>Services:</label>{{clusterInfo.services}}</li>
+            <li><label>Replicas and instances:</label>{{clusterInfo.replicas}}</li>
         </ul>
     </div>
     <div class="balance controlGroup" *ngIf="clusterInfo">

@@ -14,13 +14,17 @@ namespace xray.Controllers
     [Route("api/[controller]")]
     public class NodeController : Controller
     {
-        
+        private readonly HttpClient httpClient;
+
+        public NodeController(HttpClient httpClient)
+        {
+            this.httpClient = httpClient;
+        }
+
         [HttpGet("info/{nodeTypeFilter?}")]
         public Task<HttpResponseMessage> Info(string nodeTypeFilter = null)
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
@@ -30,9 +34,7 @@ namespace xray.Controllers
         [HttpGet("capacity/{nodeName}")]
         public Task<HttpResponseMessage> Capacity(string nodeName)
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)

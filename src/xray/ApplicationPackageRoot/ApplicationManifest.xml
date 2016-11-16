@@ -3,7 +3,7 @@
   <Parameters>
     <Parameter Name="Data_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Data_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Web_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Web_InstanceCount" DefaultValue="1" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 

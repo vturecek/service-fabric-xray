@@ -12,12 +12,17 @@ namespace xray.Controllers
     [Route("api/[controller]")]
     public class ApplicationController : Controller
     {
+        private readonly HttpClient httpClient;
+
+        public ApplicationController(HttpClient httpClient)
+        {
+            this.httpClient = httpClient;
+        }
+
         [HttpGet("{nodeName}/{appTypeFilter?}")]
         public Task<HttpResponseMessage> Get(string nodeName, string appTypeFilter = null)
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)

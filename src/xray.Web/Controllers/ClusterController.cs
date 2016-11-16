@@ -15,13 +15,17 @@ namespace xray.Controllers
     [Route("api/[controller]")]
     public class ClusterController : Controller
     {
+        private readonly HttpClient httpClient;
+
+        public ClusterController(HttpClient httpClient)
+        {
+            this.httpClient = httpClient;
+        }
 
         [HttpGet("info")]
         public Task<HttpResponseMessage> Info()
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                     .SetServiceName(new ServiceUriBuilder("Data").Build())
                     .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
@@ -31,9 +35,7 @@ namespace xray.Controllers
         [HttpGet("filters")]
         public Task<HttpResponseMessage> Filters()
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
@@ -43,9 +45,7 @@ namespace xray.Controllers
         [HttpGet("capacity")]
         public Task<HttpResponseMessage> Capacity()
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)
@@ -55,9 +55,7 @@ namespace xray.Controllers
         [HttpGet("history/{capacityName}/{startTime}")]
         public Task<HttpResponseMessage> History(string capacityName, DateTimeOffset startTime)
         {
-            HttpClient client = new HttpClient(new HttpServiceClientHandler());
-
-            return client.GetAsync(new HttpServiceUriBuilder()
+            return this.httpClient.GetAsync(new HttpServiceUriBuilder()
                 .SetServiceName(new ServiceUriBuilder("Data").Build())
                 .SetPartitionKey(0)
                     .SetTarget(HttpServiceUriTarget.Primary)

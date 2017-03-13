@@ -10,8 +10,8 @@ namespace xray.Data
     using System.Fabric.Health;
     using System.Fabric.Query;
     using System.Linq;
-    using System.Runtime.Caching;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Caching.Memory;
 
     internal class FabricClientServiceFabricQuery : IServiceFabricQuery
     {
@@ -40,25 +40,20 @@ namespace xray.Data
 
         public FabricClientServiceFabricQuery(FabricClient fabricClient)
         {
-            this.cache = new MemoryCache("FabricClientServiceFabricQuery");
+            this.cache = new MemoryCache(new MemoryCacheOptions());
             this.fabricClient = fabricClient;
         }
 
         public async Task<Application> GetApplicationAsync(Uri applicationName)
         {
-            ApplicationList applications = this.cache["ApplicationList"] as ApplicationList;
-
-            if (applications == null)
+            if(!this.cache.TryGetValue<ApplicationList>("ApplicationList", out var applications))
             {
                 applications = await this.GetApplicationsAsync();
 
-                this.cache.Set(new CacheItem("ApplicationList", applications), new CacheItemPolicy()
-                {
-                    AbsoluteExpiration = DateTimeOffset.UtcNow + this.cacheDuration
-                });
-            }
-            
-            return applications.FirstOrDefault(x => x.ApplicationName == applicationName);
+                cache.Set("ApplicationList", applications, DateTimeOffset.UtcNow + this.cacheDuration);
+            }            
+
+            return applications.FirstOrDefault(x => x.ApplicationName == applicationName);            
         }
 
         public Task<ApplicationList> GetApplicationsAsync()
@@ -197,17 +192,13 @@ namespace xray.Data
             try
             {
                 string key = "Services-" + applicationName.ToString();
-                ServiceList services = this.cache[key] as ServiceList;
 
-                if (services == null)
+                if(!this.cache.TryGetValue<ServiceList>(key, out var services))
                 {
                     services = await this.GetServicesAsync(applicationName);
 
-                    this.cache.Set(new CacheItem(key, services), new CacheItemPolicy()
-                    {
-                        AbsoluteExpiration = DateTimeOffset.UtcNow + this.cacheDuration
-                    });
-                }
+                    this.cache.Set(key, services, DateTimeOffset.UtcNow + this.cacheDuration);
+                }                
 
                 return services.FirstOrDefault(x => x.ServiceName == serviceName);
             }

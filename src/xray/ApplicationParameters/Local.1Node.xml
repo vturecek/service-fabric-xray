@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/xray" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="Web_InstanceCount" Value="1" />
-    <Parameter Name="Data_TargetReplicaSetSize" Value="1" />
-    <Parameter Name="Data_MinReplicaSetSize" Value="1" />
+    <Parameter Name="WebService_InstanceCount" Value="1" />
+    <Parameter Name="DataService_PartitionCount" Value="1" />
+    <Parameter Name="DataService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="DataService_TargetReplicaSetSize" Value="1" />
   </Parameters>
 </Application>

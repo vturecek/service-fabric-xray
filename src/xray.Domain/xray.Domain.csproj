@@ -3,22 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
-    <AssemblyName>xray.Domain</AssemblyName>
-    <PackageId>xray.Domain</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ix-Async" Version="1.2.5" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="5.5.216" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

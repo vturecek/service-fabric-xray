@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ix-Async" Version="1.2.5" />
-    <PackageReference Include="Microsoft.ServiceFabric" Version="5.1.150" />
+    <PackageReference Include="Microsoft.ServiceFabric" Version="5.5.216" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">

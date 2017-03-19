@@ -3,17 +3,12 @@
   <Parameters>
     <Parameter Name="Data_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Data_TargetReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Web_InstanceCount" DefaultValue="1" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="xray.DataPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-  </ServiceManifestImport>
-  <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="xray.WebPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
   </ServiceManifestImport>
   <DefaultServices>
@@ -28,7 +23,7 @@
       </StatefulService>
     </Service>
     <Service Name="Web">
-      <StatelessService ServiceTypeName="WebType" InstanceCount="[Web_InstanceCount]">
+      <StatelessService ServiceTypeName="WebType">
         <SingletonPartition />
       </StatelessService>
     </Service>

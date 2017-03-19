@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5361/",
+      "applicationUrl": "http://localhost:13908/",
       "sslPort": 0
     }
   },
@@ -16,12 +16,7 @@
       }
     },
     "xray.Web": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "commandName": "Project"
     }
   }
 }

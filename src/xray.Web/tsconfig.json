@@ -1,20 +1,14 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
+    "moduleResolution": "node",
     "target": "es5",
-    "emitDecoratorMetadata": true,
+    "sourceMap": true,
     "experimentalDecorators": true,
-    "module": "system",
-    "moduleResolution": "node"
+    "emitDecoratorMetadata": true,
+    "skipDefaultLibCheck": true,
+    "lib": [ "es6", "dom" ],
+    "types": [ "node" ]
   },
-  "exclude": [
-    "node_modules",
-    "wwwroot/lib",
-    "typings/main",
-    "typings/main.d.ts"
-  ]
+  "exclude": [ "bin", "node_modules" ],
+  "atom": { "rewriteTsconfig": false }
 }

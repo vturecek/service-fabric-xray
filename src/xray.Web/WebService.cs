@@ -7,6 +7,7 @@ namespace xray.Web
     using Common;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
     using Microsoft.ServiceFabric.Services.Communication.Runtime;
     using Microsoft.ServiceFabric.Services.Runtime;
     using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace xray.Web
             return new[] 
             {
                 new ServiceInstanceListener(context =>
-                    new WebHostCommunicationListener(context, "ServiceEndpoint", uri =>
+                    new WebListenerCommunicationListener(context, "ServiceEndpoint", (uri, listener) =>
                         new WebHostBuilder().UseWebListener()
                                            .ConfigureServices(services =>
                                                 services.AddSingleton(new HttpClient(new HttpServiceClientHandler())))

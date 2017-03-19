@@ -1,29 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Service Fabric xray";
+@{
+    ViewData["Title"] = "Home Page";
 }
 
-<section id="content">
-    <xray>
-        <div class="loading-main">
-            <div class="loading">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-    </xray>
-</section>
+<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
 
-@section Scripts {
-    <script>
-        System.config({
-            packages: {
-                'app': { defaultExtension: 'js' },
-                'lib': { defaultExtension: 'js' },
-            },
-        });
-
-        System.import('app/boot')
-            .then(null, console.error.bind(console));
-    </script>
+<script src="~/dist/vendor.js" asp-append-version="true"></script>
+@section scripts {
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
 }

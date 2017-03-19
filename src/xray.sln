@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "xray", "xray\xray.sfproj", "{41829464-E11F-4394-BDAF-D7C66E770C0D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -45,10 +45,10 @@ Global
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Debug|x64.Build.0 = Debug|Any CPU
-		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|Any CPU.ActiveCfg = LocalServer|Any CPU
-		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|Any CPU.Build.0 = LocalServer|Any CPU
-		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|x64.ActiveCfg = LocalServer|Any CPU
-		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|x64.Build.0 = LocalServer|Any CPU
+		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|Any CPU.ActiveCfg = Release|Any CPU
+		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|Any CPU.Build.0 = Release|Any CPU
+		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|x64.ActiveCfg = Release|Any CPU
+		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.LocalServer|x64.Build.0 = Release|Any CPU
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F51D8EF-B9FB-46F4-9571-B375E780957F}.Release|x64.ActiveCfg = Release|Any CPU

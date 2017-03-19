@@ -1,17 +1,16 @@
-﻿// ------------------------------------------------------------
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace xray.Web
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json.Serialization;
-
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -30,14 +29,7 @@ namespace xray.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc()
-                .AddWebApiConventions()
-                .AddJsonOptions(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver =
-                            new CamelCasePropertyNamesContractResolver();
-                    });
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +41,9 @@ namespace xray.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                    HotModuleReplacement = true
+                });
             }
             else
             {
@@ -58,7 +52,16 @@ namespace xray.Web
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
+            });
         }
     }
 }

@@ -1,18 +1,21 @@
-﻿// ------------------------------------------------------------
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace xray.Controllers
+namespace xray.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-
-    [Route("")]
     public class HomeController : Controller
     {
-        [Route("{section:regex(^cluster|dashboard$)?}")]
-        public IActionResult Index(string section = null)
+        public IActionResult Index()
         {
-            return this.View();
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            return View();
         }
     }
 }

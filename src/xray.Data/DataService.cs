@@ -9,6 +9,7 @@ namespace xray.Data
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.ServiceFabric.Data;
     using Microsoft.ServiceFabric.Data.Collections;
+    using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
     using Microsoft.ServiceFabric.Services.Communication.Runtime;
     using System;
     using System.Collections.Generic;
@@ -34,10 +35,11 @@ namespace xray.Data
             return new[]
             {
                 new ServiceReplicaListener(context =>
-                    new WebHostCommunicationListener(context, "ServiceEndpoint", uri =>
+                    new KestrelCommunicationListener(context, (uri, listener) =>
                         new WebHostBuilder().UseWebListener()
                                            .UseStartup<Startup>()
                                            .UseUrls(uri)
+                                           .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
                                            .ConfigureServices(services => services
                                                .AddSingleton<IReliableStateManager>(this.StateManager)
                                                .AddSingleton<IServiceFabricQuery>(this.query))

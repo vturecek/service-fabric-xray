@@ -12,10 +12,10 @@
 
   <ItemGroup>
     <PackageReference Include="Ix-Async" Version="1.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="1.1.1" />
     <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
-    <PackageReference Include="Microsoft.ServiceFabric" Version="5.1.150" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="2.1.150" />
+    <PackageReference Include="Microsoft.ServiceFabric" Version="5.5.216" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="2.5.216" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
